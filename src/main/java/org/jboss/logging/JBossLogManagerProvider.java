@@ -42,7 +42,11 @@ final class JBossLogManagerProvider implements LoggerProvider {
         Logger l = logger.getAttachment(KEY);
         for (;;) {
             if (l != null) {
-                if (l.getPrefix().equals(prefix)) {
+                if (prefix == null) {
+                    if (l.getPrefix() == null) {
+                        return l;
+                    }
+                } else if (prefix.equals(l.getPrefix())) {
                     return l;
                 }
                 return new JBossLogManagerLogger(name, resourceBundleName, prefix, logger);
