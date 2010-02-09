@@ -73,7 +73,7 @@ final class Slf4jLogger extends Logger {
 
     protected void doLogf(final Level level, final String loggerClassName, final String format, final Object[] parameters, final Throwable thrown) {
         if (isEnabled(level)) {
-            final String text = parameters == null || parameters.length == 0 ? format : String.format(format, parameters);
+            final String text = parameters == null ? String.format(format) : String.format(format, parameters);
             switch (level) {
                 case FATAL:
                 case ERROR:

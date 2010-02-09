@@ -45,7 +45,7 @@ final class Log4jLogger extends Logger {
     }
 
     protected void doLogf(final Level level, final String loggerClassName, final String format, final Object[] parameters, final Throwable thrown) {
-        logger.log(loggerClassName, translate(level), parameters == null || parameters.length == 0 ? format : String.format(format, parameters), thrown);
+        logger.log(loggerClassName, translate(level), parameters == null ? String.format(format) : String.format(format, parameters), thrown);
     }
 
     private static org.apache.log4j.Level translate(final Level level) {
