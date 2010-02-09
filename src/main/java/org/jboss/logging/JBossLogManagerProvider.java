@@ -26,10 +26,36 @@ import java.util.Map;
 import org.jboss.logmanager.MDC;
 import org.jboss.logmanager.NDC;
 
+import static org.jboss.logmanager.Logger.AttachmentKey;
+
 final class JBossLogManagerProvider implements LoggerProvider {
 
+    private static final AttachmentKey<Logger> KEY = new AttachmentKey<Logger>();
+
     public Logger getLogger(final String name, final String resourceBundleName, final String prefix) {
-        return new JBossLogManagerLogger(name, resourceBundleName, prefix);
+        final org.jboss.logmanager.Logger logger;
+        if (resourceBundleName != null) {
+            logger = org.jboss.logmanager.Logger.getLogger(name, resourceBundleName);
+        } else {
+            logger = org.jboss.logmanager.Logger.getLogger(name);
+        }
+        Logger l = logger.getAttachment(KEY);
+        for (;;) {
+            if (l != null) {
+                if (l.getPrefix().equals(prefix)) {
+                    return l;
+                }
+                return new JBossLogManagerLogger(name, resourceBundleName, prefix, logger);
+            } else {
+                l = new JBossLogManagerLogger(name, resourceBundleName, prefix, logger);
+                Logger a = logger.attachIfAbsent(KEY, l);
+                if (a == null) {
+                    return l;
+                }
+                l = a;
+                // try again...
+            }
+        }
     }
 
     public void putMdc(final String key, final Object value) {

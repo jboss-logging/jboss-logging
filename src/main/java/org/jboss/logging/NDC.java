@@ -22,28 +22,36 @@
 
 package org.jboss.logging;
 
-import java.util.logging.Level;
+public final class NDC {
 
-/**
- * Levels used by the JDK logging back end.
- */
-final class JDKLevel extends Level {
-
-    private static final long serialVersionUID = 1L;
-
-    protected JDKLevel(final String name, final int value) {
-        super(name, value);
+    private NDC() {
     }
 
-    protected JDKLevel(final String name, final int value, final String resourceBundleName) {
-        super(name, value, resourceBundleName);
+    public static void clear() {
+        LoggerProviders.PROVIDER.clearNdc();
     }
 
-    public static final JDKLevel FATAL = new JDKLevel("FATAL", 1100);
-    public static final JDKLevel ERROR = new JDKLevel("ERROR", 1000);
-    public static final JDKLevel WARN = new JDKLevel("WARN", 900);
-    @SuppressWarnings("hiding")
-    public static final JDKLevel INFO = new JDKLevel("INFO", 800);
-    public static final JDKLevel DEBUG = new JDKLevel("DEBUG", 500);
-    public static final JDKLevel TRACE = new JDKLevel("TRACE", 400);
+    public static String get() {
+        return LoggerProviders.PROVIDER.getNdc();
+    }
+
+    public static int getDepth() {
+        return LoggerProviders.PROVIDER.getNdcDepth();
+    }
+
+    public static String pop() {
+        return LoggerProviders.PROVIDER.popNdc();
+    }
+
+    public static String peek() {
+        return LoggerProviders.PROVIDER.peekNdc();
+    }
+
+    public static void push(String message) {
+        LoggerProviders.PROVIDER.pushNdc(message);
+    }
+
+    public static void setMaxDepth(int maxDepth) {
+        LoggerProviders.PROVIDER.setNdcMaxDepth(maxDepth);
+    }
 }

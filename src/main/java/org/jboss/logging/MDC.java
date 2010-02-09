@@ -22,28 +22,26 @@
 
 package org.jboss.logging;
 
-import java.util.logging.Level;
+import java.util.Map;
 
-/**
- * Levels used by the JDK logging back end.
- */
-final class JDKLevel extends Level {
+public final class MDC {
 
-    private static final long serialVersionUID = 1L;
-
-    protected JDKLevel(final String name, final int value) {
-        super(name, value);
+    private MDC() {
     }
 
-    protected JDKLevel(final String name, final int value, final String resourceBundleName) {
-        super(name, value, resourceBundleName);
+    public static void put(String key, Object val) {
+        LoggerProviders.PROVIDER.putMdc(key, val);
     }
 
-    public static final JDKLevel FATAL = new JDKLevel("FATAL", 1100);
-    public static final JDKLevel ERROR = new JDKLevel("ERROR", 1000);
-    public static final JDKLevel WARN = new JDKLevel("WARN", 900);
-    @SuppressWarnings("hiding")
-    public static final JDKLevel INFO = new JDKLevel("INFO", 800);
-    public static final JDKLevel DEBUG = new JDKLevel("DEBUG", 500);
-    public static final JDKLevel TRACE = new JDKLevel("TRACE", 400);
+    public static Object get(String key) {
+        return LoggerProviders.PROVIDER.getMdc(key);
+    }
+
+    public static void remove(String key) {
+        LoggerProviders.PROVIDER.removeMdc(key);
+    }
+
+    public static Map<String, Object> getMap() {
+        return LoggerProviders.PROVIDER.getMdcMap();
+    }
 }

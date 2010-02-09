@@ -30,13 +30,9 @@ final class JBossLogManagerLogger extends Logger {
 
     private final org.jboss.logmanager.Logger logger;
 
-    JBossLogManagerLogger(final String name, final String resourceBundleName, final String prefix) {
+    JBossLogManagerLogger(final String name, final String resourceBundleName, final String prefix, final org.jboss.logmanager.Logger logger) {
         super(name, resourceBundleName, prefix);
-        if (resourceBundleName != null) {
-            logger = org.jboss.logmanager.Logger.getLogger(name, resourceBundleName);
-        } else {
-            logger = org.jboss.logmanager.Logger.getLogger(name);
-        }
+        this.logger = logger;
     }
 
     public boolean isEnabled(final Level level) {

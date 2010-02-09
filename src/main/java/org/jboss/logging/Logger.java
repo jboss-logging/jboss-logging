@@ -71,6 +71,15 @@ public abstract class Logger implements Serializable {
     }
 
     /**
+     * Get the log message prefix string.
+     *
+     * @return the log message prefix string
+     */
+    public String getPrefix() {
+        return prefix;
+    }
+
+    /**
      * Check to see if the given level is enabled for this logger.
      *
      * @param level the level to check for
