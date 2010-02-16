@@ -109,18 +109,33 @@ public abstract class Logger implements Serializable {
      */
     protected abstract void doLogf(Level level, String loggerClassName, String format, Object[] parameters, Throwable thrown);
     
+    private static String key(String prefix, int id) {
+        StringBuilder b = new StringBuilder(32);
+        b.append(prefix).append('-');
+        if (id < 10) {
+            b.append("0000");
+        } else if (id < 100) {
+            b.append("000");
+        } else if (id < 1000) {
+            b.append("00");
+        } else if (id < 10000) {
+            b.append('0');
+        }
+        b.append(id);
+        return b.toString();
+    }
+
     /**
-     * Check to see if the TRACE level is enabled for this logger.
+     * Check to see if the {@code TRACE} level is enabled for this logger.
      *
-     * @return true if a {@link #trace(Object)} method invocation would pass the msg to the configured appenders, false
-     *         otherwise.
+     * @return {@code true} if messages logged at {@link Level#TRACE} may be accepted, {@code false} otherwise
      */
     public boolean isTraceEnabled() {
         return isEnabled(Level.TRACE);
     }
 
     /**
-     * Issue a log msg with a level of TRACE.
+     * Issue a log message with a level of TRACE.
      *
      * @param message the message
      */
@@ -129,7 +144,7 @@ public abstract class Logger implements Serializable {
     }
 
     /**
-     * Issue a log msg and throwable with a level of TRACE.
+     * Issue a log message and throwable with a level of TRACE.
      *
      * @param message the message
      * @param t the throwable
@@ -139,7 +154,7 @@ public abstract class Logger implements Serializable {
     }
 
     /**
-     * Issue a log msg and throwable with a level of TRACE and a specific logger class name.
+     * Issue a log message and throwable with a level of TRACE and a specific logger class name.
      *
      * @param loggerFqcn the logger class name
      * @param message the message
@@ -154,6 +169,7 @@ public abstract class Logger implements Serializable {
      *
      * @param message the message
      * @param params the message parameters
+     * @deprecated To log a message with parameters, using {@link #tracev(String, Object...)} is recommended.
      */
     public void trace(Object message, Object[] params) {
         doLog(Level.TRACE, FQCN, message, params, null);
@@ -165,6 +181,7 @@ public abstract class Logger implements Serializable {
      * @param message the message
      * @param params the message parameters
      * @param t the throwable
+     * @deprecated To log a message with parameters, using {@link #tracev(Throwable, String, Object...)} is recommended.
      */
     public void trace(Object message, Object[] params, Throwable t) {
         doLog(Level.TRACE, FQCN, message, params, t);
@@ -180,6 +197,108 @@ public abstract class Logger implements Serializable {
      */
     public void trace(String loggerFqcn, Object message, Object[] params, Throwable t) {
         doLog(Level.TRACE, loggerFqcn, message, params, t);
+    }
+
+    /**
+     * Issue a log message with a level of TRACE using {@link java.text.MessageFormat}-style formatting.
+     *
+     * @param format the message format string
+     * @param params the parameters
+     */
+    public void tracev(String format, Object... params) {
+        doLog(Level.TRACE, FQCN, format, params, null);
+    }
+
+    /**
+     * Issue a log message with a level of TRACE using {@link java.text.MessageFormat}-style formatting.
+     *
+     * @param format the message format string
+     * @param param1 the sole parameter
+     */
+    public void tracev(String format, Object param1) {
+        if (isEnabled(Level.TRACE)) {
+            doLog(Level.TRACE, FQCN, format, new Object[] { param1 }, null);
+        }
+    }
+
+    /**
+     * Issue a log message with a level of TRACE using {@link java.text.MessageFormat}-style formatting.
+     *
+     * @param format the message format string
+     * @param param1 the first parameter
+     * @param param2 the second parameter
+     */
+    public void tracev(String format, Object param1, Object param2) {
+        if (isEnabled(Level.TRACE)) {
+            doLog(Level.TRACE, FQCN, format, new Object[] { param1, param2 }, null);
+        }
+    }
+
+    /**
+     * Issue a log message with a level of TRACE using {@link java.text.MessageFormat}-style formatting.
+     *
+     * @param format the message format string
+     * @param param1 the first parameter
+     * @param param2 the second parameter
+     * @param param3 the third parameter
+     */
+    public void tracev(String format, Object param1, Object param2, Object param3) {
+        if (isEnabled(Level.TRACE)) {
+            doLog(Level.TRACE, FQCN, format, new Object[] { param1, param2, param3 }, null);
+        }
+    }
+
+    /**
+     * Issue a log message with a level of TRACE using {@link java.text.MessageFormat}-style formatting.
+     *
+     * @param t the throwable
+     * @param format the message format string
+     * @param params the parameters
+     */
+    public void tracev(Throwable t, String format, Object... params) {
+        doLog(Level.TRACE, FQCN, format, params, t);
+    }
+
+    /**
+     * Issue a log message with a level of TRACE using {@link java.text.MessageFormat}-style formatting.
+     *
+     * @param t the throwable
+     * @param format the message format string
+     * @param param1 the sole parameter
+     */
+    public void tracev(Throwable t, String format, Object param1) {
+        if (isEnabled(Level.TRACE)) {
+            doLog(Level.TRACE, FQCN, format, new Object[] { param1 }, t);
+        }
+    }
+
+    /**
+     * Issue a log message with a level of TRACE using {@link java.text.MessageFormat}-style formatting.
+     *
+     * @param t the throwable
+     * @param format the message format string
+     * @param param1 the first parameter
+     * @param param2 the second parameter
+     */
+    public void tracev(Throwable t, String format, Object param1, Object param2) {
+        if (isEnabled(Level.TRACE)) {
+            doLog(Level.TRACE, FQCN, format, new Object[] { param1, param2 }, t);
+        }
+    }
+
+    /**
+     * Issue a log message with a level of TRACE using {@link java.text.MessageFormat}-style formatting.
+     *
+     * @param t the throwable
+     * @param format the message format string
+     * @param param1 the first parameter
+     * @param param2 the second parameter
+     * @param param3 the third parameter
+     */
+    public void tracev(Throwable t, String format, Object param1, Object param2, Object param3) {
+        if (isEnabled(Level.TRACE)) {
+            doLog(Level.TRACE, FQCN, format, new Object[] { param1, param2, param3 }, t);
+        }
     }
 
     /**
@@ -285,10 +404,260 @@ public abstract class Logger implements Serializable {
     }
 
     /**
-     * Check to see if the DEBUG level is enabled for this logger.
+     * Issue a log message from a numerical key with a level of TRACE.
      *
-     * @return true if a {@link #debug(Object)} method invocation would pass the msg to the configured appenders, false
-     *         otherwise.
+     * @param key the numerical key
+     */
+    public void tracek(int key) {
+        if (isEnabled(Level.TRACE)) {
+            doLog(Level.TRACE, FQCN, key(prefix, key), null, null);
+        }
+    }
+
+    /**
+     * Issue a log message from a numerical key with a level of TRACE.
+     *
+     * @param key the numerical key
+     * @param t the throwable
+     */
+    public void tracek(Throwable t, int key) {
+        if (isEnabled(Level.TRACE)) {
+            doLog(Level.TRACE, FQCN, key(prefix, key), null, t);
+        }
+    }
+
+    /**
+     * Issue a parameterized log message from a numerical key with a level of TRACE.  The resource value should be a
+     * {@link java.text.MessageFormat}-style format string.
+     *
+     * @param key the numerical key
+     * @param params the parameters
+     */
+    public void tracekv(int key, Object... params) {
+        if (isEnabled(Level.TRACE)) {
+            doLog(Level.TRACE, FQCN, key(prefix, key), params, null);
+        }
+    }
+
+    /**
+     * Issue a parameterized log message from a numerical key with a level of TRACE.  The resource value should be a
+     * {@link java.text.MessageFormat}-style format string.
+     *
+     * @param key the numerical key
+     * @param param1 the sole parameter
+     */
+    public void tracekv(int key, Object param1) {
+        if (isEnabled(Level.TRACE)) {
+            doLog(Level.TRACE, FQCN, key(prefix, key), new Object[] { param1 }, null);
+        }
+    }
+
+    /**
+     * Issue a parameterized log message from a numerical key with a level of TRACE.  The resource value should be a
+     * {@link java.text.MessageFormat}-style format string.
+     *
+     * @param key the numerical key
+     * @param param1 the first parameter
+     * @param param2 the second parameter
+     */
+    public void tracekv(int key, Object param1, Object param2) {
+        if (isEnabled(Level.TRACE)) {
+            doLog(Level.TRACE, FQCN, key(prefix, key), new Object[] { param1, param2 }, null);
+        }
+    }
+
+    /**
+     * Issue a parameterized log message from a numerical key with a level of TRACE.  The resource value should be a
+     * {@link java.text.MessageFormat}-style format string.
+     *
+     * @param key the numerical key
+     * @param param1 the first parameter
+     * @param param2 the second parameter
+     * @param param3 the third parameter
+     */
+    public void tracekv(int key, Object param1, Object param2, Object param3) {
+        if (isEnabled(Level.TRACE)) {
+            doLog(Level.TRACE, FQCN, key(prefix, key), new Object[] { param1, param2, param3 }, null);
+        }
+    }
+
+    /**
+     * Issue a parameterized log message from a numerical key with a level of TRACE.  The resource value should be a
+     * {@link java.text.MessageFormat}-style format string.
+     *
+     * @param t the throwable
+     * @param key the numerical key
+     * @param params the parameters
+     */
+    public void tracekv(Throwable t, int key, Object... params) {
+        if (isEnabled(Level.TRACE)) {
+            doLog(Level.TRACE, FQCN, key(prefix, key), params, t);
+        }
+    }
+
+    /**
+     * Issue a parameterized log message from a numerical key with a level of TRACE.  The resource value should be a
+     * {@link java.text.MessageFormat}-style format string.
+     *
+     * @param t the throwable
+     * @param key the numerical key
+     * @param param1 the sole parameter
+     */
+    public void tracekv(Throwable t, int key, Object param1) {
+        if (isEnabled(Level.TRACE)) {
+            doLog(Level.TRACE, FQCN, key(prefix, key), new Object[] { param1 }, t);
+        }
+    }
+
+    /**
+     * Issue a parameterized log message from a numerical key with a level of TRACE.  The resource value should be a
+     * {@link java.text.MessageFormat}-style format string.
+     *
+     * @param t the throwable
+     * @param key the numerical key
+     * @param param1 the first parameter
+     * @param param2 the second parameter
+     */
+    public void tracekv(Throwable t, int key, Object param1, Object param2) {
+        if (isEnabled(Level.TRACE)) {
+            doLog(Level.TRACE, FQCN, key(prefix, key), new Object[] { param1, param2 }, t);
+        }
+    }
+
+    /**
+     * Issue a parameterized log message from a numerical key with a level of TRACE.  The resource value should be a
+     * {@link java.text.MessageFormat}-style format string.
+     *
+     * @param t the throwable
+     * @param key the numerical key
+     * @param param1 the first parameter
+     * @param param2 the second parameter
+     * @param param3 the third parameter
+     */
+    public void tracekv(Throwable t, int key, Object param1, Object param2, Object param3) {
+        if (isEnabled(Level.TRACE)) {
+            doLog(Level.TRACE, FQCN, key(prefix, key), new Object[] { param1, param2, param3 }, t);
+        }
+    }
+
+    /**
+     * Issue a parameterized log message from a numerical key with a level of TRACE.  The resource value should be a
+     * {@link java.util.Formatter}-style format string.
+     *
+     * @param key the numerical key
+     * @param params the parameters
+     */
+    public void tracekf(int key, Object... params) {
+        if (isEnabled(Level.TRACE)) {
+            doLogf(Level.TRACE, FQCN, key(prefix, key), params, null);
+        }
+    }
+
+    /**
+     * Issue a parameterized log message from a numerical key with a level of TRACE.  The resource value should be a
+     * {@link java.util.Formatter}-style format string.
+     *
+     * @param key the numerical key
+     * @param param1 the sole parameter
+     */
+    public void tracekf(int key, Object param1) {
+        if (isEnabled(Level.TRACE)) {
+            doLogf(Level.TRACE, FQCN, key(prefix, key), new Object[] { param1 }, null);
+        }
+    }
+
+    /**
+     * Issue a parameterized log message from a numerical key with a level of TRACE.  The resource value should be a
+     * {@link java.util.Formatter}-style format string.
+     *
+     * @param key the numerical key
+     * @param param1 the first parameter
+     * @param param2 the second parameter
+     */
+    public void tracekf(int key, Object param1, Object param2) {
+        if (isEnabled(Level.TRACE)) {
+            doLogf(Level.TRACE, FQCN, key(prefix, key), new Object[] { param1, param2 }, null);
+        }
+    }
+
+    /**
+     * Issue a parameterized log message from a numerical key with a level of TRACE.  The resource value should be a
+     * {@link java.util.Formatter}-style format string.
+     *
+     * @param key the numerical key
+     * @param param1 the first parameter
+     * @param param2 the second parameter
+     * @param param3 the third parameter
+     */
+    public void tracekf(int key, Object param1, Object param2, Object param3) {
+        if (isEnabled(Level.TRACE)) {
+            doLogf(Level.TRACE, FQCN, key(prefix, key), new Object[] { param1, param2, param3 }, null);
+        }
+    }
+
+    /**
+     * Issue a parameterized log message from a numerical key with a level of TRACE.  The resource value should be a
+     * {@link java.util.Formatter}-style format string.
+     *
+     * @param t the throwable
+     * @param key the numerical key
+     * @param params the parameters
+     */
+    public void tracekf(Throwable t, int key, Object... params) {
+        if (isEnabled(Level.TRACE)) {
+            doLog(Level.TRACE, FQCN, key(prefix, key), params, t);
+        }
+    }
+
+    /**
+     * Issue a parameterized log message from a numerical key with a level of TRACE.  The resource value should be a
+     * {@link java.util.Formatter}-style format string.
+     *
+     * @param t the throwable
+     * @param key the numerical key
+     * @param param1 the sole parameter
+     */
+    public void tracekf(Throwable t, int key, Object param1) {
+        if (isEnabled(Level.TRACE)) {
+            doLogf(Level.TRACE, FQCN, key(prefix, key), new Object[] { param1 }, t);
+        }
+    }
+
+    /**
+     * Issue a parameterized log message from a numerical key with a level of TRACE.  The resource value should be a
+     * {@link java.util.Formatter}-style format string.
+     *
+     * @param t the throwable
+     * @param key the numerical key
+     * @param param1 the first parameter
+     * @param param2 the second parameter
+     */
+    public void tracekf(Throwable t, int key, Object param1, Object param2) {
+        if (isEnabled(Level.TRACE)) {
+            doLogf(Level.TRACE, FQCN, key(prefix, key), new Object[] { param1, param2 }, t);
+        }
+    }
+
+    /**
+     * Issue a parameterized log message from a numerical key with a level of TRACE.  The resource value should be a
+     * {@link java.util.Formatter}-style format string.
+     *
+     * @param t the throwable
+     * @param key the numerical key
+     * @param param1 the first parameter
+     * @param param2 the second parameter
+     * @param param3 the third parameter
+     */
+    public void tracekf(Throwable t, int key, Object param1, Object param2, Object param3) {
+        if (isEnabled(Level.TRACE)) {
+            doLogf(Level.TRACE, FQCN, key(prefix, key), new Object[] { param1, param2, param3 }, t);
+        }
+    }
+
+    /**
+     * Check to see if the {@code DEBUG} level is enabled for this logger.
+     *
+     * @return {@code true} if messages logged at {@link Level#DEBUG} may be accepted, {@code false} otherwise
      */
     public boolean isDebugEnabled() {
         return isEnabled(Level.DEBUG);
@@ -329,6 +698,7 @@ public abstract class Logger implements Serializable {
      *
      * @param message the message
      * @param params the message parameters
+     * @deprecated To log a message with parameters, using {@link #debugv(String, Object...)} is recommended.
      */
     public void debug(Object message, Object[] params) {
         doLog(Level.DEBUG, FQCN, message, params, null);
@@ -340,6 +710,7 @@ public abstract class Logger implements Serializable {
      * @param message the message
      * @param params the message parameters
      * @param t the throwable
+     * @deprecated To log a message with parameters, using {@link #debugv(Throwable, String, Object...)} is recommended.
      */
     public void debug(Object message, Object[] params, Throwable t) {
         doLog(Level.DEBUG, FQCN, message, params, t);
@@ -355,6 +726,108 @@ public abstract class Logger implements Serializable {
      */
     public void debug(String loggerFqcn, Object message, Object[] params, Throwable t) {
         doLog(Level.DEBUG, loggerFqcn, message, params, t);
+    }
+
+    /**
+     * Issue a log message with a level of DEBUG using {@link java.text.MessageFormat}-style formatting.
+     *
+     * @param format the message format string
+     * @param params the parameters
+     */
+    public void debugv(String format, Object... params) {
+        doLog(Level.DEBUG, FQCN, format, params, null);
+    }
+
+    /**
+     * Issue a log message with a level of DEBUG using {@link java.text.MessageFormat}-style formatting.
+     *
+     * @param format the message format string
+     * @param param1 the sole parameter
+     */
+    public void debugv(String format, Object param1) {
+        if (isEnabled(Level.DEBUG)) {
+            doLog(Level.DEBUG, FQCN, format, new Object[] { param1 }, null);
+        }
+    }
+
+    /**
+     * Issue a log message with a level of DEBUG using {@link java.text.MessageFormat}-style formatting.
+     *
+     * @param format the message format string
+     * @param param1 the first parameter
+     * @param param2 the second parameter
+     */
+    public void debugv(String format, Object param1, Object param2) {
+        if (isEnabled(Level.DEBUG)) {
+            doLog(Level.DEBUG, FQCN, format, new Object[] { param1, param2 }, null);
+        }
+    }
+
+    /**
+     * Issue a log message with a level of DEBUG using {@link java.text.MessageFormat}-style formatting.
+     *
+     * @param format the message format string
+     * @param param1 the first parameter
+     * @param param2 the second parameter
+     * @param param3 the third parameter
+     */
+    public void debugv(String format, Object param1, Object param2, Object param3) {
+        if (isEnabled(Level.DEBUG)) {
+            doLog(Level.DEBUG, FQCN, format, new Object[] { param1, param2, param3 }, null);
+        }
+    }
+
+    /**
+     * Issue a log message with a level of DEBUG using {@link java.text.MessageFormat}-style formatting.
+     *
+     * @param t the throwable
+     * @param format the message format string
+     * @param params the parameters
+     */
+    public void debugv(Throwable t, String format, Object... params) {
+        doLog(Level.DEBUG, FQCN, format, params, t);
+    }
+
+    /**
+     * Issue a log message with a level of DEBUG using {@link java.text.MessageFormat}-style formatting.
+     *
+     * @param t the throwable
+     * @param format the message format string
+     * @param param1 the sole parameter
+     */
+    public void debugv(Throwable t, String format, Object param1) {
+        if (isEnabled(Level.DEBUG)) {
+            doLog(Level.DEBUG, FQCN, format, new Object[] { param1 }, t);
+        }
+    }
+
+    /**
+     * Issue a log message with a level of DEBUG using {@link java.text.MessageFormat}-style formatting.
+     *
+     * @param t the throwable
+     * @param format the message format string
+     * @param param1 the first parameter
+     * @param param2 the second parameter
+     */
+    public void debugv(Throwable t, String format, Object param1, Object param2) {
+        if (isEnabled(Level.DEBUG)) {
+            doLog(Level.DEBUG, FQCN, format, new Object[] { param1, param2 }, t);
+        }
+    }
+
+    /**
+     * Issue a log message with a level of DEBUG using {@link java.text.MessageFormat}-style formatting.
+     *
+     * @param t the throwable
+     * @param format the message format string
+     * @param param1 the first parameter
+     * @param param2 the second parameter
+     * @param param3 the third parameter
+     */
+    public void debugv(Throwable t, String format, Object param1, Object param2, Object param3) {
+        if (isEnabled(Level.DEBUG)) {
+            doLog(Level.DEBUG, FQCN, format, new Object[] { param1, param2, param3 }, t);
+        }
     }
 
     /**
@@ -460,10 +933,260 @@ public abstract class Logger implements Serializable {
     }
 
     /**
-     * Check to see if the INFO level is enabled for this logger.
+     * Issue a log message from a numerical key with a level of DEBUG.
      *
-     * @return true if a {@link #info(Object)} method invocation would pass the msg to the configured appenders, false
-     *         otherwise.
+     * @param key the numerical key
+     */
+    public void debugk(int key) {
+        if (isEnabled(Level.DEBUG)) {
+            doLog(Level.DEBUG, FQCN, key(prefix, key), null, null);
+        }
+    }
+
+    /**
+     * Issue a log message from a numerical key with a level of DEBUG.
+     *
+     * @param key the numerical key
+     * @param t the throwable
+     */
+    public void debugk(Throwable t, int key) {
+        if (isEnabled(Level.DEBUG)) {
+            doLog(Level.DEBUG, FQCN, key(prefix, key), null, t);
+        }
+    }
+
+    /**
+     * Issue a parameterized log message from a numerical key with a level of DEBUG.  The resource value should be a
+     * {@link java.text.MessageFormat}-style format string.
+     *
+     * @param key the numerical key
+     * @param params the parameters
+     */
+    public void debugkv(int key, Object... params) {
+        if (isEnabled(Level.DEBUG)) {
+            doLog(Level.DEBUG, FQCN, key(prefix, key), params, null);
+        }
+    }
+
+    /**
+     * Issue a parameterized log message from a numerical key with a level of DEBUG.  The resource value should be a
+     * {@link java.text.MessageFormat}-style format string.
+     *
+     * @param key the numerical key
+     * @param param1 the sole parameter
+     */
+    public void debugkv(int key, Object param1) {
+        if (isEnabled(Level.DEBUG)) {
+            doLog(Level.DEBUG, FQCN, key(prefix, key), new Object[] { param1 }, null);
+        }
+    }
+
+    /**
+     * Issue a parameterized log message from a numerical key with a level of DEBUG.  The resource value should be a
+     * {@link java.text.MessageFormat}-style format string.
+     *
+     * @param key the numerical key
+     * @param param1 the first parameter
+     * @param param2 the second parameter
+     */
+    public void debugkv(int key, Object param1, Object param2) {
+        if (isEnabled(Level.DEBUG)) {
+            doLog(Level.DEBUG, FQCN, key(prefix, key), new Object[] { param1, param2 }, null);
+        }
+    }
+
+    /**
+     * Issue a parameterized log message from a numerical key with a level of DEBUG.  The resource value should be a
+     * {@link java.text.MessageFormat}-style format string.
+     *
+     * @param key the numerical key
+     * @param param1 the first parameter
+     * @param param2 the second parameter
+     * @param param3 the third parameter
+     */
+    public void debugkv(int key, Object param1, Object param2, Object param3) {
+        if (isEnabled(Level.DEBUG)) {
+            doLog(Level.DEBUG, FQCN, key(prefix, key), new Object[] { param1, param2, param3 }, null);
+        }
+    }
+
+    /**
+     * Issue a parameterized log message from a numerical key with a level of DEBUG.  The resource value should be a
+     * {@link java.text.MessageFormat}-style format string.
+     *
+     * @param t the throwable
+     * @param key the numerical key
+     * @param params the parameters
+     */
+    public void debugkv(Throwable t, int key, Object... params) {
+        if (isEnabled(Level.DEBUG)) {
+            doLog(Level.DEBUG, FQCN, key(prefix, key), params, t);
+        }
+    }
+
+    /**
+     * Issue a parameterized log message from a numerical key with a level of DEBUG.  The resource value should be a
+     * {@link java.text.MessageFormat}-style format string.
+     *
+     * @param t the throwable
+     * @param key the numerical key
+     * @param param1 the sole parameter
+     */
+    public void debugkv(Throwable t, int key, Object param1) {
+        if (isEnabled(Level.DEBUG)) {
+            doLog(Level.DEBUG, FQCN, key(prefix, key), new Object[] { param1 }, t);
+        }
+    }
+
+    /**
+     * Issue a parameterized log message from a numerical key with a level of DEBUG.  The resource value should be a
+     * {@link java.text.MessageFormat}-style format string.
+     *
+     * @param t the throwable
+     * @param key the numerical key
+     * @param param1 the first parameter
+     * @param param2 the second parameter
+     */
+    public void debugkv(Throwable t, int key, Object param1, Object param2) {
+        if (isEnabled(Level.DEBUG)) {
+            doLog(Level.DEBUG, FQCN, key(prefix, key), new Object[] { param1, param2 }, t);
+        }
+    }
+
+    /**
+     * Issue a parameterized log message from a numerical key with a level of DEBUG.  The resource value should be a
+     * {@link java.text.MessageFormat}-style format string.
+     *
+     * @param t the throwable
+     * @param key the numerical key
+     * @param param1 the first parameter
+     * @param param2 the second parameter
+     * @param param3 the third parameter
+     */
+    public void debugkv(Throwable t, int key, Object param1, Object param2, Object param3) {
+        if (isEnabled(Level.DEBUG)) {
+            doLog(Level.DEBUG, FQCN, key(prefix, key), new Object[] { param1, param2, param3 }, t);
+        }
+    }
+
+    /**
+     * Issue a parameterized log message from a numerical key with a level of DEBUG.  The resource value should be a
+     * {@link java.util.Formatter}-style format string.
+     *
+     * @param key the numerical key
+     * @param params the parameters
+     */
+    public void debugkf(int key, Object... params) {
+        if (isEnabled(Level.DEBUG)) {
+            doLogf(Level.DEBUG, FQCN, key(prefix, key), params, null);
+        }
+    }
+
+    /**
+     * Issue a parameterized log message from a numerical key with a level of DEBUG.  The resource value should be a
+     * {@link java.util.Formatter}-style format string.
+     *
+     * @param key the numerical key
+     * @param param1 the sole parameter
+     */
+    public void debugkf(int key, Object param1) {
+        if (isEnabled(Level.DEBUG)) {
+            doLogf(Level.DEBUG, FQCN, key(prefix, key), new Object[] { param1 }, null);
+        }
+    }
+
+    /**
+     * Issue a parameterized log message from a numerical key with a level of DEBUG.  The resource value should be a
+     * {@link java.util.Formatter}-style format string.
+     *
+     * @param key the numerical key
+     * @param param1 the first parameter
+     * @param param2 the second parameter
+     */
+    public void debugkf(int key, Object param1, Object param2) {
+        if (isEnabled(Level.DEBUG)) {
+            doLogf(Level.DEBUG, FQCN, key(prefix, key), new Object[] { param1, param2 }, null);
+        }
+    }
+
+    /**
+     * Issue a parameterized log message from a numerical key with a level of DEBUG.  The resource value should be a
+     * {@link java.util.Formatter}-style format string.
+     *
+     * @param key the numerical key
+     * @param param1 the first parameter
+     * @param param2 the second parameter
+     * @param param3 the third parameter
+     */
+    public void debugkf(int key, Object param1, Object param2, Object param3) {
+        if (isEnabled(Level.DEBUG)) {
+            doLogf(Level.DEBUG, FQCN, key(prefix, key), new Object[] { param1, param2, param3 }, null);
+        }
+    }
+
+    /**
+     * Issue a parameterized log message from a numerical key with a level of DEBUG.  The resource value should be a
+     * {@link java.util.Formatter}-style format string.
+     *
+     * @param t the throwable
+     * @param key the numerical key
+     * @param params the parameters
+     */
+    public void debugkf(Throwable t, int key, Object... params) {
+        if (isEnabled(Level.DEBUG)) {
+            doLog(Level.DEBUG, FQCN, key(prefix, key), params, t);
+        }
+    }
+
+    /**
+     * Issue a parameterized log message from a numerical key with a level of DEBUG.  The resource value should be a
+     * {@link java.util.Formatter}-style format string.
+     *
+     * @param t the throwable
+     * @param key the numerical key
+     * @param param1 the sole parameter
+     */
+    public void debugkf(Throwable t, int key, Object param1) {
+        if (isEnabled(Level.DEBUG)) {
+            doLogf(Level.DEBUG, FQCN, key(prefix, key), new Object[] { param1 }, t);
+        }
+    }
+
+    /**
+     * Issue a parameterized log message from a numerical key with a level of DEBUG.  The resource value should be a
+     * {@link java.util.Formatter}-style format string.
+     *
+     * @param t the throwable
+     * @param key the numerical key
+     * @param param1 the first parameter
+     * @param param2 the second parameter
+     */
+    public void debugkf(Throwable t, int key, Object param1, Object param2) {
+        if (isEnabled(Level.DEBUG)) {
+            doLogf(Level.DEBUG, FQCN, key(prefix, key), new Object[] { param1, param2 }, t);
+        }
+    }
+
+    /**
+     * Issue a parameterized log message from a numerical key with a level of DEBUG.  The resource value should be a
+     * {@link java.util.Formatter}-style format string.
+     *
+     * @param t the throwable
+     * @param key the numerical key
+     * @param param1 the first parameter
+     * @param param2 the second parameter
+     * @param param3 the third parameter
+     */
+    public void debugkf(Throwable t, int key, Object param1, Object param2, Object param3) {
+        if (isEnabled(Level.DEBUG)) {
+            doLogf(Level.DEBUG, FQCN, key(prefix, key), new Object[] { param1, param2, param3 }, t);
+        }
+    }
+
+    /**
+     * Check to see if the {@code INFO} level is enabled for this logger.
+     *
+     * @return {@code true} if messages logged at {@link Level#INFO} may be accepted, {@code false} otherwise
      */
     public boolean isInfoEnabled() {
         return isEnabled(Level.INFO);
@@ -504,6 +1227,7 @@ public abstract class Logger implements Serializable {
      *
      * @param message the message
      * @param params the message parameters
+     * @deprecated To log a message with parameters, using {@link #infov(String, Object...)} is recommended.
      */
     public void info(Object message, Object[] params) {
         doLog(Level.INFO, FQCN, message, params, null);
@@ -515,6 +1239,7 @@ public abstract class Logger implements Serializable {
      * @param message the message
      * @param params the message parameters
      * @param t the throwable
+     * @deprecated To log a message with parameters, using {@link #infov(Throwable, String, Object...)} is recommended.
      */
     public void info(Object message, Object[] params, Throwable t) {
         doLog(Level.INFO, FQCN, message, params, t);
@@ -530,6 +1255,108 @@ public abstract class Logger implements Serializable {
      */
     public void info(String loggerFqcn, Object message, Object[] params, Throwable t) {
         doLog(Level.INFO, loggerFqcn, message, params, t);
+    }
+
+    /**
+     * Issue a log message with a level of INFO using {@link java.text.MessageFormat}-style formatting.
+     *
+     * @param format the message format string
+     * @param params the parameters
+     */
+    public void infov(String format, Object... params) {
+        doLog(Level.INFO, FQCN, format, params, null);
+    }
+
+    /**
+     * Issue a log message with a level of INFO using {@link java.text.MessageFormat}-style formatting.
+     *
+     * @param format the message format string
+     * @param param1 the sole parameter
+     */
+    public void infov(String format, Object param1) {
+        if (isEnabled(Level.INFO)) {
+            doLog(Level.INFO, FQCN, format, new Object[] { param1 }, null);
+        }
+    }
+
+    /**
+     * Issue a log message with a level of INFO using {@link java.text.MessageFormat}-style formatting.
+     *
+     * @param format the message format string
+     * @param param1 the first parameter
+     * @param param2 the second parameter
+     */
+    public void infov(String format, Object param1, Object param2) {
+        if (isEnabled(Level.INFO)) {
+            doLog(Level.INFO, FQCN, format, new Object[] { param1, param2 }, null);
+        }
+    }
+
+    /**
+     * Issue a log message with a level of INFO using {@link java.text.MessageFormat}-style formatting.
+     *
+     * @param format the message format string
+     * @param param1 the first parameter
+     * @param param2 the second parameter
+     * @param param3 the third parameter
+     */
+    public void infov(String format, Object param1, Object param2, Object param3) {
+        if (isEnabled(Level.INFO)) {
+            doLog(Level.INFO, FQCN, format, new Object[] { param1, param2, param3 }, null);
+        }
+    }
+
+    /**
+     * Issue a log message with a level of INFO using {@link java.text.MessageFormat}-style formatting.
+     *
+     * @param t the throwable
+     * @param format the message format string
+     * @param params the parameters
+     */
+    public void infov(Throwable t, String format, Object... params) {
+        doLog(Level.INFO, FQCN, format, params, t);
+    }
+
+    /**
+     * Issue a log message with a level of INFO using {@link java.text.MessageFormat}-style formatting.
+     *
+     * @param t the throwable
+     * @param format the message format string
+     * @param param1 the sole parameter
+     */
+    public void infov(Throwable t, String format, Object param1) {
+        if (isEnabled(Level.INFO)) {
+            doLog(Level.INFO, FQCN, format, new Object[] { param1 }, t);
+        }
+    }
+
+    /**
+     * Issue a log message with a level of INFO using {@link java.text.MessageFormat}-style formatting.
+     *
+     * @param t the throwable
+     * @param format the message format string
+     * @param param1 the first parameter
+     * @param param2 the second parameter
+     */
+    public void infov(Throwable t, String format, Object param1, Object param2) {
+        if (isEnabled(Level.INFO)) {
+            doLog(Level.INFO, FQCN, format, new Object[] { param1, param2 }, t);
+        }
+    }
+
+    /**
+     * Issue a log message with a level of INFO using {@link java.text.MessageFormat}-style formatting.
+     *
+     * @param t the throwable
+     * @param format the message format string
+     * @param param1 the first parameter
+     * @param param2 the second parameter
+     * @param param3 the third parameter
+     */
+    public void infov(Throwable t, String format, Object param1, Object param2, Object param3) {
+        if (isEnabled(Level.INFO)) {
+            doLog(Level.INFO, FQCN, format, new Object[] { param1, param2, param3 }, t);
+        }
     }
 
     /**
@@ -635,6 +1462,257 @@ public abstract class Logger implements Serializable {
     }
 
     /**
+     * Issue a log message from a numerical key with a level of INFO.
+     *
+     * @param key the numerical key
+     */
+    public void infok(int key) {
+        if (isEnabled(Level.INFO)) {
+            doLog(Level.INFO, FQCN, key(prefix, key), null, null);
+        }
+    }
+
+    /**
+     * Issue a log message from a numerical key with a level of INFO.
+     *
+     * @param key the numerical key
+     * @param t the throwable
+     */
+    public void infok(Throwable t, int key) {
+        if (isEnabled(Level.INFO)) {
+            doLog(Level.INFO, FQCN, key(prefix, key), null, t);
+        }
+    }
+
+    /**
+     * Issue a parameterized log message from a numerical key with a level of INFO.  The resource value should be a
+     * {@link java.text.MessageFormat}-style format string.
+     *
+     * @param key the numerical key
+     * @param params the parameters
+     */
+    public void infokv(int key, Object... params) {
+        if (isEnabled(Level.INFO)) {
+            doLog(Level.INFO, FQCN, key(prefix, key), params, null);
+        }
+    }
+
+    /**
+     * Issue a parameterized log message from a numerical key with a level of INFO.  The resource value should be a
+     * {@link java.text.MessageFormat}-style format string.
+     *
+     * @param key the numerical key
+     * @param param1 the sole parameter
+     */
+    public void infokv(int key, Object param1) {
+        if (isEnabled(Level.INFO)) {
+            doLog(Level.INFO, FQCN, key(prefix, key), new Object[] { param1 }, null);
+        }
+    }
+
+    /**
+     * Issue a parameterized log message from a numerical key with a level of INFO.  The resource value should be a
+     * {@link java.text.MessageFormat}-style format string.
+     *
+     * @param key the numerical key
+     * @param param1 the first parameter
+     * @param param2 the second parameter
+     */
+    public void infokv(int key, Object param1, Object param2) {
+        if (isEnabled(Level.INFO)) {
+            doLog(Level.INFO, FQCN, key(prefix, key), new Object[] { param1, param2 }, null);
+        }
+    }
+
+    /**
+     * Issue a parameterized log message from a numerical key with a level of INFO.  The resource value should be a
+     * {@link java.text.MessageFormat}-style format string.
+     *
+     * @param key the numerical key
+     * @param param1 the first parameter
+     * @param param2 the second parameter
+     * @param param3 the third parameter
+     */
+    public void infokv(int key, Object param1, Object param2, Object param3) {
+        if (isEnabled(Level.INFO)) {
+            doLog(Level.INFO, FQCN, key(prefix, key), new Object[] { param1, param2, param3 }, null);
+        }
+    }
+
+    /**
+     * Issue a parameterized log message from a numerical key with a level of INFO.  The resource value should be a
+     * {@link java.text.MessageFormat}-style format string.
+     *
+     * @param t the throwable
+     * @param key the numerical key
+     * @param params the parameters
+     */
+    public void infokv(Throwable t, int key, Object... params) {
+        if (isEnabled(Level.INFO)) {
+            doLog(Level.INFO, FQCN, key(prefix, key), params, t);
+        }
+    }
+
+    /**
+     * Issue a parameterized log message from a numerical key with a level of INFO.  The resource value should be a
+     * {@link java.text.MessageFormat}-style format string.
+     *
+     * @param t the throwable
+     * @param key the numerical key
+     * @param param1 the sole parameter
+     */
+    public void infokv(Throwable t, int key, Object param1) {
+        if (isEnabled(Level.INFO)) {
+            doLog(Level.INFO, FQCN, key(prefix, key), new Object[] { param1 }, t);
+        }
+    }
+
+    /**
+     * Issue a parameterized log message from a numerical key with a level of INFO.  The resource value should be a
+     * {@link java.text.MessageFormat}-style format string.
+     *
+     * @param t the throwable
+     * @param key the numerical key
+     * @param param1 the first parameter
+     * @param param2 the second parameter
+     */
+    public void infokv(Throwable t, int key, Object param1, Object param2) {
+        if (isEnabled(Level.INFO)) {
+            doLog(Level.INFO, FQCN, key(prefix, key), new Object[] { param1, param2 }, t);
+        }
+    }
+
+    /**
+     * Issue a parameterized log message from a numerical key with a level of INFO.  The resource value should be a
+     * {@link java.text.MessageFormat}-style format string.
+     *
+     * @param t the throwable
+     * @param key the numerical key
+     * @param param1 the first parameter
+     * @param param2 the second parameter
+     * @param param3 the third parameter
+     */
+    public void infokv(Throwable t, int key, Object param1, Object param2, Object param3) {
+        if (isEnabled(Level.INFO)) {
+            doLog(Level.INFO, FQCN, key(prefix, key), new Object[] { param1, param2, param3 }, t);
+        }
+    }
+
+    /**
+     * Issue a parameterized log message from a numerical key with a level of INFO.  The resource value should be a
+     * {@link java.util.Formatter}-style format string.
+     *
+     * @param key the numerical key
+     * @param params the parameters
+     */
+    public void infokf(int key, Object... params) {
+        if (isEnabled(Level.INFO)) {
+            doLogf(Level.INFO, FQCN, key(prefix, key), params, null);
+        }
+    }
+
+    /**
+     * Issue a parameterized log message from a numerical key with a level of INFO.  The resource value should be a
+     * {@link java.util.Formatter}-style format string.
+     *
+     * @param key the numerical key
+     * @param param1 the sole parameter
+     */
+    public void infokf(int key, Object param1) {
+        if (isEnabled(Level.INFO)) {
+            doLogf(Level.INFO, FQCN, key(prefix, key), new Object[] { param1 }, null);
+        }
+    }
+
+    /**
+     * Issue a parameterized log message from a numerical key with a level of INFO.  The resource value should be a
+     * {@link java.util.Formatter}-style format string.
+     *
+     * @param key the numerical key
+     * @param param1 the first parameter
+     * @param param2 the second parameter
+     */
+    public void infokf(int key, Object param1, Object param2) {
+        if (isEnabled(Level.INFO)) {
+            doLogf(Level.INFO, FQCN, key(prefix, key), new Object[] { param1, param2 }, null);
+        }
+    }
+
+    /**
+     * Issue a parameterized log message from a numerical key with a level of INFO.  The resource value should be a
+     * {@link java.util.Formatter}-style format string.
+     *
+     * @param key the numerical key
+     * @param param1 the first parameter
+     * @param param2 the second parameter
+     * @param param3 the third parameter
+     */
+    public void infokf(int key, Object param1, Object param2, Object param3) {
+        if (isEnabled(Level.INFO)) {
+            doLogf(Level.INFO, FQCN, key(prefix, key), new Object[] { param1, param2, param3 }, null);
+        }
+    }
+
+    /**
+     * Issue a parameterized log message from a numerical key with a level of INFO.  The resource value should be a
+     * {@link java.util.Formatter}-style format string.
+     *
+     * @param t the throwable
+     * @param key the numerical key
+     * @param params the parameters
+     */
+    public void infokf(Throwable t, int key, Object... params) {
+        if (isEnabled(Level.INFO)) {
+            doLog(Level.INFO, FQCN, key(prefix, key), params, t);
+        }
+    }
+
+    /**
+     * Issue a parameterized log message from a numerical key with a level of INFO.  The resource value should be a
+     * {@link java.util.Formatter}-style format string.
+     *
+     * @param t the throwable
+     * @param key the numerical key
+     * @param param1 the sole parameter
+     */
+    public void infokf(Throwable t, int key, Object param1) {
+        if (isEnabled(Level.INFO)) {
+            doLogf(Level.INFO, FQCN, key(prefix, key), new Object[] { param1 }, t);
+        }
+    }
+
+    /**
+     * Issue a parameterized log message from a numerical key with a level of INFO.  The resource value should be a
+     * {@link java.util.Formatter}-style format string.
+     *
+     * @param t the throwable
+     * @param key the numerical key
+     * @param param1 the first parameter
+     * @param param2 the second parameter
+     */
+    public void infokf(Throwable t, int key, Object param1, Object param2) {
+        if (isEnabled(Level.INFO)) {
+            doLogf(Level.INFO, FQCN, key(prefix, key), new Object[] { param1, param2 }, t);
+        }
+    }
+
+    /**
+     * Issue a parameterized log message from a numerical key with a level of INFO.  The resource value should be a
+     * {@link java.util.Formatter}-style format string.
+     *
+     * @param t the throwable
+     * @param key the numerical key
+     * @param param1 the first parameter
+     * @param param2 the second parameter
+     * @param param3 the third parameter
+     */
+    public void infokf(Throwable t, int key, Object param1, Object param2, Object param3) {
+        if (isEnabled(Level.INFO)) {
+            doLogf(Level.INFO, FQCN, key(prefix, key), new Object[] { param1, param2, param3 }, t);
+        }
+    }
+
+    /**
      * Issue a log message with a level of WARN.
      *
      * @param message the message
@@ -669,6 +1747,7 @@ public abstract class Logger implements Serializable {
      *
      * @param message the message
      * @param params the message parameters
+     * @deprecated To log a message with parameters, using {@link #warnv(String, Object...)} is recommended.
      */
     public void warn(Object message, Object[] params) {
         doLog(Level.WARN, FQCN, message, params, null);
@@ -680,6 +1759,7 @@ public abstract class Logger implements Serializable {
      * @param message the message
      * @param params the message parameters
      * @param t the throwable
+     * @deprecated To log a message with parameters, using {@link #warnv(Throwable, String, Object...)} is recommended.
      */
     public void warn(Object message, Object[] params, Throwable t) {
         doLog(Level.WARN, FQCN, message, params, t);
@@ -695,6 +1775,108 @@ public abstract class Logger implements Serializable {
      */
     public void warn(String loggerFqcn, Object message, Object[] params, Throwable t) {
         doLog(Level.WARN, loggerFqcn, message, params, t);
+    }
+
+    /**
+     * Issue a log message with a level of WARN using {@link java.text.MessageFormat}-style formatting.
+     *
+     * @param format the message format string
+     * @param params the parameters
+     */
+    public void warnv(String format, Object... params) {
+        doLog(Level.WARN, FQCN, format, params, null);
+    }
+
+    /**
+     * Issue a log message with a level of WARN using {@link java.text.MessageFormat}-style formatting.
+     *
+     * @param format the message format string
+     * @param param1 the sole parameter
+     */
+    public void warnv(String format, Object param1) {
+        if (isEnabled(Level.WARN)) {
+            doLog(Level.WARN, FQCN, format, new Object[] { param1 }, null);
+        }
+    }
+
+    /**
+     * Issue a log message with a level of WARN using {@link java.text.MessageFormat}-style formatting.
+     *
+     * @param format the message format string
+     * @param param1 the first parameter
+     * @param param2 the second parameter
+     */
+    public void warnv(String format, Object param1, Object param2) {
+        if (isEnabled(Level.WARN)) {
+            doLog(Level.WARN, FQCN, format, new Object[] { param1, param2 }, null);
+        }
+    }
+
+    /**
+     * Issue a log message with a level of WARN using {@link java.text.MessageFormat}-style formatting.
+     *
+     * @param format the message format string
+     * @param param1 the first parameter
+     * @param param2 the second parameter
+     * @param param3 the third parameter
+     */
+    public void warnv(String format, Object param1, Object param2, Object param3) {
+        if (isEnabled(Level.WARN)) {
+            doLog(Level.WARN, FQCN, format, new Object[] { param1, param2, param3 }, null);
+        }
+    }
+
+    /**
+     * Issue a log message with a level of WARN using {@link java.text.MessageFormat}-style formatting.
+     *
+     * @param t the throwable
+     * @param format the message format string
+     * @param params the parameters
+     */
+    public void warnv(Throwable t, String format, Object... params) {
+        doLog(Level.WARN, FQCN, format, params, t);
+    }
+
+    /**
+     * Issue a log message with a level of WARN using {@link java.text.MessageFormat}-style formatting.
+     *
+     * @param t the throwable
+     * @param format the message format string
+     * @param param1 the sole parameter
+     */
+    public void warnv(Throwable t, String format, Object param1) {
+        if (isEnabled(Level.WARN)) {
+            doLog(Level.WARN, FQCN, format, new Object[] { param1 }, t);
+        }
+    }
+
+    /**
+     * Issue a log message with a level of WARN using {@link java.text.MessageFormat}-style formatting.
+     *
+     * @param t the throwable
+     * @param format the message format string
+     * @param param1 the first parameter
+     * @param param2 the second parameter
+     */
+    public void warnv(Throwable t, String format, Object param1, Object param2) {
+        if (isEnabled(Level.WARN)) {
+            doLog(Level.WARN, FQCN, format, new Object[] { param1, param2 }, t);
+        }
+    }
+
+    /**
+     * Issue a log message with a level of WARN using {@link java.text.MessageFormat}-style formatting.
+     *
+     * @param t the throwable
+     * @param format the message format string
+     * @param param1 the first parameter
+     * @param param2 the second parameter
+     * @param param3 the third parameter
+     */
+    public void warnv(Throwable t, String format, Object param1, Object param2, Object param3) {
+        if (isEnabled(Level.WARN)) {
+            doLog(Level.WARN, FQCN, format, new Object[] { param1, param2, param3 }, t);
+        }
     }
 
     /**
@@ -800,6 +1982,257 @@ public abstract class Logger implements Serializable {
     }
 
     /**
+     * Issue a log message from a numerical key with a level of WARN.
+     *
+     * @param key the numerical key
+     */
+    public void warnk(int key) {
+        if (isEnabled(Level.WARN)) {
+            doLog(Level.WARN, FQCN, key(prefix, key), null, null);
+        }
+    }
+
+    /**
+     * Issue a log message from a numerical key with a level of WARN.
+     *
+     * @param key the numerical key
+     * @param t the throwable
+     */
+    public void warnk(Throwable t, int key) {
+        if (isEnabled(Level.WARN)) {
+            doLog(Level.WARN, FQCN, key(prefix, key), null, t);
+        }
+    }
+
+    /**
+     * Issue a parameterized log message from a numerical key with a level of WARN.  The resource value should be a
+     * {@link java.text.MessageFormat}-style format string.
+     *
+     * @param key the numerical key
+     * @param params the parameters
+     */
+    public void warnkv(int key, Object... params) {
+        if (isEnabled(Level.WARN)) {
+            doLog(Level.WARN, FQCN, key(prefix, key), params, null);
+        }
+    }
+
+    /**
+     * Issue a parameterized log message from a numerical key with a level of WARN.  The resource value should be a
+     * {@link java.text.MessageFormat}-style format string.
+     *
+     * @param key the numerical key
+     * @param param1 the sole parameter
+     */
+    public void warnkv(int key, Object param1) {
+        if (isEnabled(Level.WARN)) {
+            doLog(Level.WARN, FQCN, key(prefix, key), new Object[] { param1 }, null);
+        }
+    }
+
+    /**
+     * Issue a parameterized log message from a numerical key with a level of WARN.  The resource value should be a
+     * {@link java.text.MessageFormat}-style format string.
+     *
+     * @param key the numerical key
+     * @param param1 the first parameter
+     * @param param2 the second parameter
+     */
+    public void warnkv(int key, Object param1, Object param2) {
+        if (isEnabled(Level.WARN)) {
+            doLog(Level.WARN, FQCN, key(prefix, key), new Object[] { param1, param2 }, null);
+        }
+    }
+
+    /**
+     * Issue a parameterized log message from a numerical key with a level of WARN.  The resource value should be a
+     * {@link java.text.MessageFormat}-style format string.
+     *
+     * @param key the numerical key
+     * @param param1 the first parameter
+     * @param param2 the second parameter
+     * @param param3 the third parameter
+     */
+    public void warnkv(int key, Object param1, Object param2, Object param3) {
+        if (isEnabled(Level.WARN)) {
+            doLog(Level.WARN, FQCN, key(prefix, key), new Object[] { param1, param2, param3 }, null);
+        }
+    }
+
+    /**
+     * Issue a parameterized log message from a numerical key with a level of WARN.  The resource value should be a
+     * {@link java.text.MessageFormat}-style format string.
+     *
+     * @param t the throwable
+     * @param key the numerical key
+     * @param params the parameters
+     */
+    public void warnkv(Throwable t, int key, Object... params) {
+        if (isEnabled(Level.WARN)) {
+            doLog(Level.WARN, FQCN, key(prefix, key), params, t);
+        }
+    }
+
+    /**
+     * Issue a parameterized log message from a numerical key with a level of WARN.  The resource value should be a
+     * {@link java.text.MessageFormat}-style format string.
+     *
+     * @param t the throwable
+     * @param key the numerical key
+     * @param param1 the sole parameter
+     */
+    public void warnkv(Throwable t, int key, Object param1) {
+        if (isEnabled(Level.WARN)) {
+            doLog(Level.WARN, FQCN, key(prefix, key), new Object[] { param1 }, t);
+        }
+    }
+
+    /**
+     * Issue a parameterized log message from a numerical key with a level of WARN.  The resource value should be a
+     * {@link java.text.MessageFormat}-style format string.
+     *
+     * @param t the throwable
+     * @param key the numerical key
+     * @param param1 the first parameter
+     * @param param2 the second parameter
+     */
+    public void warnkv(Throwable t, int key, Object param1, Object param2) {
+        if (isEnabled(Level.WARN)) {
+            doLog(Level.WARN, FQCN, key(prefix, key), new Object[] { param1, param2 }, t);
+        }
+    }
+
+    /**
+     * Issue a parameterized log message from a numerical key with a level of WARN.  The resource value should be a
+     * {@link java.text.MessageFormat}-style format string.
+     *
+     * @param t the throwable
+     * @param key the numerical key
+     * @param param1 the first parameter
+     * @param param2 the second parameter
+     * @param param3 the third parameter
+     */
+    public void warnkv(Throwable t, int key, Object param1, Object param2, Object param3) {
+        if (isEnabled(Level.WARN)) {
+            doLog(Level.WARN, FQCN, key(prefix, key), new Object[] { param1, param2, param3 }, t);
+        }
+    }
+
+    /**
+     * Issue a parameterized log message from a numerical key with a level of WARN.  The resource value should be a
+     * {@link java.util.Formatter}-style format string.
+     *
+     * @param key the numerical key
+     * @param params the parameters
+     */
+    public void warnkf(int key, Object... params) {
+        if (isEnabled(Level.WARN)) {
+            doLogf(Level.WARN, FQCN, key(prefix, key), params, null);
+        }
+    }
+
+    /**
+     * Issue a parameterized log message from a numerical key with a level of WARN.  The resource value should be a
+     * {@link java.util.Formatter}-style format string.
+     *
+     * @param key the numerical key
+     * @param param1 the sole parameter
+     */
+    public void warnkf(int key, Object param1) {
+        if (isEnabled(Level.WARN)) {
+            doLogf(Level.WARN, FQCN, key(prefix, key), new Object[] { param1 }, null);
+        }
+    }
+
+    /**
+     * Issue a parameterized log message from a numerical key with a level of WARN.  The resource value should be a
+     * {@link java.util.Formatter}-style format string.
+     *
+     * @param key the numerical key
+     * @param param1 the first parameter
+     * @param param2 the second parameter
+     */
+    public void warnkf(int key, Object param1, Object param2) {
+        if (isEnabled(Level.WARN)) {
+            doLogf(Level.WARN, FQCN, key(prefix, key), new Object[] { param1, param2 }, null);
+        }
+    }
+
+    /**
+     * Issue a parameterized log message from a numerical key with a level of WARN.  The resource value should be a
+     * {@link java.util.Formatter}-style format string.
+     *
+     * @param key the numerical key
+     * @param param1 the first parameter
+     * @param param2 the second parameter
+     * @param param3 the third parameter
+     */
+    public void warnkf(int key, Object param1, Object param2, Object param3) {
+        if (isEnabled(Level.WARN)) {
+            doLogf(Level.WARN, FQCN, key(prefix, key), new Object[] { param1, param2, param3 }, null);
+        }
+    }
+
+    /**
+     * Issue a parameterized log message from a numerical key with a level of WARN.  The resource value should be a
+     * {@link java.util.Formatter}-style format string.
+     *
+     * @param t the throwable
+     * @param key the numerical key
+     * @param params the parameters
+     */
+    public void warnkf(Throwable t, int key, Object... params) {
+        if (isEnabled(Level.WARN)) {
+            doLog(Level.WARN, FQCN, key(prefix, key), params, t);
+        }
+    }
+
+    /**
+     * Issue a parameterized log message from a numerical key with a level of WARN.  The resource value should be a
+     * {@link java.util.Formatter}-style format string.
+     *
+     * @param t the throwable
+     * @param key the numerical key
+     * @param param1 the sole parameter
+     */
+    public void warnkf(Throwable t, int key, Object param1) {
+        if (isEnabled(Level.WARN)) {
+            doLogf(Level.WARN, FQCN, key(prefix, key), new Object[] { param1 }, t);
+        }
+    }
+
+    /**
+     * Issue a parameterized log message from a numerical key with a level of WARN.  The resource value should be a
+     * {@link java.util.Formatter}-style format string.
+     *
+     * @param t the throwable
+     * @param key the numerical key
+     * @param param1 the first parameter
+     * @param param2 the second parameter
+     */
+    public void warnkf(Throwable t, int key, Object param1, Object param2) {
+        if (isEnabled(Level.WARN)) {
+            doLogf(Level.WARN, FQCN, key(prefix, key), new Object[] { param1, param2 }, t);
+        }
+    }
+
+    /**
+     * Issue a parameterized log message from a numerical key with a level of WARN.  The resource value should be a
+     * {@link java.util.Formatter}-style format string.
+     *
+     * @param t the throwable
+     * @param key the numerical key
+     * @param param1 the first parameter
+     * @param param2 the second parameter
+     * @param param3 the third parameter
+     */
+    public void warnkf(Throwable t, int key, Object param1, Object param2, Object param3) {
+        if (isEnabled(Level.WARN)) {
+            doLogf(Level.WARN, FQCN, key(prefix, key), new Object[] { param1, param2, param3 }, t);
+        }
+    }
+
+    /**
      * Issue a log message with a level of ERROR.
      *
      * @param message the message
@@ -834,6 +2267,7 @@ public abstract class Logger implements Serializable {
      *
      * @param message the message
      * @param params the message parameters
+     * @deprecated To log a message with parameters, using {@link #errorv(String, Object...)} is recommended.
      */
     public void error(Object message, Object[] params) {
         doLog(Level.ERROR, FQCN, message, params, null);
@@ -845,6 +2279,7 @@ public abstract class Logger implements Serializable {
      * @param message the message
      * @param params the message parameters
      * @param t the throwable
+     * @deprecated To log a message with parameters, using {@link #errorv(Throwable, String, Object...)} is recommended.
      */
     public void error(Object message, Object[] params, Throwable t) {
         doLog(Level.ERROR, FQCN, message, params, t);
@@ -860,6 +2295,108 @@ public abstract class Logger implements Serializable {
      */
     public void error(String loggerFqcn, Object message, Object[] params, Throwable t) {
         doLog(Level.ERROR, loggerFqcn, message, params, t);
+    }
+
+    /**
+     * Issue a log message with a level of ERROR using {@link java.text.MessageFormat}-style formatting.
+     *
+     * @param format the message format string
+     * @param params the parameters
+     */
+    public void errorv(String format, Object... params) {
+        doLog(Level.ERROR, FQCN, format, params, null);
+    }
+
+    /**
+     * Issue a log message with a level of ERROR using {@link java.text.MessageFormat}-style formatting.
+     *
+     * @param format the message format string
+     * @param param1 the sole parameter
+     */
+    public void errorv(String format, Object param1) {
+        if (isEnabled(Level.ERROR)) {
+            doLog(Level.ERROR, FQCN, format, new Object[] { param1 }, null);
+        }
+    }
+
+    /**
+     * Issue a log message with a level of ERROR using {@link java.text.MessageFormat}-style formatting.
+     *
+     * @param format the message format string
+     * @param param1 the first parameter
+     * @param param2 the second parameter
+     */
+    public void errorv(String format, Object param1, Object param2) {
+        if (isEnabled(Level.ERROR)) {
+            doLog(Level.ERROR, FQCN, format, new Object[] { param1, param2 }, null);
+        }
+    }
+
+    /**
+     * Issue a log message with a level of ERROR using {@link java.text.MessageFormat}-style formatting.
+     *
+     * @param format the message format string
+     * @param param1 the first parameter
+     * @param param2 the second parameter
+     * @param param3 the third parameter
+     */
+    public void errorv(String format, Object param1, Object param2, Object param3) {
+        if (isEnabled(Level.ERROR)) {
+            doLog(Level.ERROR, FQCN, format, new Object[] { param1, param2, param3 }, null);
+        }
+    }
+
+    /**
+     * Issue a log message with a level of ERROR using {@link java.text.MessageFormat}-style formatting.
+     *
+     * @param t the throwable
+     * @param format the message format string
+     * @param params the parameters
+     */
+    public void errorv(Throwable t, String format, Object... params) {
+        doLog(Level.ERROR, FQCN, format, params, t);
+    }
+
+    /**
+     * Issue a log message with a level of ERROR using {@link java.text.MessageFormat}-style formatting.
+     *
+     * @param t the throwable
+     * @param format the message format string
+     * @param param1 the sole parameter
+     */
+    public void errorv(Throwable t, String format, Object param1) {
+        if (isEnabled(Level.ERROR)) {
+            doLog(Level.ERROR, FQCN, format, new Object[] { param1 }, t);
+        }
+    }
+
+    /**
+     * Issue a log message with a level of ERROR using {@link java.text.MessageFormat}-style formatting.
+     *
+     * @param t the throwable
+     * @param format the message format string
+     * @param param1 the first parameter
+     * @param param2 the second parameter
+     */
+    public void errorv(Throwable t, String format, Object param1, Object param2) {
+        if (isEnabled(Level.ERROR)) {
+            doLog(Level.ERROR, FQCN, format, new Object[] { param1, param2 }, t);
+        }
+    }
+
+    /**
+     * Issue a log message with a level of ERROR using {@link java.text.MessageFormat}-style formatting.
+     *
+     * @param t the throwable
+     * @param format the message format string
+     * @param param1 the first parameter
+     * @param param2 the second parameter
+     * @param param3 the third parameter
+     */
+    public void errorv(Throwable t, String format, Object param1, Object param2, Object param3) {
+        if (isEnabled(Level.ERROR)) {
+            doLog(Level.ERROR, FQCN, format, new Object[] { param1, param2, param3 }, t);
+        }
     }
 
     /**
@@ -965,6 +2502,257 @@ public abstract class Logger implements Serializable {
     }
 
     /**
+     * Issue a log message from a numerical key with a level of ERROR.
+     *
+     * @param key the numerical key
+     */
+    public void errork(int key) {
+        if (isEnabled(Level.ERROR)) {
+            doLog(Level.ERROR, FQCN, key(prefix, key), null, null);
+        }
+    }
+
+    /**
+     * Issue a log message from a numerical key with a level of ERROR.
+     *
+     * @param key the numerical key
+     * @param t the throwable
+     */
+    public void errork(Throwable t, int key) {
+        if (isEnabled(Level.ERROR)) {
+            doLog(Level.ERROR, FQCN, key(prefix, key), null, t);
+        }
+    }
+
+    /**
+     * Issue a parameterized log message from a numerical key with a level of ERROR.  The resource value should be a
+     * {@link java.text.MessageFormat}-style format string.
+     *
+     * @param key the numerical key
+     * @param params the parameters
+     */
+    public void errorkv(int key, Object... params) {
+        if (isEnabled(Level.ERROR)) {
+            doLog(Level.ERROR, FQCN, key(prefix, key), params, null);
+        }
+    }
+
+    /**
+     * Issue a parameterized log message from a numerical key with a level of ERROR.  The resource value should be a
+     * {@link java.text.MessageFormat}-style format string.
+     *
+     * @param key the numerical key
+     * @param param1 the sole parameter
+     */
+    public void errorkv(int key, Object param1) {
+        if (isEnabled(Level.ERROR)) {
+            doLog(Level.ERROR, FQCN, key(prefix, key), new Object[] { param1 }, null);
+        }
+    }
+
+    /**
+     * Issue a parameterized log message from a numerical key with a level of ERROR.  The resource value should be a
+     * {@link java.text.MessageFormat}-style format string.
+     *
+     * @param key the numerical key
+     * @param param1 the first parameter
+     * @param param2 the second parameter
+     */
+    public void errorkv(int key, Object param1, Object param2) {
+        if (isEnabled(Level.ERROR)) {
+            doLog(Level.ERROR, FQCN, key(prefix, key), new Object[] { param1, param2 }, null);
+        }
+    }
+
+    /**
+     * Issue a parameterized log message from a numerical key with a level of ERROR.  The resource value should be a
+     * {@link java.text.MessageFormat}-style format string.
+     *
+     * @param key the numerical key
+     * @param param1 the first parameter
+     * @param param2 the second parameter
+     * @param param3 the third parameter
+     */
+    public void errorkv(int key, Object param1, Object param2, Object param3) {
+        if (isEnabled(Level.ERROR)) {
+            doLog(Level.ERROR, FQCN, key(prefix, key), new Object[] { param1, param2, param3 }, null);
+        }
+    }
+
+    /**
+     * Issue a parameterized log message from a numerical key with a level of ERROR.  The resource value should be a
+     * {@link java.text.MessageFormat}-style format string.
+     *
+     * @param t the throwable
+     * @param key the numerical key
+     * @param params the parameters
+     */
+    public void errorkv(Throwable t, int key, Object... params) {
+        if (isEnabled(Level.ERROR)) {
+            doLog(Level.ERROR, FQCN, key(prefix, key), params, t);
+        }
+    }
+
+    /**
+     * Issue a parameterized log message from a numerical key with a level of ERROR.  The resource value should be a
+     * {@link java.text.MessageFormat}-style format string.
+     *
+     * @param t the throwable
+     * @param key the numerical key
+     * @param param1 the sole parameter
+     */
+    public void errorkv(Throwable t, int key, Object param1) {
+        if (isEnabled(Level.ERROR)) {
+            doLog(Level.ERROR, FQCN, key(prefix, key), new Object[] { param1 }, t);
+        }
+    }
+
+    /**
+     * Issue a parameterized log message from a numerical key with a level of ERROR.  The resource value should be a
+     * {@link java.text.MessageFormat}-style format string.
+     *
+     * @param t the throwable
+     * @param key the numerical key
+     * @param param1 the first parameter
+     * @param param2 the second parameter
+     */
+    public void errorkv(Throwable t, int key, Object param1, Object param2) {
+        if (isEnabled(Level.ERROR)) {
+            doLog(Level.ERROR, FQCN, key(prefix, key), new Object[] { param1, param2 }, t);
+        }
+    }
+
+    /**
+     * Issue a parameterized log message from a numerical key with a level of ERROR.  The resource value should be a
+     * {@link java.text.MessageFormat}-style format string.
+     *
+     * @param t the throwable
+     * @param key the numerical key
+     * @param param1 the first parameter
+     * @param param2 the second parameter
+     * @param param3 the third parameter
+     */
+    public void errorkv(Throwable t, int key, Object param1, Object param2, Object param3) {
+        if (isEnabled(Level.ERROR)) {
+            doLog(Level.ERROR, FQCN, key(prefix, key), new Object[] { param1, param2, param3 }, t);
+        }
+    }
+
+    /**
+     * Issue a parameterized log message from a numerical key with a level of ERROR.  The resource value should be a
+     * {@link java.util.Formatter}-style format string.
+     *
+     * @param key the numerical key
+     * @param params the parameters
+     */
+    public void errorkf(int key, Object... params) {
+        if (isEnabled(Level.ERROR)) {
+            doLogf(Level.ERROR, FQCN, key(prefix, key), params, null);
+        }
+    }
+
+    /**
+     * Issue a parameterized log message from a numerical key with a level of ERROR.  The resource value should be a
+     * {@link java.util.Formatter}-style format string.
+     *
+     * @param key the numerical key
+     * @param param1 the sole parameter
+     */
+    public void errorkf(int key, Object param1) {
+        if (isEnabled(Level.ERROR)) {
+            doLogf(Level.ERROR, FQCN, key(prefix, key), new Object[] { param1 }, null);
+        }
+    }
+
+    /**
+     * Issue a parameterized log message from a numerical key with a level of ERROR.  The resource value should be a
+     * {@link java.util.Formatter}-style format string.
+     *
+     * @param key the numerical key
+     * @param param1 the first parameter
+     * @param param2 the second parameter
+     */
+    public void errorkf(int key, Object param1, Object param2) {
+        if (isEnabled(Level.ERROR)) {
+            doLogf(Level.ERROR, FQCN, key(prefix, key), new Object[] { param1, param2 }, null);
+        }
+    }
+
+    /**
+     * Issue a parameterized log message from a numerical key with a level of ERROR.  The resource value should be a
+     * {@link java.util.Formatter}-style format string.
+     *
+     * @param key the numerical key
+     * @param param1 the first parameter
+     * @param param2 the second parameter
+     * @param param3 the third parameter
+     */
+    public void errorkf(int key, Object param1, Object param2, Object param3) {
+        if (isEnabled(Level.ERROR)) {
+            doLogf(Level.ERROR, FQCN, key(prefix, key), new Object[] { param1, param2, param3 }, null);
+        }
+    }
+
+    /**
+     * Issue a parameterized log message from a numerical key with a level of ERROR.  The resource value should be a
+     * {@link java.util.Formatter}-style format string.
+     *
+     * @param t the throwable
+     * @param key the numerical key
+     * @param params the parameters
+     */
+    public void errorkf(Throwable t, int key, Object... params) {
+        if (isEnabled(Level.ERROR)) {
+            doLog(Level.ERROR, FQCN, key(prefix, key), params, t);
+        }
+    }
+
+    /**
+     * Issue a parameterized log message from a numerical key with a level of ERROR.  The resource value should be a
+     * {@link java.util.Formatter}-style format string.
+     *
+     * @param t the throwable
+     * @param key the numerical key
+     * @param param1 the sole parameter
+     */
+    public void errorkf(Throwable t, int key, Object param1) {
+        if (isEnabled(Level.ERROR)) {
+            doLogf(Level.ERROR, FQCN, key(prefix, key), new Object[] { param1 }, t);
+        }
+    }
+
+    /**
+     * Issue a parameterized log message from a numerical key with a level of ERROR.  The resource value should be a
+     * {@link java.util.Formatter}-style format string.
+     *
+     * @param t the throwable
+     * @param key the numerical key
+     * @param param1 the first parameter
+     * @param param2 the second parameter
+     */
+    public void errorkf(Throwable t, int key, Object param1, Object param2) {
+        if (isEnabled(Level.ERROR)) {
+            doLogf(Level.ERROR, FQCN, key(prefix, key), new Object[] { param1, param2 }, t);
+        }
+    }
+
+    /**
+     * Issue a parameterized log message from a numerical key with a level of ERROR.  The resource value should be a
+     * {@link java.util.Formatter}-style format string.
+     *
+     * @param t the throwable
+     * @param key the numerical key
+     * @param param1 the first parameter
+     * @param param2 the second parameter
+     * @param param3 the third parameter
+     */
+    public void errorkf(Throwable t, int key, Object param1, Object param2, Object param3) {
+        if (isEnabled(Level.ERROR)) {
+            doLogf(Level.ERROR, FQCN, key(prefix, key), new Object[] { param1, param2, param3 }, t);
+        }
+    }
+
+    /**
      * Issue a log message with a level of FATAL.
      *
      * @param message the message
@@ -999,6 +2787,7 @@ public abstract class Logger implements Serializable {
      *
      * @param message the message
      * @param params the message parameters
+     * @deprecated To log a message with parameters, using {@link #fatalv(String, Object...)} is recommended.
      */
     public void fatal(Object message, Object[] params) {
         doLog(Level.FATAL, FQCN, message, params, null);
@@ -1010,6 +2799,7 @@ public abstract class Logger implements Serializable {
      * @param message the message
      * @param params the message parameters
      * @param t the throwable
+     * @deprecated To log a message with parameters, using {@link #fatalv(Throwable, String, Object...)} is recommended.
      */
     public void fatal(Object message, Object[] params, Throwable t) {
         doLog(Level.FATAL, FQCN, message, params, t);
@@ -1025,6 +2815,108 @@ public abstract class Logger implements Serializable {
      */
     public void fatal(String loggerFqcn, Object message, Object[] params, Throwable t) {
         doLog(Level.FATAL, loggerFqcn, message, params, t);
+    }
+
+    /**
+     * Issue a log message with a level of FATAL using {@link java.text.MessageFormat}-style formatting.
+     *
+     * @param format the message format string
+     * @param params the parameters
+     */
+    public void fatalv(String format, Object... params) {
+        doLog(Level.FATAL, FQCN, format, params, null);
+    }
+
+    /**
+     * Issue a log message with a level of FATAL using {@link java.text.MessageFormat}-style formatting.
+     *
+     * @param format the message format string
+     * @param param1 the sole parameter
+     */
+    public void fatalv(String format, Object param1) {
+        if (isEnabled(Level.FATAL)) {
+            doLog(Level.FATAL, FQCN, format, new Object[] { param1 }, null);
+        }
+    }
+
+    /**
+     * Issue a log message with a level of FATAL using {@link java.text.MessageFormat}-style formatting.
+     *
+     * @param format the message format string
+     * @param param1 the first parameter
+     * @param param2 the second parameter
+     */
+    public void fatalv(String format, Object param1, Object param2) {
+        if (isEnabled(Level.FATAL)) {
+            doLog(Level.FATAL, FQCN, format, new Object[] { param1, param2 }, null);
+        }
+    }
+
+    /**
+     * Issue a log message with a level of FATAL using {@link java.text.MessageFormat}-style formatting.
+     *
+     * @param format the message format string
+     * @param param1 the first parameter
+     * @param param2 the second parameter
+     * @param param3 the third parameter
+     */
+    public void fatalv(String format, Object param1, Object param2, Object param3) {
+        if (isEnabled(Level.FATAL)) {
+            doLog(Level.FATAL, FQCN, format, new Object[] { param1, param2, param3 }, null);
+        }
+    }
+
+    /**
+     * Issue a log message with a level of FATAL using {@link java.text.MessageFormat}-style formatting.
+     *
+     * @param t the throwable
+     * @param format the message format string
+     * @param params the parameters
+     */
+    public void fatalv(Throwable t, String format, Object... params) {
+        doLog(Level.FATAL, FQCN, format, params, t);
+    }
+
+    /**
+     * Issue a log message with a level of FATAL using {@link java.text.MessageFormat}-style formatting.
+     *
+     * @param t the throwable
+     * @param format the message format string
+     * @param param1 the sole parameter
+     */
+    public void fatalv(Throwable t, String format, Object param1) {
+        if (isEnabled(Level.FATAL)) {
+            doLog(Level.FATAL, FQCN, format, new Object[] { param1 }, t);
+        }
+    }
+
+    /**
+     * Issue a log message with a level of FATAL using {@link java.text.MessageFormat}-style formatting.
+     *
+     * @param t the throwable
+     * @param format the message format string
+     * @param param1 the first parameter
+     * @param param2 the second parameter
+     */
+    public void fatalv(Throwable t, String format, Object param1, Object param2) {
+        if (isEnabled(Level.FATAL)) {
+            doLog(Level.FATAL, FQCN, format, new Object[] { param1, param2 }, t);
+        }
+    }
+
+    /**
+     * Issue a log message with a level of FATAL using {@link java.text.MessageFormat}-style formatting.
+     *
+     * @param t the throwable
+     * @param format the message format string
+     * @param param1 the first parameter
+     * @param param2 the second parameter
+     * @param param3 the third parameter
+     */
+    public void fatalv(Throwable t, String format, Object param1, Object param2, Object param3) {
+        if (isEnabled(Level.FATAL)) {
+            doLog(Level.FATAL, FQCN, format, new Object[] { param1, param2, param3 }, t);
+        }
     }
 
     /**
@@ -1130,6 +3022,257 @@ public abstract class Logger implements Serializable {
     }
 
     /**
+     * Issue a log message from a numerical key with a level of FATAL.
+     *
+     * @param key the numerical key
+     */
+    public void fatalk(int key) {
+        if (isEnabled(Level.FATAL)) {
+            doLog(Level.FATAL, FQCN, key(prefix, key), null, null);
+        }
+    }
+
+    /**
+     * Issue a log message from a numerical key with a level of FATAL.
+     *
+     * @param key the numerical key
+     * @param t the throwable
+     */
+    public void fatalk(Throwable t, int key) {
+        if (isEnabled(Level.FATAL)) {
+            doLog(Level.FATAL, FQCN, key(prefix, key), null, t);
+        }
+    }
+
+    /**
+     * Issue a parameterized log message from a numerical key with a level of FATAL.  The resource value should be a
+     * {@link java.text.MessageFormat}-style format string.
+     *
+     * @param key the numerical key
+     * @param params the parameters
+     */
+    public void fatalkv(int key, Object... params) {
+        if (isEnabled(Level.FATAL)) {
+            doLog(Level.FATAL, FQCN, key(prefix, key), params, null);
+        }
+    }
+
+    /**
+     * Issue a parameterized log message from a numerical key with a level of FATAL.  The resource value should be a
+     * {@link java.text.MessageFormat}-style format string.
+     *
+     * @param key the numerical key
+     * @param param1 the sole parameter
+     */
+    public void fatalkv(int key, Object param1) {
+        if (isEnabled(Level.FATAL)) {
+            doLog(Level.FATAL, FQCN, key(prefix, key), new Object[] { param1 }, null);
+        }
+    }
+
+    /**
+     * Issue a parameterized log message from a numerical key with a level of FATAL.  The resource value should be a
+     * {@link java.text.MessageFormat}-style format string.
+     *
+     * @param key the numerical key
+     * @param param1 the first parameter
+     * @param param2 the second parameter
+     */
+    public void fatalkv(int key, Object param1, Object param2) {
+        if (isEnabled(Level.FATAL)) {
+            doLog(Level.FATAL, FQCN, key(prefix, key), new Object[] { param1, param2 }, null);
+        }
+    }
+
+    /**
+     * Issue a parameterized log message from a numerical key with a level of FATAL.  The resource value should be a
+     * {@link java.text.MessageFormat}-style format string.
+     *
+     * @param key the numerical key
+     * @param param1 the first parameter
+     * @param param2 the second parameter
+     * @param param3 the third parameter
+     */
+    public void fatalkv(int key, Object param1, Object param2, Object param3) {
+        if (isEnabled(Level.FATAL)) {
+            doLog(Level.FATAL, FQCN, key(prefix, key), new Object[] { param1, param2, param3 }, null);
+        }
+    }
+
+    /**
+     * Issue a parameterized log message from a numerical key with a level of FATAL.  The resource value should be a
+     * {@link java.text.MessageFormat}-style format string.
+     *
+     * @param t the throwable
+     * @param key the numerical key
+     * @param params the parameters
+     */
+    public void fatalkv(Throwable t, int key, Object... params) {
+        if (isEnabled(Level.FATAL)) {
+            doLog(Level.FATAL, FQCN, key(prefix, key), params, t);
+        }
+    }
+
+    /**
+     * Issue a parameterized log message from a numerical key with a level of FATAL.  The resource value should be a
+     * {@link java.text.MessageFormat}-style format string.
+     *
+     * @param t the throwable
+     * @param key the numerical key
+     * @param param1 the sole parameter
+     */
+    public void fatalkv(Throwable t, int key, Object param1) {
+        if (isEnabled(Level.FATAL)) {
+            doLog(Level.FATAL, FQCN, key(prefix, key), new Object[] { param1 }, t);
+        }
+    }
+
+    /**
+     * Issue a parameterized log message from a numerical key with a level of FATAL.  The resource value should be a
+     * {@link java.text.MessageFormat}-style format string.
+     *
+     * @param t the throwable
+     * @param key the numerical key
+     * @param param1 the first parameter
+     * @param param2 the second parameter
+     */
+    public void fatalkv(Throwable t, int key, Object param1, Object param2) {
+        if (isEnabled(Level.FATAL)) {
+            doLog(Level.FATAL, FQCN, key(prefix, key), new Object[] { param1, param2 }, t);
+        }
+    }
+
+    /**
+     * Issue a parameterized log message from a numerical key with a level of FATAL.  The resource value should be a
+     * {@link java.text.MessageFormat}-style format string.
+     *
+     * @param t the throwable
+     * @param key the numerical key
+     * @param param1 the first parameter
+     * @param param2 the second parameter
+     * @param param3 the third parameter
+     */
+    public void fatalkv(Throwable t, int key, Object param1, Object param2, Object param3) {
+        if (isEnabled(Level.FATAL)) {
+            doLog(Level.FATAL, FQCN, key(prefix, key), new Object[] { param1, param2, param3 }, t);
+        }
+    }
+
+    /**
+     * Issue a parameterized log message from a numerical key with a level of FATAL.  The resource value should be a
+     * {@link java.util.Formatter}-style format string.
+     *
+     * @param key the numerical key
+     * @param params the parameters
+     */
+    public void fatalkf(int key, Object... params) {
+        if (isEnabled(Level.FATAL)) {
+            doLogf(Level.FATAL, FQCN, key(prefix, key), params, null);
+        }
+    }
+
+    /**
+     * Issue a parameterized log message from a numerical key with a level of FATAL.  The resource value should be a
+     * {@link java.util.Formatter}-style format string.
+     *
+     * @param key the numerical key
+     * @param param1 the sole parameter
+     */
+    public void fatalkf(int key, Object param1) {
+        if (isEnabled(Level.FATAL)) {
+            doLogf(Level.FATAL, FQCN, key(prefix, key), new Object[] { param1 }, null);
+        }
+    }
+
+    /**
+     * Issue a parameterized log message from a numerical key with a level of FATAL.  The resource value should be a
+     * {@link java.util.Formatter}-style format string.
+     *
+     * @param key the numerical key
+     * @param param1 the first parameter
+     * @param param2 the second parameter
+     */
+    public void fatalkf(int key, Object param1, Object param2) {
+        if (isEnabled(Level.FATAL)) {
+            doLogf(Level.FATAL, FQCN, key(prefix, key), new Object[] { param1, param2 }, null);
+        }
+    }
+
+    /**
+     * Issue a parameterized log message from a numerical key with a level of FATAL.  The resource value should be a
+     * {@link java.util.Formatter}-style format string.
+     *
+     * @param key the numerical key
+     * @param param1 the first parameter
+     * @param param2 the second parameter
+     * @param param3 the third parameter
+     */
+    public void fatalkf(int key, Object param1, Object param2, Object param3) {
+        if (isEnabled(Level.FATAL)) {
+            doLogf(Level.FATAL, FQCN, key(prefix, key), new Object[] { param1, param2, param3 }, null);
+        }
+    }
+
+    /**
+     * Issue a parameterized log message from a numerical key with a level of FATAL.  The resource value should be a
+     * {@link java.util.Formatter}-style format string.
+     *
+     * @param t the throwable
+     * @param key the numerical key
+     * @param params the parameters
+     */
+    public void fatalkf(Throwable t, int key, Object... params) {
+        if (isEnabled(Level.FATAL)) {
+            doLog(Level.FATAL, FQCN, key(prefix, key), params, t);
+        }
+    }
+
+    /**
+     * Issue a parameterized log message from a numerical key with a level of FATAL.  The resource value should be a
+     * {@link java.util.Formatter}-style format string.
+     *
+     * @param t the throwable
+     * @param key the numerical key
+     * @param param1 the sole parameter
+     */
+    public void fatalkf(Throwable t, int key, Object param1) {
+        if (isEnabled(Level.FATAL)) {
+            doLogf(Level.FATAL, FQCN, key(prefix, key), new Object[] { param1 }, t);
+        }
+    }
+
+    /**
+     * Issue a parameterized log message from a numerical key with a level of FATAL.  The resource value should be a
+     * {@link java.util.Formatter}-style format string.
+     *
+     * @param t the throwable
+     * @param key the numerical key
+     * @param param1 the first parameter
+     * @param param2 the second parameter
+     */
+    public void fatalkf(Throwable t, int key, Object param1, Object param2) {
+        if (isEnabled(Level.FATAL)) {
+            doLogf(Level.FATAL, FQCN, key(prefix, key), new Object[] { param1, param2 }, t);
+        }
+    }
+
+    /**
+     * Issue a parameterized log message from a numerical key with a level of FATAL.  The resource value should be a
+     * {@link java.util.Formatter}-style format string.
+     *
+     * @param t the throwable
+     * @param key the numerical key
+     * @param param1 the first parameter
+     * @param param2 the second parameter
+     * @param param3 the third parameter
+     */
+    public void fatalkf(Throwable t, int key, Object param1, Object param2, Object param3) {
+        if (isEnabled(Level.FATAL)) {
+            doLogf(Level.FATAL, FQCN, key(prefix, key), new Object[] { param1, param2, param3 }, t);
+        }
+    }
+
+    /**
      * Log a message at the given level.
      *
      * @param level the level
@@ -1140,43 +3283,189 @@ public abstract class Logger implements Serializable {
     }
 
     /**
-     * Log a message at the given level.
+     * Issue a log message and throwable at the given log level.
+     *
+     * @param level the level
+     * @param message the message
+     * @param t the throwable
+     */
+    public void log(Level level, Object message, Throwable t) {
+        doLog(level, FQCN, message, null, t);
+    }
+
+    /**
+     * Issue a log message and throwable at the given log level and a specific logger class name.
+     *
+     * @param level the level
+     * @param loggerFqcn the logger class name
+     * @param message the message
+     * @param t the throwable
+     */
+    public void log(Level level, String loggerFqcn, Object message, Throwable t) {
+        doLog(level, loggerFqcn, message, null, t);
+    }
+
+    /**
+     * Issue a log message with parameters at the given log level.
      *
      * @param level the level
      * @param message the message
      * @param params the message parameters
+     * @deprecated To log a message with parameters, using {@link #logv(Level, String, Object...)} is recommended.
      */
     public void log(Level level, Object message, Object[] params) {
         doLog(level, FQCN, message, params, null);
     }
 
     /**
-     * Log a message at the given level.
+     * Issue a log message with parameters and a throwable at the given log level.
      *
      * @param level the level
      * @param message the message
      * @param params the message parameters
-     * @param t the throwable cause
+     * @param t the throwable
+     * @deprecated To log a message with parameters, using {@link #logv(Level, Throwable, String, Object...)} is recommended.
      */
     public void log(Level level, Object message, Object[] params, Throwable t) {
         doLog(level, FQCN, message, params, t);
     }
 
     /**
-     * Log a message at the given level.
+     * Issue a log message with parameters and a throwable at the given log level.
      *
      * @param loggerFqcn the logger class name
      * @param level the level
      * @param message the message
      * @param params the message parameters
-     * @param t the throwable cause
+     * @param t the throwable
      */
     public void log(String loggerFqcn, Level level, Object message, Object[] params, Throwable t) {
         doLog(level, loggerFqcn, message, params, t);
     }
 
     /**
-     * Log a message at the given level.
+     * Issue a log message at the given log level using {@link java.text.MessageFormat}-style formatting.
+     *
+     * @param level the level
+     * @param format the message format string
+     * @param params the parameters
+     */
+    public void logv(Level level, String format, Object... params) {
+        doLog(level, FQCN, format, params, null);
+    }
+
+    /**
+     * Issue a log message at the given log level using {@link java.text.MessageFormat}-style formatting.
+     *
+     * @param level the level
+     * @param format the message format string
+     * @param param1 the sole parameter
+     */
+    public void logv(Level level, String format, Object param1) {
+        if (isEnabled(level)) {
+            doLog(level, FQCN, format, new Object[] { param1 }, null);
+        }
+    }
+
+    /**
+     * Issue a log message at the given log level using {@link java.text.MessageFormat}-style formatting.
+     *
+     * @param level the level
+     * @param format the message format string
+     * @param param1 the first parameter
+     * @param param2 the second parameter
+     */
+    public void logv(Level level, String format, Object param1, Object param2) {
+        if (isEnabled(level)) {
+            doLog(level, FQCN, format, new Object[] { param1, param2 }, null);
+        }
+    }
+
+    /**
+     * Issue a log message at the given log level using {@link java.text.MessageFormat}-style formatting.
+     *
+     * @param level the level
+     * @param format the message format string
+     * @param param1 the first parameter
+     * @param param2 the second parameter
+     * @param param3 the third parameter
+     */
+    public void logv(Level level, String format, Object param1, Object param2, Object param3) {
+        if (isEnabled(level)) {
+            doLog(level, FQCN, format, new Object[] { param1, param2, param3 }, null);
+        }
+    }
+
+    /**
+     * Issue a log message at the given log level using {@link java.text.MessageFormat}-style formatting.
+     *
+     * @param level the level
+     * @param t the throwable
+     * @param format the message format string
+     * @param params the parameters
+     */
+    public void logv(Level level, Throwable t, String format, Object... params) {
+        doLog(level, FQCN, format, params, t);
+    }
+
+    /**
+     * Issue a log message at the given log level using {@link java.text.MessageFormat}-style formatting.
+     *
+     * @param level the level
+     * @param t the throwable
+     * @param format the message format string
+     * @param param1 the sole parameter
+     */
+    public void logv(Level level, Throwable t, String format, Object param1) {
+        if (isEnabled(level)) {
+            doLog(level, FQCN, format, new Object[] { param1 }, t);
+        }
+    }
+
+    /**
+     * Issue a log message at the given log level using {@link java.text.MessageFormat}-style formatting.
+     *
+     * @param level the level
+     * @param t the throwable
+     * @param format the message format string
+     * @param param1 the first parameter
+     * @param param2 the second parameter
+     */
+    public void logv(Level level, Throwable t, String format, Object param1, Object param2) {
+        if (isEnabled(level)) {
+            doLog(level, FQCN, format, new Object[] { param1, param2 }, t);
+        }
+    }
+
+    /**
+     * Issue a log message at the given log level using {@link java.text.MessageFormat}-style formatting.
+     *
+     * @param level the level
+     * @param t the throwable
+     * @param format the message format string
+     * @param param1 the first parameter
+     * @param param2 the second parameter
+     * @param param3 the third parameter
+     */
+    public void logv(Level level, Throwable t, String format, Object param1, Object param2, Object param3) {
+        if (isEnabled(level)) {
+            doLog(level, FQCN, format, new Object[] { param1, param2, param3 }, t);
+        }
+    }
+
+    /**
+     * Issue a formatted log message at the given log level.
+     *
+     * @param level the level
+     * @param format the format string as per {@link String#format(String, Object...)} or resource bundle key therefor
+     * @param params the parameters
+     */
+    public void logf(Level level, String format, Object... params) {
+        doLogf(level, FQCN, format, params, null);
+    }
+
+    /**
+     * Issue a formatted log message at the given log level.
      *
      * @param level the level
      * @param format the format string as per {@link String#format(String, Object...)} or resource bundle key therefor
@@ -1189,7 +3478,7 @@ public abstract class Logger implements Serializable {
     }
 
     /**
-     * Log a message at the given level.
+     * Issue a formatted log message at the given log level.
      *
      * @param level the level
      * @param format the format string as per {@link String#format(String, Object...)} or resource bundle key therefor
@@ -1203,7 +3492,7 @@ public abstract class Logger implements Serializable {
     }
 
     /**
-     * Log a message at the given level.
+     * Issue a formatted log message at the given log level.
      *
      * @param level the level
      * @param format the format string as per {@link String#format(String, Object...)} or resource bundle key therefor
@@ -1218,22 +3507,23 @@ public abstract class Logger implements Serializable {
     }
 
     /**
-     * Log a message at the given level.
+     * Issue a formatted log message at the given log level.
      *
      * @param level the level
-     * @param format the format string as per {@link String#format(String, Object...)} or resource bundle key therefor
-     * @param params the message parameters
+     * @param t the throwable
+     * @param format the format string, as per {@link String#format(String, Object...)}
+     * @param params the parameters
      */
-    public void logf(Level level, String format, Object... params) {
-        doLogf(level, FQCN, format, params, null);
+    public void logf(Level level, Throwable t, String format, Object... params) {
+        doLogf(level, FQCN, format, params, t);
     }
 
     /**
-     * Log a message at the given level.
+     * Issue a formatted log message at the given log level.
      *
      * @param level the level
-     * @param t the throwable cause
-     * @param format the format string as per {@link String#format(String, Object...)} or resource bundle key therefor
+     * @param t the throwable
+     * @param format the format string, as per {@link String#format(String, Object...)}
      * @param param1 the sole parameter
      */
     public void logf(Level level, Throwable t, String format, Object param1) {
@@ -1243,11 +3533,11 @@ public abstract class Logger implements Serializable {
     }
 
     /**
-     * Log a message at the given level.
+     * Issue a formatted log message at the given log level.
      *
      * @param level the level
-     * @param t the throwable cause
-     * @param format the format string as per {@link String#format(String, Object...)} or resource bundle key therefor
+     * @param t the throwable
+     * @param format the format string, as per {@link String#format(String, Object...)}
      * @param param1 the first parameter
      * @param param2 the second parameter
      */
@@ -1258,11 +3548,11 @@ public abstract class Logger implements Serializable {
     }
 
     /**
-     * Log a message at the given level.
+     * Issue a formatted log message at the given log level.
      *
      * @param level the level
-     * @param t the throwable cause
-     * @param format the format string as per {@link String#format(String, Object...)} or resource bundle key therefor
+     * @param t the throwable
+     * @param format the format string, as per {@link String#format(String, Object...)}
      * @param param1 the first parameter
      * @param param2 the second parameter
      * @param param3 the third parameter
@@ -1274,15 +3564,272 @@ public abstract class Logger implements Serializable {
     }
 
     /**
-     * Log a message at the given level.
+     * Issue a log message from a numerical key at the given log level.
      *
      * @param level the level
-     * @param t the throwable cause
-     * @param format the format string as per {@link String#format(String, Object...)} or resource bundle key therefor
-     * @param params the message parameters
+     * @param key the numerical key
      */
-    public void logf(Level level, Throwable t, String format, Object... params) {
-        doLogf(level, FQCN, format, params, t);
+    public void logk(Level level, int key) {
+        if (isEnabled(level)) {
+            doLog(level, FQCN, key(prefix, key), null, null);
+        }
+    }
+
+    /**
+     * Issue a log message from a numerical key at the given log level.
+     *
+     * @param level the level
+     * @param key the numerical key
+     * @param t the throwable
+     */
+    public void logk(Level level, Throwable t, int key) {
+        if (isEnabled(level)) {
+            doLog(level, FQCN, key(prefix, key), null, t);
+        }
+    }
+
+    /**
+     * Issue a parameterized log message from a numerical key at the given log level.  The resource value should be a
+     * {@link java.text.MessageFormat}-style format string.
+     *
+     * @param level the level
+     * @param key the numerical key
+     * @param params the parameters
+     */
+    public void logkv(Level level, int key, Object... params) {
+        if (isEnabled(level)) {
+            doLog(level, FQCN, key(prefix, key), params, null);
+        }
+    }
+
+    /**
+     * Issue a parameterized log message from a numerical key at the given log level.  The resource value should be a
+     * {@link java.text.MessageFormat}-style format string.
+     *
+     * @param level the level
+     * @param key the numerical key
+     * @param param1 the sole parameter
+     */
+    public void logkv(Level level, int key, Object param1) {
+        if (isEnabled(level)) {
+            doLog(level, FQCN, key(prefix, key), new Object[] { param1 }, null);
+        }
+    }
+
+    /**
+     * Issue a parameterized log message from a numerical key at the given log level.  The resource value should be a
+     * {@link java.text.MessageFormat}-style format string.
+     *
+     * @param level the level
+     * @param key the numerical key
+     * @param param1 the first parameter
+     * @param param2 the second parameter
+     */
+    public void logkv(Level level, int key, Object param1, Object param2) {
+        if (isEnabled(level)) {
+            doLog(level, FQCN, key(prefix, key), new Object[] { param1, param2 }, null);
+        }
+    }
+
+    /**
+     * Issue a parameterized log message from a numerical key at the given log level.  The resource value should be a
+     * {@link java.text.MessageFormat}-style format string.
+     *
+     * @param level the level
+     * @param key the numerical key
+     * @param param1 the first parameter
+     * @param param2 the second parameter
+     * @param param3 the third parameter
+     */
+    public void logkv(Level level, int key, Object param1, Object param2, Object param3) {
+        if (isEnabled(level)) {
+            doLog(level, FQCN, key(prefix, key), new Object[] { param1, param2, param3 }, null);
+        }
+    }
+
+    /**
+     * Issue a parameterized log message from a numerical key at the given log level.  The resource value should be a
+     * {@link java.text.MessageFormat}-style format string.
+     *
+     * @param level the level
+     * @param t the throwable
+     * @param key the numerical key
+     * @param params the parameters
+     */
+    public void logkv(Level level, Throwable t, int key, Object... params) {
+        if (isEnabled(level)) {
+            doLog(level, FQCN, key(prefix, key), params, t);
+        }
+    }
+
+    /**
+     * Issue a parameterized log message from a numerical key at the given log level.  The resource value should be a
+     * {@link java.text.MessageFormat}-style format string.
+     *
+     * @param level the level
+     * @param t the throwable
+     * @param key the numerical key
+     * @param param1 the sole parameter
+     */
+    public void logkv(Level level, Throwable t, int key, Object param1) {
+        if (isEnabled(level)) {
+            doLog(level, FQCN, key(prefix, key), new Object[] { param1 }, t);
+        }
+    }
+
+    /**
+     * Issue a parameterized log message from a numerical key at the given log level.  The resource value should be a
+     * {@link java.text.MessageFormat}-style format string.
+     *
+     * @param level the level
+     * @param t the throwable
+     * @param key the numerical key
+     * @param param1 the first parameter
+     * @param param2 the second parameter
+     */
+    public void logkv(Level level, Throwable t, int key, Object param1, Object param2) {
+        if (isEnabled(level)) {
+            doLog(level, FQCN, key(prefix, key), new Object[] { param1, param2 }, t);
+        }
+    }
+
+    /**
+     * Issue a parameterized log message from a numerical key at the given log level.  The resource value should be a
+     * {@link java.text.MessageFormat}-style format string.
+     *
+     * @param level the level
+     * @param t the throwable
+     * @param key the numerical key
+     * @param param1 the first parameter
+     * @param param2 the second parameter
+     * @param param3 the third parameter
+     */
+    public void logkv(Level level, Throwable t, int key, Object param1, Object param2, Object param3) {
+        if (isEnabled(level)) {
+            doLog(level, FQCN, key(prefix, key), new Object[] { param1, param2, param3 }, t);
+        }
+    }
+
+    /**
+     * Issue a parameterized log message from a numerical key at the given log level.  The resource value should be a
+     * {@link java.util.Formatter}-style format string.
+     *
+     * @param level the level
+     * @param key the numerical key
+     * @param params the parameters
+     */
+    public void logkf(Level level, int key, Object... params) {
+        if (isEnabled(level)) {
+            doLogf(level, FQCN, key(prefix, key), params, null);
+        }
+    }
+
+    /**
+     * Issue a parameterized log message from a numerical key at the given log level.  The resource value should be a
+     * {@link java.util.Formatter}-style format string.
+     *
+     * @param level the level
+     * @param key the numerical key
+     * @param param1 the sole parameter
+     */
+    public void logkf(Level level, int key, Object param1) {
+        if (isEnabled(level)) {
+            doLogf(level, FQCN, key(prefix, key), new Object[] { param1 }, null);
+        }
+    }
+
+    /**
+     * Issue a parameterized log message from a numerical key at the given log level.  The resource value should be a
+     * {@link java.util.Formatter}-style format string.
+     *
+     * @param level the level
+     * @param key the numerical key
+     * @param param1 the first parameter
+     * @param param2 the second parameter
+     */
+    public void logkf(Level level, int key, Object param1, Object param2) {
+        if (isEnabled(level)) {
+            doLogf(level, FQCN, key(prefix, key), new Object[] { param1, param2 }, null);
+        }
+    }
+
+    /**
+     * Issue a parameterized log message from a numerical key at the given log level.  The resource value should be a
+     * {@link java.util.Formatter}-style format string.
+     *
+     * @param level the level
+     * @param key the numerical key
+     * @param param1 the first parameter
+     * @param param2 the second parameter
+     * @param param3 the third parameter
+     */
+    public void logkf(Level level, int key, Object param1, Object param2, Object param3) {
+        if (isEnabled(level)) {
+            doLogf(level, FQCN, key(prefix, key), new Object[] { param1, param2, param3 }, null);
+        }
+    }
+
+    /**
+     * Issue a parameterized log message from a numerical key at the given log level.  The resource value should be a
+     * {@link java.util.Formatter}-style format string.
+     *
+     * @param level the level
+     * @param t the throwable
+     * @param key the numerical key
+     * @param params the parameters
+     */
+    public void logkf(Level level, Throwable t, int key, Object... params) {
+        if (isEnabled(level)) {
+            doLog(level, FQCN, key(prefix, key), params, t);
+        }
+    }
+
+    /**
+     * Issue a parameterized log message from a numerical key at the given log level.  The resource value should be a
+     * {@link java.util.Formatter}-style format string.
+     *
+     * @param level the level
+     * @param t the throwable
+     * @param key the numerical key
+     * @param param1 the sole parameter
+     */
+    public void logkf(Level level, Throwable t, int key, Object param1) {
+        if (isEnabled(level)) {
+            doLogf(level, FQCN, key(prefix, key), new Object[] { param1 }, t);
+        }
+    }
+
+    /**
+     * Issue a parameterized log message from a numerical key at the given log level.  The resource value should be a
+     * {@link java.util.Formatter}-style format string.
+     *
+     * @param level the level
+     * @param t the throwable
+     * @param key the numerical key
+     * @param param1 the first parameter
+     * @param param2 the second parameter
+     */
+    public void logkf(Level level, Throwable t, int key, Object param1, Object param2) {
+        if (isEnabled(level)) {
+            doLogf(level, FQCN, key(prefix, key), new Object[] { param1, param2 }, t);
+        }
+    }
+
+    /**
+     * Issue a parameterized log message from a numerical key at the given log level.  The resource value should be a
+     * {@link java.util.Formatter}-style format string.
+     *
+     * @param level the level
+     * @param t the throwable
+     * @param key the numerical key
+     * @param param1 the first parameter
+     * @param param2 the second parameter
+     * @param param3 the third parameter
+     */
+    public void logkf(Level level, Throwable t, int key, Object param1, Object param2, Object param3) {
+        if (isEnabled(level)) {
+            doLogf(level, FQCN, key(prefix, key), new Object[] { param1, param2, param3 }, t);
+        }
     }
 
     /**
