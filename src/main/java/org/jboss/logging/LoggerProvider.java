@@ -27,7 +27,7 @@ import java.util.Map;
 public interface LoggerProvider {
     Logger getLogger(String name, String resourceBundleName, String prefix);
 
-    void putMdc(String key, Object value);
+    Object putMdc(String key, Object value);
 
     Object getMdc(String key);
 

@@ -38,8 +38,16 @@ final class Slf4jLoggerProvider extends AbstractLoggerProvider implements Logger
         }
     }
 
-    public void putMdc(final String key, final Object value) {
-        MDC.put(key, String.valueOf(value));
+    public Object putMdc(final String key, final Object value) {
+        try {
+            return MDC.get(key);
+        } finally {
+            if (value == null) {
+                MDC.remove(key);
+            } else {
+                MDC.put(key, String.valueOf(value));
+            }
+        }
     }
 
     public Object getMdc(final String key) {

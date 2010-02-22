@@ -42,8 +42,12 @@ final class Log4jLoggerProvider implements LoggerProvider {
         return MDC.getContext();
     }
 
-    public void putMdc(String key, Object val) {
-        MDC.put(key, val);
+    public Object putMdc(String key, Object val) {
+        try {
+            return MDC.get(key);
+        } finally {
+            MDC.put(key, val);
+        }
     }
 
     public void removeMdc(String key) {

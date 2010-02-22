@@ -29,8 +29,8 @@ public final class MDC {
     private MDC() {
     }
 
-    public static void put(String key, Object val) {
-        LoggerProviders.PROVIDER.putMdc(key, val);
+    public static Object put(String key, Object val) {
+        return LoggerProviders.PROVIDER.putMdc(key, val);
     }
 
     public static Object get(String key) {

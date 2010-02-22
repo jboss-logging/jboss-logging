@@ -62,8 +62,8 @@ final class JBossLogManagerProvider implements LoggerProvider {
         }
     }
 
-    public void putMdc(final String key, final Object value) {
-        MDC.put(key, String.valueOf(value));
+    public Object putMdc(final String key, final Object value) {
+        return MDC.put(key, String.valueOf(value));
     }
 
     public Object getMdc(final String key) {

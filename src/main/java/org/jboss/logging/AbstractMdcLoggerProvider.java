@@ -37,13 +37,13 @@ abstract class AbstractMdcLoggerProvider extends AbstractLoggerProvider {
         return mdcMap.get();
     }
 
-    public void putMdc(String key, Object value) {
+    public Object putMdc(String key, Object value) {
         Map<String, Object> map = mdcMap.get();
         if (map == null) {
             map = new HashMap<String, Object>();
             mdcMap.set(map);
         }
-        map.put(key, value);
+        return map.put(key, value);
     }
 
     public void removeMdc(String key) {
