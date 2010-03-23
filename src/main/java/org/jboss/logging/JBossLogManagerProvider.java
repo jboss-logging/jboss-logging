@@ -22,6 +22,8 @@
 
 package org.jboss.logging;
 
+import java.security.AccessController;
+import java.security.PrivilegedAction;
 import java.util.Map;
 import org.jboss.logmanager.MDC;
 import org.jboss.logmanager.NDC;
@@ -33,6 +35,19 @@ final class JBossLogManagerProvider implements LoggerProvider {
     private static final AttachmentKey<Logger> KEY = new AttachmentKey<Logger>();
 
     public Logger getLogger(final String name, final String resourceBundleName, final String prefix) {
+        final SecurityManager sm = System.getSecurityManager();
+        if (sm != null) {
+            return AccessController.doPrivileged(new PrivilegedAction<Logger>() {
+                public Logger run() {
+                    return doGetLogger(name, resourceBundleName, prefix);
+                }
+            });
+        } else {
+            return doGetLogger(name, resourceBundleName, prefix);
+        }
+    }
+
+    private static Logger doGetLogger(final String name, final String resourceBundleName, final String prefix) {
         final org.jboss.logmanager.Logger logger;
         if (resourceBundleName != null) {
             logger = org.jboss.logmanager.Logger.getLogger(name, resourceBundleName);
