@@ -31,14 +31,18 @@
     <url>http://www.jboss.org</url>
     <description>The JBoss Logging Framework</description>
     <scm>
-        <connection>scm:svn:https://svn.jboss.org/repos/common/common-logging-spi/trunk/</connection>
+        <connection>scm:svn:https://svn.jboss.org/repos/common/jboss-logging/trunk/</connection>
     </scm>
+
+    <properties>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+    </properties>
 
     <dependencies>
         <dependency>
             <groupId>org.jboss.logmanager</groupId>
             <artifactId>jboss-logmanager</artifactId>
-            <version>1.2.0.CR1-SNAPSHOT</version>
+            <version>1.2.0.CR1</version>
             <scope>provided</scope>
         </dependency>
         <dependency>
