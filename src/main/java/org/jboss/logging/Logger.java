@@ -2264,45 +2264,6 @@ public abstract class Logger implements Serializable, BasicLogger {
         }
     }
 
-    public static <T> T getMessageBundle(Class<T> type, Locale locale) {
-        String language = locale.getLanguage();
-        String country = locale.getCountry();
-        String variant = locale.getVariant();
-
-        Class<? extends T> bundleClass = null;
-        if (variant != null && variant.length() > 0) try {
-            bundleClass = Class.forName(join(type.getName(), "$bundle", language, country, variant), true, type.getClassLoader()).asSubclass(type);
-        } catch (ClassNotFoundException e) {
-            // ignore
-        }
-        if (bundleClass == null && country != null && country.length() > 0) try {
-            bundleClass = Class.forName(join(type.getName(), "$bundle", language, country, null), true, type.getClassLoader()).asSubclass(type);
-        } catch (ClassNotFoundException e) {
-            // ignore
-        }
-        if (bundleClass == null && language != null && language.length() > 0) try {
-            bundleClass = Class.forName(join(type.getName(), "$bundle", language, null, null), true, type.getClassLoader()).asSubclass(type);
-        } catch (ClassNotFoundException e) {
-            // ignore
-        }
-        if (bundleClass == null) try {
-            bundleClass = Class.forName(join(type.getName(), "$bundle", null, null, null), true, type.getClassLoader()).asSubclass(type);
-        } catch (ClassNotFoundException e) {
-            throw new IllegalArgumentException("Invalid bundle " + type + " (implementation not found)");
-        }
-        final Field field;
-        try {
-            field = bundleClass.getField("INSTANCE");
-        } catch (NoSuchFieldException e) {
-            throw new IllegalArgumentException("Bundle implementation " + bundleClass + " has no instance field");
-        }
-        try {
-            return type.cast(field.get(null));
-        } catch (IllegalAccessException e) {
-            throw new IllegalArgumentException("Bundle implementation " + bundleClass + " could not be instantiated", e);
-        }
-    }
-
     private static String join(String interfaceName, String a, String b, String c, String d) {
         final StringBuilder build = new StringBuilder();
         build.append(interfaceName).append('_').append(a);
