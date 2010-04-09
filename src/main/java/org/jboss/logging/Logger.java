@@ -23,7 +23,6 @@ package org.jboss.logging;
 
 import java.io.Serializable;
 import java.lang.reflect.Constructor;
-import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.util.Locale;
 
@@ -2147,7 +2146,7 @@ public abstract class Logger implements Serializable, BasicLogger {
      */
     @Deprecated
     public static Logger getI18nLogger(Class<?> clazz, String resourceBundleName) {
-        return getI18nLogger(clazz.getName(), resourceBundleName);
+        return LoggerProviders.PROVIDER.getLogger(clazz.getName(), resourceBundleName, null);
     }
 
     /**
