@@ -20,27 +20,33 @@
  * 02110-1301 USA, or see the FSF site: http://www.fsf.org.
  */
 
-package org.jboss.logging;
+package org.jboss.logging.annotation;
 
-import java.io.Serializable;
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
+import java.lang.annotation.Target;
 
-final class SerializedLogger implements Serializable {
+/**
+ * A single translation of a message.
+ *
+ * @author <a href="mailto:david.lloyd@redhat.com">David M. Lloyd</a>
+ */
+@Target({})
+@Retention(RetentionPolicy.SOURCE)
+public @interface Translation {
 
-    private static final long serialVersionUID = 508779982439435831L;
+    /**
+     * The locale, in the form <code>"aa[_bb[_cc]]"</code> where "aa" is the language (e.g. "en"), "bb" is the country (e.g. "US"), and
+     * "cc" is the variant.
+     *
+     * @return the locale
+     */
+    String locale();
 
-    private final String name;
-    private final String resourceBundleName;
-
-    SerializedLogger(final String name, final String resourceBundleName) {
-        this.name = name;
-        this.resourceBundleName = resourceBundleName;
-    }
-
-    protected Object readResolve() {
-        if (resourceBundleName != null) {
-            return Logger.getI18nLogger(name, resourceBundleName);
-        } else {
-            return Logger.getLogger(name);
-        }
-    }
+    /**
+     * The translation of this message.
+     *
+     * @return the translation
+     */
+    String message();
 }

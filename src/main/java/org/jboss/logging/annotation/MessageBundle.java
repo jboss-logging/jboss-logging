@@ -20,27 +20,19 @@
  * 02110-1301 USA, or see the FSF site: http://www.fsf.org.
  */
 
-package org.jboss.logging;
+package org.jboss.logging.annotation;
 
-import java.io.Serializable;
+/**
+ * Signify that an interface is a message bundle interface.
+ *
+ * @author <a href="mailto:david.lloyd@redhat.com">David M. Lloyd</a>
+ */
+public @interface MessageBundle {
 
-final class SerializedLogger implements Serializable {
-
-    private static final long serialVersionUID = 508779982439435831L;
-
-    private final String name;
-    private final String resourceBundleName;
-
-    SerializedLogger(final String name, final String resourceBundleName) {
-        this.name = name;
-        this.resourceBundleName = resourceBundleName;
-    }
-
-    protected Object readResolve() {
-        if (resourceBundleName != null) {
-            return Logger.getI18nLogger(name, resourceBundleName);
-        } else {
-            return Logger.getLogger(name);
-        }
-    }
+    /**
+     * Get the project code for messages that have an associated code.
+     *
+     * @return the project code
+     */
+    String projectCode() default "";
 }

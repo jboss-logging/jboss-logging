@@ -20,27 +20,28 @@
  * 02110-1301 USA, or see the FSF site: http://www.fsf.org.
  */
 
-package org.jboss.logging;
+package org.jboss.logging.annotation;
 
-import java.io.Serializable;
+import java.lang.annotation.ElementType;
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
+import java.lang.annotation.Target;
+import org.jboss.logging.Logger;
 
-final class SerializedLogger implements Serializable {
+/**
+ * A typed logger method.  Indicates that this method will log the associated {@link Message} to the logger system, as
+ * opposed to being a simple message lookup.
+ *
+ * @author <a href="mailto:david.lloyd@redhat.com">David M. Lloyd</a>
+ */
+@Retention(RetentionPolicy.SOURCE)
+@Target(ElementType.METHOD)
+public @interface LogMessage {
 
-    private static final long serialVersionUID = 508779982439435831L;
-
-    private final String name;
-    private final String resourceBundleName;
-
-    SerializedLogger(final String name, final String resourceBundleName) {
-        this.name = name;
-        this.resourceBundleName = resourceBundleName;
-    }
-
-    protected Object readResolve() {
-        if (resourceBundleName != null) {
-            return Logger.getI18nLogger(name, resourceBundleName);
-        } else {
-            return Logger.getLogger(name);
-        }
-    }
+    /**
+     * The log level at which this message should be logged.  Defaults to {@code INFO}.
+     *
+     * @return the log level
+     */
+    Logger.Level level() default Logger.Level.INFO;
 }

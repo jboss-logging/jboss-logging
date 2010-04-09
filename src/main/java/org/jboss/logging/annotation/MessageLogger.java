@@ -20,27 +20,20 @@
  * 02110-1301 USA, or see the FSF site: http://www.fsf.org.
  */
 
-package org.jboss.logging;
+package org.jboss.logging.annotation;
 
-import java.io.Serializable;
+import java.lang.annotation.ElementType;
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
+import java.lang.annotation.Target;
 
-final class SerializedLogger implements Serializable {
-
-    private static final long serialVersionUID = 508779982439435831L;
-
-    private final String name;
-    private final String resourceBundleName;
-
-    SerializedLogger(final String name, final String resourceBundleName) {
-        this.name = name;
-        this.resourceBundleName = resourceBundleName;
-    }
-
-    protected Object readResolve() {
-        if (resourceBundleName != null) {
-            return Logger.getI18nLogger(name, resourceBundleName);
-        } else {
-            return Logger.getLogger(name);
-        }
-    }
+/**
+ * Signify that an interface is a typed logger interface.  A message logger interface may optionally extend other message logger
+ * interfaces and message bundle interfaces (see {@link MessageBundle}, as well as the {@link org.jboss.logging.BasicLogger} interface.
+ *
+ * @author <a href="mailto:david.lloyd@redhat.com">David M. Lloyd</a>
+ */
+@Retention(RetentionPolicy.SOURCE)
+@Target(ElementType.TYPE)
+public @interface MessageLogger {
 }

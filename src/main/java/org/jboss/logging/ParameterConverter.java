@@ -22,25 +22,24 @@
 
 package org.jboss.logging;
 
-import java.io.Serializable;
+import java.util.Locale;
 
-final class SerializedLogger implements Serializable {
+/**
+ * A converter for a specific parameter type.
+ *
+ * @author <a href="mailto:david.lloyd@redhat.com">David M. Lloyd</a>
+ * @type <I> the input type
+ */
+public interface ParameterConverter<I> {
 
-    private static final long serialVersionUID = 508779982439435831L;
-
-    private final String name;
-    private final String resourceBundleName;
-
-    SerializedLogger(final String name, final String resourceBundleName) {
-        this.name = name;
-        this.resourceBundleName = resourceBundleName;
-    }
-
-    protected Object readResolve() {
-        if (resourceBundleName != null) {
-            return Logger.getI18nLogger(name, resourceBundleName);
-        } else {
-            return Logger.getLogger(name);
-        }
-    }
+    /**
+     * Convert the parameter to its string or string-equivalent representation.  The returned value will be passed in
+     * as a parameter to either a {@link java.text.MessageFormat} or {@link java.util.Formatter} instance, depending
+     * on the setting of {@link org.jboss.logging.annotation.Message#format()}.
+     *
+     * @param locale the locale
+     * @param parameter the parameter
+     * @return the converted value
+     */
+    Object convert(Locale locale, I parameter);
 }
