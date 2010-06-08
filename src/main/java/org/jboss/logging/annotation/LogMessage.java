@@ -20,26 +20,36 @@
  * 02110-1301 USA, or see the FSF site: http://www.fsf.org.
  */
 
-package org.jboss.logging;
+package org.jboss.logging.annotation;
 
-import java.util.Locale;
+import java.lang.annotation.ElementType;
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
+import java.lang.annotation.Target;
 
 /**
- * A converter for a specific parameter type.
+ * A typed logger method.  Indicates that this method will log the associated {@link Message} to the logger system, as
+ * opposed to being a simple message lookup.
  *
  * @author <a href="mailto:david.lloyd@redhat.com">David M. Lloyd</a>
- * @type <I> the input type
  */
-public interface ParameterConverter<I> {
+@Retention(RetentionPolicy.RUNTIME)
+@Target(ElementType.METHOD)
+public @interface LogMessage {
 
     /**
-     * Convert the parameter to its string or string-equivalent representation.  The returned value will be passed in
-     * as a parameter to either a {@link java.text.MessageFormat} or {@link java.util.Formatter} instance, depending
-     * on the setting of {@link org.jboss.logging.annotation.Message#format()}.
+     * The log level at which this message should be logged.  Defaults to {@code INFO}.
      *
-     * @param locale the locale
-     * @param parameter the parameter
-     * @return the converted value
+     * @return the log level
      */
-    Object convert(Locale locale, I parameter);
+    Level level() default Level.INFO;
+
+    enum Level {
+        TRACE,
+        DEBUG,
+        INFO,
+        WARN,
+        ERROR,
+        FATAL
+    }
 }

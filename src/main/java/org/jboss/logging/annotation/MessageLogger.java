@@ -20,26 +20,27 @@
  * 02110-1301 USA, or see the FSF site: http://www.fsf.org.
  */
 
-package org.jboss.logging;
+package org.jboss.logging.annotation;
 
-import java.util.Locale;
+import java.lang.annotation.ElementType;
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
+import java.lang.annotation.Target;
 
 /**
- * A converter for a specific parameter type.
+ * Signify that an interface is a typed logger interface.  A message logger interface may optionally extend other message logger
+ * interfaces and message bundle interfaces (see {@link MessageBundle}, as well as the {@link org.jboss.logging.BasicLogger} interface.
  *
  * @author <a href="mailto:david.lloyd@redhat.com">David M. Lloyd</a>
- * @type <I> the input type
  */
-public interface ParameterConverter<I> {
+@Retention(RetentionPolicy.RUNTIME)
+@Target(ElementType.TYPE)
+public @interface MessageLogger {
 
     /**
-     * Convert the parameter to its string or string-equivalent representation.  The returned value will be passed in
-     * as a parameter to either a {@link java.text.MessageFormat} or {@link java.util.Formatter} instance, depending
-     * on the setting of {@link org.jboss.logging.annotation.Message#format()}.
+     * Get the project code for messages that have an associated code.
      *
-     * @param locale the locale
-     * @param parameter the parameter
-     * @return the converted value
+     * @return the project code
      */
-    Object convert(Locale locale, I parameter);
+    String projectCode() default "";
 }
