@@ -28,7 +28,7 @@ import java.util.Locale;
  * A converter for a specific parameter type.
  *
  * @author <a href="mailto:david.lloyd@redhat.com">David M. Lloyd</a>
- * @type <I> the input type
+ * @param <I> the input type
  */
 public interface ParameterConverter<I> {
 
