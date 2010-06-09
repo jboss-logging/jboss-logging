@@ -20,7 +20,7 @@
  * 02110-1301 USA, or see the FSF site: http://www.fsf.org.
  */
 
-package org.jboss.logging.annotation;
+package org.jboss.logging;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
@@ -42,14 +42,5 @@ public @interface LogMessage {
      *
      * @return the log level
      */
-    Level level() default Level.INFO;
-
-    enum Level {
-        TRACE,
-        DEBUG,
-        INFO,
-        WARN,
-        ERROR,
-        FATAL
-    }
+    Logger.Level level() default Logger.Level.INFO;
 }

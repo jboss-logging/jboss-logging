@@ -20,7 +20,7 @@
  * 02110-1301 USA, or see the FSF site: http://www.fsf.org.
  */
 
-package org.jboss.logging.annotation;
+package org.jboss.logging;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
@@ -28,13 +28,14 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
 /**
- * Signify that an interface is a message bundle interface.
+ * Signify that an interface is a typed logger interface.  A message logger interface may optionally extend other message logger
+ * interfaces and message bundle interfaces (see {@link MessageBundle}, as well as the {@link org.jboss.logging.BasicLogger} interface.
  *
  * @author <a href="mailto:david.lloyd@redhat.com">David M. Lloyd</a>
  */
-@Target(ElementType.TYPE)
 @Retention(RetentionPolicy.RUNTIME)
-public @interface MessageBundle {
+@Target(ElementType.TYPE)
+public @interface MessageLogger {
 
     /**
      * Get the project code for messages that have an associated code.

@@ -1927,6 +1927,67 @@ public abstract class Logger implements Serializable, BasicLogger {
     }
 
     /**
+     * Issue a log message at the given log level using {@link java.text.MessageFormat}-style formatting.
+     *
+     * @param loggerFqcn the logger class name
+     * @param level the level
+     * @param t the throwable
+     * @param format the message format string
+     * @param params the parameters
+     */
+    public void logv(String loggerFqcn, Level level, Throwable t, String format, Object... params) {
+        doLog(level, loggerFqcn, format, params, t);
+    }
+
+    /**
+     * Issue a log message at the given log level using {@link java.text.MessageFormat}-style formatting.
+     *
+     * @param loggerFqcn the logger class name
+     * @param level the level
+     * @param t the throwable
+     * @param format the message format string
+     * @param param1 the sole parameter
+     */
+    public void logv(String loggerFqcn, Level level, Throwable t, String format, Object param1) {
+        if (isEnabled(level)) {
+            doLog(level, loggerFqcn, format, new Object[] { param1 }, t);
+        }
+    }
+
+    /**
+     * Issue a log message at the given log level using {@link java.text.MessageFormat}-style formatting.
+     *
+     * @param loggerFqcn the logger class name
+     * @param level the level
+     * @param t the throwable
+     * @param format the message format string
+     * @param param1 the first parameter
+     * @param param2 the second parameter
+     */
+    public void logv(String loggerFqcn, Level level, Throwable t, String format, Object param1, Object param2) {
+        if (isEnabled(level)) {
+            doLog(level, loggerFqcn, format, new Object[] { param1, param2 }, t);
+        }
+    }
+
+    /**
+     * Issue a log message at the given log level using {@link java.text.MessageFormat}-style formatting.
+     *
+     * @param loggerFqcn the logger class name
+     * @param level the level
+     * @param t the throwable
+     * @param format the message format string
+     * @param param1 the first parameter
+     * @param param2 the second parameter
+     * @param param3 the third parameter
+     */
+    public void logv(String loggerFqcn, Level level, Throwable t, String format, Object param1, Object param2, Object param3) {
+        if (isEnabled(level)) {
+            doLog(level, loggerFqcn, format, new Object[] { param1, param2, param3 }, t);
+        }
+    }
+
+    /**
      * Issue a formatted log message at the given log level.
      *
      * @param level the level
