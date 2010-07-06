@@ -1452,7 +1452,7 @@ public interface BasicLogger {
      * @param param3 the third parameter
      */
     void logv(String loggerFqcn, Logger.Level level, Throwable t, String format, Object param1, Object param2, Object param3);
-}
+
     /**
      * Issue a formatted log message at the given log level.
      *
@@ -1581,4 +1581,4 @@ public interface BasicLogger {
      * @param params the message parameters
      */
     void logf(String loggerFqcn, Logger.Level level, Throwable t, String format, Object... params);
-
+}
