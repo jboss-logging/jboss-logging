@@ -23,6 +23,9 @@
 package org.jboss.logging;
 
 import java.lang.reflect.Field;
+import java.lang.reflect.Proxy;
+import java.security.AccessController;
+import java.security.PrivilegedAction;
 import java.util.Locale;
 
 /**
@@ -31,6 +34,16 @@ import java.util.Locale;
  * @author <a href="mailto:david.lloyd@redhat.com">David M. Lloyd</a>
  */
 public final class Messages {
+
+    static final boolean GENERATE_PROXIES;
+
+    static {
+        GENERATE_PROXIES = AccessController.doPrivileged(new PrivilegedAction<Boolean>() {
+            public Boolean run() {
+                return Boolean.valueOf(System.getProperty("jboss.i18n.generate-proxies"));
+            }
+        }).booleanValue();
+    }
 
     private Messages() {
     }
@@ -78,6 +91,9 @@ public final class Messages {
         if (bundleClass == null) try {
             bundleClass = Class.forName(join(type.getName(), "$bundle", null, null, null), true, type.getClassLoader()).asSubclass(type);
         } catch (ClassNotFoundException e) {
+            if (GENERATE_PROXIES) {
+                return type.cast(Proxy.newProxyInstance(type.getClassLoader(), new Class<?>[] { type }, new MessageBundleInvocationHandler(type)));
+            }
             throw new IllegalArgumentException("Invalid bundle " + type + " (implementation not found)");
         }
         final Field field;

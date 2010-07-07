@@ -41,6 +41,14 @@ class MessageBundleInvocationHandler implements InvocationHandler {
         this.projectCode = projectCode;
     }
 
+    protected MessageBundleInvocationHandler(final Class<?> type) {
+        this(type.getAnnotation(MessageBundle.class));
+    }
+
+    protected MessageBundleInvocationHandler(final MessageBundle messageBundle) {
+        this(messageBundle != null ? messageBundle.projectCode() : null);
+    }
+
     public Object invoke(final Object proxy, final Method method, final Object[] args) throws Throwable {
         final Message message = method.getAnnotation(Message.class);
         if (message == null) {
@@ -84,6 +92,7 @@ class MessageBundleInvocationHandler implements InvocationHandler {
         }
         final int id = message.id();
         if (id > 0) {
+            // todo - support for inherited msg id
             final String projectCode = this.projectCode;
             if (projectCode != null) {
                 final StringBuilder b = new StringBuilder(32);
