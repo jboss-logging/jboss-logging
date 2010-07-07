@@ -24,6 +24,9 @@ package org.jboss.logging;
 import java.io.Serializable;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Proxy;
+import java.security.AccessController;
+import java.security.PrivilegedAction;
 import java.util.Locale;
 
 /**
@@ -34,6 +37,16 @@ public abstract class Logger implements Serializable, BasicLogger {
     private static final long serialVersionUID = 4232175575988879434L;
 
     private static final String FQCN = Logger.class.getName();
+
+    private static final boolean GENERATE_PROXIES;
+
+    static {
+        GENERATE_PROXIES = AccessController.doPrivileged(new PrivilegedAction<Boolean>() {
+            public Boolean run() {
+                return Boolean.valueOf(System.getProperty("jboss.i18n.generate-proxies"));
+            }
+        }).booleanValue();
+    }
 
     /**
      * Levels used by this logging API.
@@ -2305,6 +2318,9 @@ public abstract class Logger implements Serializable, BasicLogger {
         if (loggerClass == null) try {
             loggerClass = Class.forName(join(type.getName(), "$logger", null, null, null), true, type.getClassLoader()).asSubclass(type);
         } catch (ClassNotFoundException e) {
+            if (GENERATE_PROXIES) {
+                return type.cast(Proxy.newProxyInstance(type.getClassLoader(), new Class<?>[] { type }, new MessageLoggerInvocationHandler(type, category)));
+            }
             throw new IllegalArgumentException("Invalid logger " + type + " (implementation not found)");
         }
         final Constructor<? extends T> constructor;
