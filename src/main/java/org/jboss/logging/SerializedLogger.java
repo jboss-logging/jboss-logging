@@ -29,18 +29,12 @@ final class SerializedLogger implements Serializable {
     private static final long serialVersionUID = 508779982439435831L;
 
     private final String name;
-    private final String resourceBundleName;
 
-    SerializedLogger(final String name, final String resourceBundleName) {
+    SerializedLogger(final String name) {
         this.name = name;
-        this.resourceBundleName = resourceBundleName;
     }
 
     protected Object readResolve() {
-        if (resourceBundleName != null) {
-            return Logger.getI18nLogger(name, resourceBundleName);
-        } else {
-            return Logger.getLogger(name);
-        }
+        return Logger.getLogger(name);
     }
 }

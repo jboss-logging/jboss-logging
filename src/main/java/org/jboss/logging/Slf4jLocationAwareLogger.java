@@ -31,8 +31,8 @@ final class Slf4jLocationAwareLogger extends Logger {
 
     private final LocationAwareLogger logger;
 
-    Slf4jLocationAwareLogger(final String name, final String resourceBundleName, final String prefix, final LocationAwareLogger  logger) {
-        super(name, resourceBundleName, prefix);
+    Slf4jLocationAwareLogger(final String name, final LocationAwareLogger logger) {
+        super(name);
         this.logger = logger;
     }
 

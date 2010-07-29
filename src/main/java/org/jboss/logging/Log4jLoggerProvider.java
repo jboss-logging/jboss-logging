@@ -29,8 +29,8 @@ import org.apache.log4j.NDC;
 
 final class Log4jLoggerProvider implements LoggerProvider {
 
-    public Logger getLogger(final String name, final String resourceBundleName, final String prefix) {
-        return new Log4jLogger(name, resourceBundleName, prefix);
+    public Logger getLogger(final String name) {
+        return new Log4jLogger(name);
     }
 
     public Object getMdc(String key) {

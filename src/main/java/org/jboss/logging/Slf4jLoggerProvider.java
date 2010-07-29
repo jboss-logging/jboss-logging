@@ -29,12 +29,12 @@ import org.slf4j.spi.LocationAwareLogger;
 
 final class Slf4jLoggerProvider extends AbstractLoggerProvider implements LoggerProvider {
 
-    public Logger getLogger(final String name, final String resourceBundleName, final String prefix) {
+    public Logger getLogger(final String name) {
         org.slf4j.Logger l = LoggerFactory.getLogger(name);
         if (l instanceof LocationAwareLogger) {
-            return new Slf4jLocationAwareLogger(name, resourceBundleName, prefix, (LocationAwareLogger) l);
+            return new Slf4jLocationAwareLogger(name, (LocationAwareLogger) l);
         } else {
-            return new Slf4jLogger(name, resourceBundleName, prefix, l);
+            return new Slf4jLogger(name, l);
         }
     }
 

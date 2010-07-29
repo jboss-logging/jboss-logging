@@ -30,8 +30,8 @@ final class Log4jLogger extends Logger {
 
     private final org.apache.log4j.Logger logger;
 
-    Log4jLogger(final String name, final String resourceBundleName, final String prefix) {
-        super(name, resourceBundleName, prefix);
+    Log4jLogger(final String name) {
+        super(name);
         logger = org.apache.log4j.Logger.getLogger(name);
     }
 

@@ -25,7 +25,7 @@ package org.jboss.logging;
 import java.util.Map;
 
 public interface LoggerProvider {
-    Logger getLogger(String name, String resourceBundleName, String prefix);
+    Logger getLogger(String name);
 
     Object putMdc(String key, Object value);
 

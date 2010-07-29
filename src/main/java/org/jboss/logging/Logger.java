@@ -49,20 +49,14 @@ public abstract class Logger implements Serializable, BasicLogger {
     }
 
     private final String name;
-    private final String resourceBundleName;
-    private final String prefix;
 
     /**
      * Construct a new instance.
      *
      * @param name the logger category name
-     * @param resourceBundleName the resource bundle name or {@code null} for none
-     * @param prefix the log message prefix string
      */
-    protected Logger(final String name, final String resourceBundleName, final String prefix) {
+    protected Logger(final String name) {
         this.name = name;
-        this.resourceBundleName = resourceBundleName;
-        this.prefix = prefix;
     }
 
     /**
@@ -72,15 +66,6 @@ public abstract class Logger implements Serializable, BasicLogger {
      */
     public String getName() {
         return name;
-    }
-
-    /**
-     * Get the log message prefix string.
-     *
-     * @return the log message prefix string
-     */
-    public String getPrefix() {
-        return prefix;
     }
 
     /**
@@ -2165,50 +2150,7 @@ public abstract class Logger implements Serializable, BasicLogger {
      * @return the canonical logger instance
      */
     protected final Object writeReplace() {
-        return new SerializedLogger(name, resourceBundleName);
-    }
-
-    /**
-     * Get a logger instance with the given name using the given resource bundle (if supported by the underlying
-     * framework).
-     *
-     * @param name the logger category name
-     * @param resourceBundleName the resource bundle name
-     *
-     * @return the logger
-     */
-    @Deprecated
-    public static Logger getI18nLogger(String name, String resourceBundleName) {
-        return LoggerProviders.PROVIDER.getLogger(name, resourceBundleName, null);
-    }
-
-    /**
-     * Get a logger instance with the given name using the given resource bundle (if supported by the underlying
-     * framework).
-     *
-     * @param name the logger category name
-     * @param resourceBundleName the resource bundle name
-     * @param prefix the log message ID subsystem prefix to use
-     *
-     * @return the logger
-     */
-    @Deprecated
-    public static Logger getI18nLogger(String name, String resourceBundleName, String prefix) {
-        return LoggerProviders.PROVIDER.getLogger(name, resourceBundleName, prefix);
-    }
-
-    /**
-     * Get a logger instance with the given name using the given resource bundle (if supported by the underlying
-     * framework).
-     *
-     * @param clazz the class whose name will be used as the logger category name
-     * @param resourceBundleName the resource bundle name
-     *
-     * @return the logger
-     */
-    @Deprecated
-    public static Logger getI18nLogger(Class<?> clazz, String resourceBundleName) {
-        return LoggerProviders.PROVIDER.getLogger(clazz.getName(), resourceBundleName, null);
+        return new SerializedLogger(name);
     }
 
     /**
@@ -2219,7 +2161,7 @@ public abstract class Logger implements Serializable, BasicLogger {
      * @return the logger
      */
     public static Logger getLogger(String name) {
-        return LoggerProviders.PROVIDER.getLogger(name, null, null);
+        return LoggerProviders.PROVIDER.getLogger(name);
     }
 
     /**

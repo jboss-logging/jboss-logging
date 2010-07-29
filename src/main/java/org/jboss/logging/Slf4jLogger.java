@@ -30,8 +30,8 @@ final class Slf4jLogger extends Logger {
 
     private final org.slf4j.Logger logger;
 
-    Slf4jLogger(final String name, final String resourceBundleName, final String prefix, final org.slf4j.Logger logger) {
-        super(name, resourceBundleName, prefix);
+    Slf4jLogger(final String name, final org.slf4j.Logger logger) {
+        super(name);
         this.logger = logger;
     }
 

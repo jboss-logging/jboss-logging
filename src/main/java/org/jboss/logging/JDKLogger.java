@@ -32,13 +32,9 @@ final class JDKLogger extends Logger {
     @SuppressWarnings({ "NonConstantLogger" })
     private transient final java.util.logging.Logger logger;
 
-    public JDKLogger(final String name, final String resourceBundleName, final String prefix) {
-        super(name, resourceBundleName, prefix);
-        if (resourceBundleName == null) {
-            logger = java.util.logging.Logger.getLogger(name);
-        } else {
-            logger = java.util.logging.Logger.getLogger(name, resourceBundleName);
-        }
+    public JDKLogger(final String name) {
+        super(name);
+        logger = java.util.logging.Logger.getLogger(name);
     }
 
     protected void doLog(final Level level, final String loggerClassName, final Object message, final Object[] parameters, final Throwable thrown) {

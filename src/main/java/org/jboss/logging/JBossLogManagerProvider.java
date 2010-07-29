@@ -25,6 +25,7 @@ package org.jboss.logging;
 import java.security.AccessController;
 import java.security.PrivilegedAction;
 import java.util.Map;
+import org.jboss.logmanager.LogContext;
 import org.jboss.logmanager.MDC;
 import org.jboss.logmanager.NDC;
 
@@ -34,46 +35,31 @@ final class JBossLogManagerProvider implements LoggerProvider {
 
     private static final AttachmentKey<Logger> KEY = new AttachmentKey<Logger>();
 
-    public Logger getLogger(final String name, final String resourceBundleName, final String prefix) {
+    public Logger getLogger(final String name) {
         final SecurityManager sm = System.getSecurityManager();
         if (sm != null) {
             return AccessController.doPrivileged(new PrivilegedAction<Logger>() {
                 public Logger run() {
-                    return doGetLogger(name, resourceBundleName, prefix);
+                    return doGetLogger(name);
                 }
             });
         } else {
-            return doGetLogger(name, resourceBundleName, prefix);
+            return doGetLogger(name);
         }
     }
 
-    private static Logger doGetLogger(final String name, final String resourceBundleName, final String prefix) {
-        final org.jboss.logmanager.Logger logger;
-        if (resourceBundleName != null) {
-            logger = org.jboss.logmanager.Logger.getLogger(name, resourceBundleName);
-        } else {
-            logger = org.jboss.logmanager.Logger.getLogger(name);
+    private static Logger doGetLogger(final String name) {
+        Logger l = LogContext.getLogContext().getAttachment(name, KEY);
+        if (l != null) {
+            return l;
         }
-        Logger l = logger.getAttachment(KEY);
-        for (;;) {
-            if (l != null) {
-                if (prefix == null) {
-                    if (l.getPrefix() == null) {
-                        return l;
-                    }
-                } else if (prefix.equals(l.getPrefix())) {
-                    return l;
-                }
-                return new JBossLogManagerLogger(name, resourceBundleName, prefix, logger);
-            } else {
-                l = new JBossLogManagerLogger(name, resourceBundleName, prefix, logger);
-                Logger a = logger.attachIfAbsent(KEY, l);
-                if (a == null) {
-                    return l;
-                }
-                l = a;
-                // try again...
-            }
+        final org.jboss.logmanager.Logger logger = org.jboss.logmanager.Logger.getLogger(name);
+        l = new JBossLogManagerLogger(name, logger);
+        Logger a = logger.attachIfAbsent(KEY, l);
+        if (a == null) {
+            return l;
+        } else {
+            return a;
         }
     }
 
