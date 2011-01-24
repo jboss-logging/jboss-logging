@@ -43,6 +43,12 @@ class MessageLoggerInvocationHandler extends MessageBundleInvocationHandler {
     }
 
     public Object invoke(final Object proxy, final Method method, Object[] args) throws Throwable {
+        // See if it's a basic logger method
+        if (method.getDeclaringClass().equals(BasicLogger.class)) {
+            // doesn't cover overrides though!
+            return method.invoke(logger, args);
+        }
+
         final Message message = method.getAnnotation(Message.class);
         if (message == null) {
             // nothing to do...
@@ -53,12 +59,6 @@ class MessageLoggerInvocationHandler extends MessageBundleInvocationHandler {
         if (logMessage != null) {
 
             try {
-                // See if it's a basic logger method
-                if (method.getDeclaringClass().equals(BasicLogger.class)) {
-                    // doesn't cover overrides though!
-                    return method.invoke(logger, args);
-                }
-
                 // it's a log message
                 final Logger.Level level = logMessage.level();
                 if (logger.isEnabled(level)) {

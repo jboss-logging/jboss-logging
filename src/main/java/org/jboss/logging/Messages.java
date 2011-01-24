@@ -40,7 +40,7 @@ public final class Messages {
     static {
         GENERATE_PROXIES = AccessController.doPrivileged(new PrivilegedAction<Boolean>() {
             public Boolean run() {
-                return Boolean.valueOf(System.getProperty("jboss.i18n.generate-proxies"));
+                return Boolean.valueOf(System.getProperty("J"));
             }
         }).booleanValue();
     }
