@@ -38,9 +38,10 @@ import java.lang.annotation.Target;
 public @interface MessageLogger {
 
     /**
-     * Get the project code for messages that have an associated code.
+     * Get the project code for messages that have an associated code.  If no project code is associated
+     * with this logger, specify {@code ""} (the empty string).
      *
      * @return the project code
      */
-    String projectCode() default "";
+    String projectCode();
 }
