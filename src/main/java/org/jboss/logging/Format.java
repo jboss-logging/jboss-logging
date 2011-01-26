@@ -1,6 +1,6 @@
 /*
  * JBoss, Home of Professional Open Source.
- * Copyright 2010, Red Hat Middleware LLC, and individual contributors
+ * Copyright 2011, Red Hat Inc., and individual contributors
  * as indicated by the @author tags. See the copyright.txt file in the
  * distribution for a full listing of individual contributors.
  *
@@ -26,24 +26,27 @@ import java.lang.annotation.Documented;
 import java.lang.annotation.Retention;
 import java.lang.annotation.Target;
 
-import static java.lang.annotation.ElementType.METHOD;
+import static java.lang.annotation.ElementType.PARAMETER;
 import static java.lang.annotation.RetentionPolicy.RUNTIME;
 
 /**
- * A typed logger method.  Indicates that this method will log the associated {@link Message} to the logger system, as
- * opposed to being a simple message lookup.
+ * Indicate that the given parameter should be wrapped with a formatting object of the given class.  The class
+ * must have a one-argument constructor which unambiguously accepts a value of this parameter's type.  The resultant
+ * object will be passed in as a parameter to the underlying format type; thus its {@link Object#toString() toString()}
+ * method will be invoked (or, if the format style is {@link org.jboss.logging.Message.Format#PRINTF PRINTF}, the
+ * object may implement {@link java.util.Formattable Formattable} to get extra functionality).
  *
  * @author <a href="mailto:david.lloyd@redhat.com">David M. Lloyd</a>
  */
+@Target(PARAMETER)
 @Retention(RUNTIME)
-@Target(METHOD)
 @Documented
-public @interface LogMessage {
+public @interface Format {
 
     /**
-     * The log level at which this message should be logged.  Defaults to {@code INFO}.
+     * The class of the formatting object to use.
      *
-     * @return the log level
+     * @return the class
      */
-    Logger.Level level() default Logger.Level.INFO;
+    Class<?> value();
 }
