@@ -41,7 +41,7 @@ import static java.lang.annotation.RetentionPolicy.RUNTIME;
 @Target(PARAMETER)
 @Retention(RUNTIME)
 @Documented
-public @interface Format {
+public @interface FormatWith {
 
     /**
      * The class of the formatting object to use.
