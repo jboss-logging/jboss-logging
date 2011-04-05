@@ -28,9 +28,13 @@ final class LoggerProviders {
     static final LoggerProvider PROVIDER = findProvider();
 
     private static LoggerProvider findProvider() {
-        final LogManager jdkLogManager = LogManager.getLogManager();
-        if (jdkLogManager.getClass().getName().equals("org.jboss.logmanager.LogManager")) {
-            return new JBossLogManagerProvider();
+        try {
+            final LogManager jdkLogManager = LogManager.getLogManager();
+            if (jdkLogManager.getClass().getName().equals("org.jboss.logmanager.LogManager")) {
+                return new JBossLogManagerProvider();
+            }
+        } catch (Throwable t) {
+            // nope...
         }
         final ClassLoader cl = getClassLoader();
         try {
