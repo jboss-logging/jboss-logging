@@ -70,25 +70,6 @@ public interface BasicLogger {
     void trace(String loggerFqcn, Object message, Throwable t);
 
     /**
-     * Issue a log message with parameters with a level of TRACE.
-     *
-     * @param message the message
-     * @param params the message parameters
-     * @deprecated To log a message with parameters, using {@link #tracev(String, Object...)} is recommended.
-     */
-    void trace(Object message, Object[] params);
-
-    /**
-     * Issue a log message with parameters and a throwable with a level of TRACE.
-     *
-     * @param message the message
-     * @param params the message parameters
-     * @param t the throwable
-     * @deprecated To log a message with parameters, using {@link #tracev(Throwable, String, Object...)} is recommended.
-     */
-    void trace(Object message, Object[] params, Throwable t);
-
-    /**
      * Issue a log message with parameters and a throwable with a level of TRACE.
      *
      * @param loggerFqcn the logger class name
@@ -276,25 +257,6 @@ public interface BasicLogger {
      * @param t the throwable
      */
     void debug(String loggerFqcn, Object message, Throwable t);
-
-    /**
-     * Issue a log message with parameters with a level of DEBUG.
-     *
-     * @param message the message
-     * @param params the message parameters
-     * @deprecated To log a message with parameters, using {@link #debugv(String, Object...)} is recommended.
-     */
-    void debug(Object message, Object[] params);
-
-    /**
-     * Issue a log message with parameters and a throwable with a level of DEBUG.
-     *
-     * @param message the message
-     * @param params the message parameters
-     * @param t the throwable
-     * @deprecated To log a message with parameters, using {@link #debugv(Throwable, String, Object...)} is recommended.
-     */
-    void debug(Object message, Object[] params, Throwable t);
 
     /**
      * Issue a log message with parameters and a throwable with a level of DEBUG.
@@ -486,25 +448,6 @@ public interface BasicLogger {
     void info(String loggerFqcn, Object message, Throwable t);
 
     /**
-     * Issue a log message with parameters with a level of INFO.
-     *
-     * @param message the message
-     * @param params the message parameters
-     * @deprecated To log a message with parameters, using {@link #infov(String, Object...)} is recommended.
-     */
-    void info(Object message, Object[] params);
-
-    /**
-     * Issue a log message with parameters and a throwable with a level of INFO.
-     *
-     * @param message the message
-     * @param params the message parameters
-     * @param t the throwable
-     * @deprecated To log a message with parameters, using {@link #infov(Throwable, String, Object...)} is recommended.
-     */
-    void info(Object message, Object[] params, Throwable t);
-
-    /**
      * Issue a log message with parameters and a throwable with a level of INFO.
      *
      * @param loggerFqcn the logger class name
@@ -685,25 +628,6 @@ public interface BasicLogger {
      * @param t the throwable
      */
     void warn(String loggerFqcn, Object message, Throwable t);
-
-    /**
-     * Issue a log message with parameters with a level of WARN.
-     *
-     * @param message the message
-     * @param params the message parameters
-     * @deprecated To log a message with parameters, using {@link #warnv(String, Object...)} is recommended.
-     */
-    void warn(Object message, Object[] params);
-
-    /**
-     * Issue a log message with parameters and a throwable with a level of WARN.
-     *
-     * @param message the message
-     * @param params the message parameters
-     * @param t the throwable
-     * @deprecated To log a message with parameters, using {@link #warnv(Throwable, String, Object...)} is recommended.
-     */
-    void warn(Object message, Object[] params, Throwable t);
 
     /**
      * Issue a log message with parameters and a throwable with a level of WARN.
@@ -888,25 +812,6 @@ public interface BasicLogger {
     void error(String loggerFqcn, Object message, Throwable t);
 
     /**
-     * Issue a log message with parameters with a level of ERROR.
-     *
-     * @param message the message
-     * @param params the message parameters
-     * @deprecated To log a message with parameters, using {@link #errorv(String, Object...)} is recommended.
-     */
-    void error(Object message, Object[] params);
-
-    /**
-     * Issue a log message with parameters and a throwable with a level of ERROR.
-     *
-     * @param message the message
-     * @param params the message parameters
-     * @param t the throwable
-     * @deprecated To log a message with parameters, using {@link #errorv(Throwable, String, Object...)} is recommended.
-     */
-    void error(Object message, Object[] params, Throwable t);
-
-    /**
      * Issue a log message with parameters and a throwable with a level of ERROR.
      *
      * @param loggerFqcn the logger class name
@@ -1087,25 +992,6 @@ public interface BasicLogger {
      * @param t the throwable
      */
     void fatal(String loggerFqcn, Object message, Throwable t);
-
-    /**
-     * Issue a log message with parameters with a level of FATAL.
-     *
-     * @param message the message
-     * @param params the message parameters
-     * @deprecated To log a message with parameters, using {@link #fatalv(String, Object...)} is recommended.
-     */
-    void fatal(Object message, Object[] params);
-
-    /**
-     * Issue a log message with parameters and a throwable with a level of FATAL.
-     *
-     * @param message the message
-     * @param params the message parameters
-     * @param t the throwable
-     * @deprecated To log a message with parameters, using {@link #fatalv(Throwable, String, Object...)} is recommended.
-     */
-    void fatal(Object message, Object[] params, Throwable t);
 
     /**
      * Issue a log message with parameters and a throwable with a level of FATAL.
@@ -1291,27 +1177,6 @@ public interface BasicLogger {
      * @param t the throwable
      */
     void log(Logger.Level level, String loggerFqcn, Object message, Throwable t);
-
-    /**
-     * Issue a log message with parameters at the given log level.
-     *
-     * @param level the level
-     * @param message the message
-     * @param params the message parameters
-     * @deprecated To log a message with parameters, using {@link #logv(org.jboss.logging.Logger.Level , String, Object...)} is recommended.
-     */
-    void log(Logger.Level level, Object message, Object[] params);
-
-    /**
-     * Issue a log message with parameters and a throwable at the given log level.
-     *
-     * @param level the level
-     * @param message the message
-     * @param params the message parameters
-     * @param t the throwable
-     * @deprecated To log a message with parameters, using {@link #logv(org.jboss.logging.Logger.Level , Throwable, String, Object...)} is recommended.
-     */
-    void log(Logger.Level level, Object message, Object[] params, Throwable t);
 
     /**
      * Issue a log message with parameters and a throwable at the given log level.
