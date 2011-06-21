@@ -39,6 +39,8 @@ final class LoggerProviders {
         final ClassLoader cl = getClassLoader();
         try {
             Class.forName("org.apache.log4j.LogManager", true, cl);
+            // JBLOGGING-65 - slf4j can disguise itself as log4j.  Test for a class that slf4j doesn't provide.
+            Class.forName("org.apache.log4j.Hierarchy", true, cl);
             return new Log4jLoggerProvider();
         } catch (Throwable t) {
             // nope...
