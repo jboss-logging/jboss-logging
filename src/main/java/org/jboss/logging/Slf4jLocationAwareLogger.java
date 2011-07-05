@@ -22,12 +22,37 @@
 
 package org.jboss.logging;
 
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
+import java.lang.reflect.UndeclaredThrowableException;
 import java.text.MessageFormat;
 import org.slf4j.spi.LocationAwareLogger;
 
 final class Slf4jLocationAwareLogger extends Logger {
 
     private static final long serialVersionUID = 8685757928087758380L;
+
+    private static final Object[] EMPTY = new Object[0];
+    private static final boolean POST_1_6;
+    private static final Method LOG_METHOD;
+
+    static {
+        Method[] methods = LocationAwareLogger.class.getDeclaredMethods();
+        Method logMethod = null;
+        boolean post16 = false;
+        for (Method method : methods) {
+            if (method.getName().equals("log")) {
+                logMethod = method;
+                Class<?>[] parameterTypes = method.getParameterTypes();
+                post16 = parameterTypes.length == 6;
+            }
+        }
+        if (logMethod == null) {
+            throw new NoSuchMethodError("Cannot find LocationAwareLogger.log() method");
+        }
+        POST_1_6 = post16;
+        LOG_METHOD = logMethod;
+    }
 
     private final LocationAwareLogger logger;
 
@@ -51,14 +76,36 @@ final class Slf4jLocationAwareLogger extends Logger {
     protected void doLog(final Level level, final String loggerClassName, final Object message, final Object[] parameters, final Throwable thrown) {
         if (isEnabled(level)) {
             final String text = parameters == null || parameters.length == 0 ? String.valueOf(message) : MessageFormat.format(String.valueOf(message), parameters);
-            logger.log(null, loggerClassName, translate(level), text, thrown);
+            doLog(logger, loggerClassName, translate(level), text, thrown);
         }
     }
 
     protected void doLogf(final Level level, final String loggerClassName, final String format, final Object[] parameters, final Throwable thrown) {
         if (isEnabled(level)) {
             final String text = parameters == null ? String.format(format) : String.format(format, parameters);
-            logger.log(null, loggerClassName, translate(level), text, thrown);
+            doLog(logger, loggerClassName, translate(level), text, thrown);
+        }
+    }
+
+    private static void doLog(LocationAwareLogger logger, String className, int level, String text, Throwable thrown) {
+        try {
+            if (POST_1_6) {
+                LOG_METHOD.invoke(logger, null, className, Integer.valueOf(level), text, EMPTY, thrown);
+            } else {
+                LOG_METHOD.invoke(logger, null, className, Integer.valueOf(level), text, thrown);
+            }
+        } catch (InvocationTargetException e) {
+            try {
+                throw e.getCause();
+            } catch (RuntimeException ex) {
+                throw ex;
+            } catch (Error er) {
+                throw er;
+            } catch (Throwable throwable) {
+                throw new UndeclaredThrowableException(throwable);
+            }
+        } catch (IllegalAccessException e) {
+            throw new IllegalAccessError(e.getMessage());
         }
     }
 
