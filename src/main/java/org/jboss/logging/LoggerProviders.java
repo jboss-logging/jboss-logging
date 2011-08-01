@@ -31,6 +31,7 @@ final class LoggerProviders {
         try {
             final LogManager jdkLogManager = LogManager.getLogManager();
             if (jdkLogManager.getClass().getName().equals("org.jboss.logmanager.LogManager")) {
+                Class.forName("org.jboss.logmanager.Logger$AttachmentKey", false, LoggerProviders.class.getClassLoader());
                 return new JBossLogManagerProvider();
             }
         } catch (Throwable t) {
