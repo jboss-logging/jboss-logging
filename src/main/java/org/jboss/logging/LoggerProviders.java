@@ -25,7 +25,14 @@ package org.jboss.logging;
 import java.util.logging.LogManager;
 
 final class LoggerProviders {
-    static final LoggerProvider PROVIDER = findProvider();
+    static final LoggerProvider PROVIDER = find();
+
+    private static LoggerProvider find() {
+        final LoggerProvider result = findProvider();
+        // Log a debug message indicating which logger we are using
+        result.getLogger("org.jboss.logging").debugf("Logging Provider: %s", result.getClass().getName());
+        return result;
+    }
 
     private static LoggerProvider findProvider() {
         try {
