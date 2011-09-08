@@ -22,9 +22,13 @@
 
 package org.jboss.logging;
 
+import java.security.AccessController;
+import java.security.PrivilegedAction;
 import java.util.logging.LogManager;
 
 final class LoggerProviders {
+    static final String LOGGING_PROVIDER_KEY = "org.jboss.logging.provider";
+
     static final LoggerProvider PROVIDER = find();
 
     private static LoggerProvider find() {
@@ -35,39 +39,72 @@ final class LoggerProviders {
     }
 
     private static LoggerProvider findProvider() {
+        // Since the impl classes refer to the back-end frameworks directly, if this classloader can't find the target
+        // log classes, then it doesn't really matter if they're possibly available from the TCCL because we won't be
+        // able to find it anyway
+        final ClassLoader cl = LoggerProviders.class.getClassLoader();
         try {
-            final LogManager jdkLogManager = LogManager.getLogManager();
-            if (jdkLogManager.getClass().getName().equals("org.jboss.logmanager.LogManager")) {
-                Class.forName("org.jboss.logmanager.Logger$AttachmentKey", false, LoggerProviders.class.getClassLoader());
-                return new JBossLogManagerProvider();
+            // Check the system property
+            final String loggerProvider = AccessController.doPrivileged(new PrivilegedAction<String>() {
+                public String run() {
+                    return System.getProperty(LOGGING_PROVIDER_KEY);
+                }
+            });
+            if (loggerProvider != null) {
+                if ("jboss".equalsIgnoreCase(loggerProvider)) {
+                    return tryJBossLogManager(cl);
+                } else if ("jdk".equalsIgnoreCase(loggerProvider)) {
+                    return tryJDK();
+                } else if ("log4j".equalsIgnoreCase(loggerProvider)) {
+                    return tryLog4j(cl);
+                } else if ("slf4j".equalsIgnoreCase(loggerProvider)) {
+                    return trySlf4j();
+                }
             }
+        } catch (Throwable t) {
+        }
+        try {
+            return tryJBossLogManager(cl);
         } catch (Throwable t) {
             // nope...
         }
-        final ClassLoader cl = getClassLoader();
         try {
-            Class.forName("org.apache.log4j.LogManager", true, cl);
-            // JBLOGGING-65 - slf4j can disguise itself as log4j.  Test for a class that slf4j doesn't provide.
-            Class.forName("org.apache.log4j.Hierarchy", true, cl);
-            return new Log4jLoggerProvider();
+            return tryLog4j(cl);
         } catch (Throwable t) {
             // nope...
         }
         try {
             // only use slf4j if Logback is in use
             Class.forName("ch.qos.logback.classic.Logger", false, cl);
-            return new Slf4jLoggerProvider();
+            return trySlf4j();
         } catch (Throwable t) {
             // nope...
         }
+        return tryJDK();
+    }
+
+    private static JDKLoggerProvider tryJDK() {
         return new JDKLoggerProvider();
     }
 
-    private static ClassLoader getClassLoader() {
-        // Since the impl classes refer to the back-end frameworks directly, if this classloader can't find the target
-        // log classes, then it doesn't really matter if they're possibly available from the TCCL because we won't be
-        // able to find it anyway
-        return LoggerProviders.class.getClassLoader();
+    private static LoggerProvider trySlf4j() {
+        return new Slf4jLoggerProvider();
+    }
+
+    private static LoggerProvider tryLog4j(final ClassLoader cl) throws ClassNotFoundException {
+        Class.forName("org.apache.log4j.LogManager", true, cl);
+        // JBLOGGING-65 - slf4j can disguise itself as log4j.  Test for a class that slf4j doesn't provide.
+        Class.forName("org.apache.log4j.Hierarchy", true, cl);
+        return new Log4jLoggerProvider();
+    }
+
+    private static LoggerProvider tryJBossLogManager(final ClassLoader cl) throws ClassNotFoundException {
+        final LogManager jdkLogManager = LogManager.getLogManager();
+        if (jdkLogManager.getClass().getName().equals("org.jboss.logmanager.LogManager")) {
+            Class.forName("org.jboss.logmanager.Logger$AttachmentKey", false, cl);
+            return new JBossLogManagerProvider();
+        }
+        throw new IllegalStateException();
     }
 
     private LoggerProviders() {
