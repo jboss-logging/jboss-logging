@@ -1,6 +1,6 @@
 /*
  * JBoss, Home of Professional Open Source.
- * Copyright 2010, Red Hat Middleware LLC, and individual contributors
+ * Copyright 2011, Red Hat Inc., and individual contributors
  * as indicated by the @author tags. See the copyright.txt file in the
  * distribution for a full listing of individual contributors.
  *
@@ -24,7 +24,6 @@ package org.jboss.logging;
 import java.io.Serializable;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Proxy;
 import java.util.Locale;
 
 /**
@@ -2248,9 +2247,6 @@ public abstract class Logger implements Serializable, BasicLogger {
         if (loggerClass == null) try {
             loggerClass = Class.forName(join(type.getName(), "$logger", null, null, null), true, type.getClassLoader()).asSubclass(type);
         } catch (ClassNotFoundException e) {
-            if (Messages.GENERATE_PROXIES) {
-                return type.cast(Proxy.newProxyInstance(type.getClassLoader(), new Class<?>[] { type }, new MessageLoggerInvocationHandler(type, category)));
-            }
             throw new IllegalArgumentException("Invalid logger " + type + " (implementation not found)");
         }
         final Constructor<? extends T> constructor;
