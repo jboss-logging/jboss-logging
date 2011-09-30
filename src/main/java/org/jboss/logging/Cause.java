@@ -27,14 +27,14 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.Target;
 
 import static java.lang.annotation.ElementType.PARAMETER;
-import static java.lang.annotation.RetentionPolicy.RUNTIME;
+import static java.lang.annotation.RetentionPolicy.SOURCE;
 
 /**
  * Mark a parameter as being the "exception cause" parameter rather than a positional format parameter.
  *
  * @author <a href="mailto:david.lloyd@redhat.com">David M. Lloyd</a>
  */
-@Retention(RUNTIME)
+@Retention(SOURCE)
 @Target(PARAMETER)
 @Documented
 public @interface Cause {

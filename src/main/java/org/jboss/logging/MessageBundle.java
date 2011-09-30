@@ -27,7 +27,7 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.Target;
 
 import static java.lang.annotation.ElementType.TYPE;
-import static java.lang.annotation.RetentionPolicy.RUNTIME;
+import static java.lang.annotation.RetentionPolicy.SOURCE;
 
 /**
  * Signify that an interface is a message bundle interface.
@@ -35,7 +35,7 @@ import static java.lang.annotation.RetentionPolicy.RUNTIME;
  * @author <a href="mailto:david.lloyd@redhat.com">David M. Lloyd</a>
  */
 @Target(TYPE)
-@Retention(RUNTIME)
+@Retention(SOURCE)
 @Documented
 public @interface MessageBundle {
 

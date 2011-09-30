@@ -27,14 +27,14 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.Target;
 
 import static java.lang.annotation.ElementType.PARAMETER;
-import static java.lang.annotation.RetentionPolicy.RUNTIME;
+import static java.lang.annotation.RetentionPolicy.SOURCE;
 
 /**
  * Indicate that a method parameter value should be applied to a field on the resultant exception object.
  *
  * @author <a href="mailto:david.lloyd@redhat.com">David M. Lloyd</a>
  */
-@Retention(RUNTIME)
+@Retention(SOURCE)
 @Target(PARAMETER)
 @Documented
 public @interface Field {
