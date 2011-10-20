@@ -32,13 +32,14 @@
     <url>http://www.jboss.org</url>
     <description>The JBoss Logging Framework</description>
     <scm>
-        <connection>scm:svn:https://svn.jboss.org/repos/common/jboss-logging/trunk/</connection>
+        <connection>scm:git:git://github.com/jboss-logging/jboss-logging.git</connection>
+        <url>https://github.com/jboss-logging/jboss-logging</url>
     </scm>
 
     <parent>
         <groupId>org.jboss</groupId>
         <artifactId>jboss-parent</artifactId>
-        <version>6-beta-2</version>
+        <version>6</version>
     </parent>
 
     <licenses>
