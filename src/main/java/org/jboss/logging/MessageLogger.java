@@ -27,7 +27,7 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.Target;
 
 import static java.lang.annotation.ElementType.TYPE;
-import static java.lang.annotation.RetentionPolicy.SOURCE;
+import static java.lang.annotation.RetentionPolicy.CLASS;
 
 /**
  * Signify that an interface is a typed logger interface.  A message logger interface may optionally extend other message logger
@@ -35,7 +35,7 @@ import static java.lang.annotation.RetentionPolicy.SOURCE;
  *
  * @author <a href="mailto:david.lloyd@redhat.com">David M. Lloyd</a>
  */
-@Retention(SOURCE)
+@Retention(CLASS)
 @Target(TYPE)
 @Documented
 public @interface MessageLogger {

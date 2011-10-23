@@ -27,7 +27,7 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.Target;
 
 import static java.lang.annotation.ElementType.METHOD;
-import static java.lang.annotation.RetentionPolicy.SOURCE;
+import static java.lang.annotation.RetentionPolicy.CLASS;
 
 /**
  * Assigns a message string to a resource method.  The method arguments are used to supply the positional parameter
@@ -36,7 +36,7 @@ import static java.lang.annotation.RetentionPolicy.SOURCE;
  * @author <a href="mailto:david.lloyd@redhat.com">David M. Lloyd</a>
  */
 @Target(METHOD)
-@Retention(SOURCE)
+@Retention(CLASS)
 @Documented
 public @interface Message {
 

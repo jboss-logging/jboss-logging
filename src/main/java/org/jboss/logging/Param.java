@@ -27,7 +27,7 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.Target;
 
 import static java.lang.annotation.ElementType.PARAMETER;
-import static java.lang.annotation.RetentionPolicy.SOURCE;
+import static java.lang.annotation.RetentionPolicy.CLASS;
 
 /**
  * Identifies a parameter is to be used for constructing an exception and excluded from the formatting of the message.
@@ -41,7 +41,7 @@ import static java.lang.annotation.RetentionPolicy.SOURCE;
  * @author <a href="mailto:jperkins@redhat.com">James R. Perkins</a>
  */
 @Target(PARAMETER)
-@Retention(SOURCE)
+@Retention(CLASS)
 @Documented
 public @interface Param {
 

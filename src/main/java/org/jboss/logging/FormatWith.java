@@ -27,7 +27,7 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.Target;
 
 import static java.lang.annotation.ElementType.PARAMETER;
-import static java.lang.annotation.RetentionPolicy.SOURCE;
+import static java.lang.annotation.RetentionPolicy.CLASS;
 
 /**
  * Indicate that the given parameter should be wrapped with a formatting object of the given class.  The class
@@ -39,7 +39,7 @@ import static java.lang.annotation.RetentionPolicy.SOURCE;
  * @author <a href="mailto:david.lloyd@redhat.com">David M. Lloyd</a>
  */
 @Target(PARAMETER)
-@Retention(SOURCE)
+@Retention(CLASS)
 @Documented
 public @interface FormatWith {
 

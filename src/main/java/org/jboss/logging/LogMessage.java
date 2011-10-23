@@ -27,7 +27,7 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.Target;
 
 import static java.lang.annotation.ElementType.METHOD;
-import static java.lang.annotation.RetentionPolicy.SOURCE;
+import static java.lang.annotation.RetentionPolicy.CLASS;
 
 /**
  * A typed logger method.  Indicates that this method will log the associated {@link Message} to the logger system, as
@@ -35,7 +35,7 @@ import static java.lang.annotation.RetentionPolicy.SOURCE;
  *
  * @author <a href="mailto:david.lloyd@redhat.com">David M. Lloyd</a>
  */
-@Retention(SOURCE)
+@Retention(CLASS)
 @Target(METHOD)
 @Documented
 public @interface LogMessage {
