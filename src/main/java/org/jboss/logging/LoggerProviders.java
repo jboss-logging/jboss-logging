@@ -99,9 +99,8 @@ final class LoggerProviders {
     }
 
     private static LoggerProvider tryJBossLogManager(final ClassLoader cl) throws ClassNotFoundException {
-        final LogManager jdkLogManager = LogManager.getLogManager();
-        if (jdkLogManager.getClass().getName().equals("org.jboss.logmanager.LogManager")) {
-            Class.forName("org.jboss.logmanager.Logger$AttachmentKey", false, cl);
+        if (LogManager.getLogManager().getClass() == Class.forName("org.jboss.logmanager.LogManager", false, cl)) {
+            Class.forName("org.jboss.logmanager.Logger$AttachmentKey", true, cl);
             return new JBossLogManagerProvider();
         }
         throw new IllegalStateException();
