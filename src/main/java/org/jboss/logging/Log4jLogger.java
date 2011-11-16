@@ -24,8 +24,6 @@ package org.jboss.logging;
 
 import java.text.MessageFormat;
 
-import org.apache.log4j.Level;
-
 final class Log4jLogger extends Logger {
 
     private static final long serialVersionUID = -5446154366955151335L;
