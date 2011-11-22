@@ -46,4 +46,11 @@ public @interface LogMessage {
      * @return the log level
      */
     Logger.Level level() default Logger.Level.INFO;
+
+    /**
+     * The logging class name to use for this message, if any.
+     *
+     * @return the logging class name
+     */
+    Class<?> loggingClass() default Void.class;
 }

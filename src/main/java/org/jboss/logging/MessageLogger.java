@@ -47,11 +47,4 @@ public @interface MessageLogger {
      * @return the project code
      */
     String projectCode();
-
-    /**
-     * The logging class name to use for this message, if any.
-     *
-     * @return the logging class name
-     */
-    Class<?> loggingClass() default Void.class;
 }
