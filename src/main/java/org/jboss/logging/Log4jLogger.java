@@ -42,16 +42,16 @@ final class Log4jLogger extends Logger {
 
     protected void doLog(final Level level, final String loggerClassName, final Object message, final Object[] parameters, final Throwable thrown) {
         final org.apache.log4j.Level translatedLevel = translate(level);
-        if (logger.isEnabledFor(translatedLevel)) {
+        if (logger.isEnabledFor(translatedLevel)) try {
             logger.log(loggerClassName, translatedLevel, parameters == null || parameters.length == 0 ? message : MessageFormat.format(String.valueOf(message), parameters), thrown);
-        }
+        } catch (Throwable ignored) {}
     }
 
     protected void doLogf(final Level level, final String loggerClassName, final String format, final Object[] parameters, final Throwable thrown) {
         final org.apache.log4j.Level translatedLevel = translate(level);
-        if (logger.isEnabledFor(translatedLevel)) {
+        if (logger.isEnabledFor(translatedLevel)) try {
             logger.log(loggerClassName, translatedLevel, parameters == null ? String.format(format) : String.format(format, parameters), thrown);
-        }
+        } catch (Throwable ignored) {}
     }
 
     private static org.apache.log4j.Level translate(final Level level) {
