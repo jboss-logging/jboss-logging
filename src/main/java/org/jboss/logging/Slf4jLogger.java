@@ -48,7 +48,7 @@ final class Slf4jLogger extends Logger {
     }
 
     protected void doLog(final Level level, final String loggerClassName, final Object message, final Object[] parameters, final Throwable thrown) {
-        if (isEnabled(level)) {
+        if (isEnabled(level)) try {
             final String text = parameters == null || parameters.length == 0 ? String.valueOf(message) : MessageFormat.format(String.valueOf(message), parameters);
             switch (level) {
                 case FATAL:
@@ -68,11 +68,11 @@ final class Slf4jLogger extends Logger {
                     logger.trace(text, thrown);
                     return;
             }
-        }
+        } catch (Throwable ignored) {}
     }
 
     protected void doLogf(final Level level, final String loggerClassName, final String format, final Object[] parameters, final Throwable thrown) {
-        if (isEnabled(level)) {
+        if (isEnabled(level)) try {
             final String text = parameters == null ? String.format(format) : String.format(format, parameters);
             switch (level) {
                 case FATAL:
@@ -92,6 +92,6 @@ final class Slf4jLogger extends Logger {
                     logger.trace(text, thrown);
                     return;
             }
-        }
+        } catch (Throwable ignored) {}
     }
 }

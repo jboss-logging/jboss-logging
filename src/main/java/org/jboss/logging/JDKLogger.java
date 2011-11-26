@@ -38,7 +38,7 @@ final class JDKLogger extends Logger {
     }
 
     protected void doLog(final Level level, final String loggerClassName, final Object message, final Object[] parameters, final Throwable thrown) {
-        if (isEnabled(level)) {
+        if (isEnabled(level)) try {
             final JBossLogRecord rec = new JBossLogRecord(translate(level), String.valueOf(message), loggerClassName);
             if (thrown != null) rec.setThrown(thrown);
             rec.setLoggerName(getName());
@@ -46,11 +46,11 @@ final class JDKLogger extends Logger {
             rec.setResourceBundleName(logger.getResourceBundleName());
             rec.setResourceBundle(logger.getResourceBundle());
             logger.log(rec);
-        }
+        } catch (Throwable ignored) {}
     }
 
     protected void doLogf(final Level level, final String loggerClassName, String format, final Object[] parameters, final Throwable thrown) {
-        if (isEnabled(level)) {
+        if (isEnabled(level)) try {
             final ResourceBundle resourceBundle = logger.getResourceBundle();
             if (resourceBundle != null) try {
                 format = resourceBundle.getString(format);
@@ -66,7 +66,7 @@ final class JDKLogger extends Logger {
             rec.setResourceBundle(null);
             rec.setParameters(null);
             logger.log(rec);
-        }
+        } catch (Throwable ignored) {}
     }
 
     private static java.util.logging.Level translate(final Level level) {
