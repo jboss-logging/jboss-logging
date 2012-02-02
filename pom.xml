@@ -39,7 +39,7 @@
     <parent>
         <groupId>org.jboss</groupId>
         <artifactId>jboss-parent</artifactId>
-        <version>6</version>
+        <version>7</version>
     </parent>
 
     <licenses>
@@ -103,7 +103,7 @@
                     <doctitle><![CDATA[JBoss Logging ]]>${project.version}</doctitle>
                     <header><![CDATA[JBoss Logging ]]>${project.version}</header>
                     <footer><![CDATA[JBoss Logging ]]>${project.version}</footer>
-                    <bottom><![CDATA[<i>Copyright &#169; 2010 JBoss, a division of Red Hat, Inc.</i>]]></bottom>
+                    <bottom><![CDATA[<i>Copyright &#169; 2012 JBoss, a division of Red Hat, Inc.</i>]]></bottom>
                     <links>
                         <link>http://java.sun.com/javase/6/docs/api/</link>
                     </links>
