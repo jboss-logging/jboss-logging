@@ -30,7 +30,7 @@ import org.apache.log4j.NDC;
 final class Log4jLoggerProvider implements LoggerProvider {
 
     public Logger getLogger(final String name) {
-        return new Log4jLogger(name);
+        return new Log4jLogger("".equals(name) ? "ROOT" : name);
     }
 
     public Object getMdc(String key) {
