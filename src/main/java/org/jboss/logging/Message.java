@@ -83,6 +83,11 @@ public @interface Message {
          * A {@link java.text.MessageFormat}-type format string.
          */
         MESSAGE_FORMAT,
+
+        /**
+         * Indicates the message should not be formatted.
+         */
+        NO_FORMAT,
     }
 
 }
