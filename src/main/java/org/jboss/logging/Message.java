@@ -38,6 +38,7 @@ import static java.lang.annotation.RetentionPolicy.CLASS;
 @Target(METHOD)
 @Retention(CLASS)
 @Documented
+@Deprecated
 public @interface Message {
 
     /**

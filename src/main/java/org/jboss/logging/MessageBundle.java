@@ -37,6 +37,7 @@ import static java.lang.annotation.RetentionPolicy.CLASS;
 @Target(TYPE)
 @Retention(CLASS)
 @Documented
+@Deprecated
 public @interface MessageBundle {
 
     /**

@@ -37,6 +37,7 @@ import static java.lang.annotation.RetentionPolicy.CLASS;
 @Retention(CLASS)
 @Target(PARAMETER)
 @Documented
+@Deprecated
 public @interface Field {
 
     /**
