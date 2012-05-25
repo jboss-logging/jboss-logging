@@ -38,6 +38,7 @@ import static java.lang.annotation.RetentionPolicy.CLASS;
 @Target(PARAMETER)
 @Retention(CLASS)
 @Documented
+@Deprecated
 public @interface FormatWith {
 
     /**
