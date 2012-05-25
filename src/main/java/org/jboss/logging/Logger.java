@@ -2229,25 +2229,27 @@ public abstract class Logger implements Serializable, BasicLogger {
         String variant = locale.getVariant();
 
         Class<? extends T> loggerClass = null;
+        final ClassLoader classLoader = type.getClassLoader();
+        final String typeName = type.getName();
         if (variant != null && variant.length() > 0) try {
-            loggerClass = Class.forName(join(type.getName(), "$logger", language, country, variant), true, type.getClassLoader()).asSubclass(type);
+            loggerClass = Class.forName(join(typeName, "$logger", language, country, variant), true, classLoader).asSubclass(type);
         } catch (ClassNotFoundException e) {
             // ignore
         }
         if (loggerClass == null && country != null && country.length() > 0) try {
-            loggerClass = Class.forName(join(type.getName(), "$logger", language, country, null), true, type.getClassLoader()).asSubclass(type);
+            loggerClass = Class.forName(join(typeName, "$logger", language, country, null), true, classLoader).asSubclass(type);
         } catch (ClassNotFoundException e) {
             // ignore
         }
         if (loggerClass == null && language != null && language.length() > 0) try {
-            loggerClass = Class.forName(join(type.getName(), "$logger", language, null, null), true, type.getClassLoader()).asSubclass(type);
+            loggerClass = Class.forName(join(typeName, "$logger", language, null, null), true, classLoader).asSubclass(type);
         } catch (ClassNotFoundException e) {
             // ignore
         }
         if (loggerClass == null) try {
-            loggerClass = Class.forName(join(type.getName(), "$logger", null, null, null), true, type.getClassLoader()).asSubclass(type);
+            loggerClass = Class.forName(join(typeName, "$logger", null, null, null), true, classLoader).asSubclass(type);
         } catch (ClassNotFoundException e) {
-            throw new IllegalArgumentException("Invalid logger " + type + " (implementation not found)");
+            throw new IllegalArgumentException("Invalid logger " + type + " (implementation not found in " + classLoader + ")");
         }
         final Constructor<? extends T> constructor;
         try {
