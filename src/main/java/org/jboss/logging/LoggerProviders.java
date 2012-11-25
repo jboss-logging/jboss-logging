@@ -18,6 +18,11 @@
 
 package org.jboss.logging;
 
+import java.io.BufferedReader;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.security.AccessController;
 import java.security.PrivilegedAction;
 import java.util.logging.LogManager;
@@ -46,18 +51,14 @@ final class LoggerProviders {
                     return System.getProperty(LOGGING_PROVIDER_KEY);
                 }
             });
-            if (loggerProvider != null) {
-                if ("jboss".equalsIgnoreCase(loggerProvider)) {
-                    return tryJBossLogManager(cl);
-                } else if ("jdk".equalsIgnoreCase(loggerProvider)) {
-                    return tryJDK();
-                } else if ("log4j".equalsIgnoreCase(loggerProvider)) {
-                    return tryLog4j(cl);
-                } else if ("slf4j".equalsIgnoreCase(loggerProvider)) {
-                    return trySlf4j();
-                }
-            }
+            return getProvider(loggerProvider, cl);
         } catch (Throwable t) {
+            // nope...
+        }
+        try {
+            return tryResource(cl);
+        } catch (Throwable t) {
+            // nope...
         }
         try {
             return tryJBossLogManager(cl);
@@ -77,6 +78,34 @@ final class LoggerProviders {
             // nope...
         }
         return tryJDK();
+    }
+
+    private static LoggerProvider getProvider(final String loggerProvider, final ClassLoader classLoader) throws ClassNotFoundException {
+        if (loggerProvider != null) {
+            if ("jboss".equalsIgnoreCase(loggerProvider)) {
+                return tryJBossLogManager(classLoader);
+            } else if ("jdk".equalsIgnoreCase(loggerProvider)) {
+                return tryJDK();
+            } else if ("log4j".equalsIgnoreCase(loggerProvider)) {
+                return tryLog4j(classLoader);
+            } else if ("slf4j".equalsIgnoreCase(loggerProvider)) {
+                return trySlf4j();
+            }
+        }
+        throw new IllegalArgumentException("Illegal logger provider: '" + loggerProvider + "'");
+    }
+
+    private static LoggerProvider tryResource(final ClassLoader cl) throws IOException, ClassNotFoundException {
+        final InputStream input = cl.getResourceAsStream("META-INF/services/" + LOGGING_PROVIDER_KEY);
+        if (input != null) {
+            final BufferedReader reader = new BufferedReader(new InputStreamReader(input, "UTF-8"));
+            try {
+                return getProvider(reader.readLine(), cl);
+            } finally {
+                reader.close();
+            }
+        }
+        throw new FileNotFoundException("Resource not found: '" + LOGGING_PROVIDER_KEY + "'");
     }
 
     private static JDKLoggerProvider tryJDK() {
