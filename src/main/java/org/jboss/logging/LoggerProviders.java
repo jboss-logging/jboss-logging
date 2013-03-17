@@ -55,6 +55,8 @@ final class LoggerProviders {
                     return tryLog4j(cl);
                 } else if ("slf4j".equalsIgnoreCase(loggerProvider)) {
                     return trySlf4j();
+                } else if ("equinox".equalsIgnoreCase(loggerProvider)) {
+                  return tryEquinox();
                 }
             }
         } catch (Throwable t) {
@@ -75,6 +77,11 @@ final class LoggerProviders {
             return trySlf4j();
         } catch (Throwable t) {
             // nope...
+        }
+        try {
+          return tryEquinox();
+        } catch (Throwable t) {
+          // nope...
         }
         return tryJDK();
     }
@@ -101,6 +108,14 @@ final class LoggerProviders {
             return new JBossLogManagerProvider();
         }
         throw new IllegalStateException();
+    }
+    
+    private static LoggerProvider tryEquinox() {
+      Object service = Activator.getService();
+      if (service != null) {
+        return new EquinoxLoggerProvider(service);
+      }
+      throw new IllegalStateException();
     }
 
     private LoggerProviders() {
