@@ -90,7 +90,8 @@ final class LoggerProviders {
     private static LoggerProvider tryLog4j(final ClassLoader cl) throws ClassNotFoundException {
         Class.forName("org.apache.log4j.LogManager", true, cl);
         // JBLOGGING-65 - slf4j can disguise itself as log4j.  Test for a class that slf4j doesn't provide.
-        Class.forName("org.apache.log4j.Hierarchy", true, cl);
+        // JBLOGGING-94 - JBoss Logging does not detect org.apache.logging.log4j:log4j-1.2-api:2.0
+        Class.forName("org.apache.log4j.config.PropertySetter", true, cl);
         return new Log4jLoggerProvider();
     }
 
