@@ -18,7 +18,7 @@
 
 package org.jboss.logging;
 
-import java.util.Hashtable;
+import java.util.HashMap;
 import java.util.Map;
 
 import org.apache.logging.log4j.ThreadContext;
@@ -51,7 +51,7 @@ final class Log4j2LoggerProvider implements LoggerProvider {
 
     @Override
     public Map<String, Object> getMdcMap() {
-        return new Hashtable<String, Object>(ThreadContext.getImmutableContext());
+        return new HashMap<String, Object>(ThreadContext.getImmutableContext());
     }
 
     @Override
