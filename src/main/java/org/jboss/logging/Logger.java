@@ -135,6 +135,7 @@ public abstract class Logger implements Serializable, BasicLogger {
      * @param params the message parameters
      * @deprecated To log a message with parameters, using {@link #tracev(String, Object...)} is recommended.
      */
+    @Deprecated
     public void trace(Object message, Object[] params) {
         doLog(Level.TRACE, FQCN, message, params, null);
     }
@@ -147,6 +148,7 @@ public abstract class Logger implements Serializable, BasicLogger {
      * @param t the throwable
      * @deprecated To log a message with parameters, using {@link #tracev(Throwable, String, Object...)} is recommended.
      */
+    @Deprecated
     public void trace(Object message, Object[] params, Throwable t) {
         doLog(Level.TRACE, FQCN, message, params, t);
     }
@@ -413,6 +415,7 @@ public abstract class Logger implements Serializable, BasicLogger {
      * @param params the message parameters
      * @deprecated To log a message with parameters, using {@link #debugv(String, Object...)} is recommended.
      */
+    @Deprecated
     public void debug(Object message, Object[] params) {
         doLog(Level.DEBUG, FQCN, message, params, null);
     }
@@ -425,6 +428,7 @@ public abstract class Logger implements Serializable, BasicLogger {
      * @param t the throwable
      * @deprecated To log a message with parameters, using {@link #debugv(Throwable, String, Object...)} is recommended.
      */
+    @Deprecated
     public void debug(Object message, Object[] params, Throwable t) {
         doLog(Level.DEBUG, FQCN, message, params, t);
     }
@@ -691,6 +695,7 @@ public abstract class Logger implements Serializable, BasicLogger {
      * @param params the message parameters
      * @deprecated To log a message with parameters, using {@link #infov(String, Object...)} is recommended.
      */
+    @Deprecated
     public void info(Object message, Object[] params) {
         doLog(Level.INFO, FQCN, message, params, null);
     }
@@ -703,6 +708,7 @@ public abstract class Logger implements Serializable, BasicLogger {
      * @param t the throwable
      * @deprecated To log a message with parameters, using {@link #infov(Throwable, String, Object...)} is recommended.
      */
+    @Deprecated
     public void info(Object message, Object[] params, Throwable t) {
         doLog(Level.INFO, FQCN, message, params, t);
     }
@@ -960,6 +966,7 @@ public abstract class Logger implements Serializable, BasicLogger {
      * @param params the message parameters
      * @deprecated To log a message with parameters, using {@link #warnv(String, Object...)} is recommended.
      */
+    @Deprecated
     public void warn(Object message, Object[] params) {
         doLog(Level.WARN, FQCN, message, params, null);
     }
@@ -972,6 +979,7 @@ public abstract class Logger implements Serializable, BasicLogger {
      * @param t the throwable
      * @deprecated To log a message with parameters, using {@link #warnv(Throwable, String, Object...)} is recommended.
      */
+    @Deprecated
     public void warn(Object message, Object[] params, Throwable t) {
         doLog(Level.WARN, FQCN, message, params, t);
     }
@@ -1229,6 +1237,7 @@ public abstract class Logger implements Serializable, BasicLogger {
      * @param params the message parameters
      * @deprecated To log a message with parameters, using {@link #errorv(String, Object...)} is recommended.
      */
+    @Deprecated
     public void error(Object message, Object[] params) {
         doLog(Level.ERROR, FQCN, message, params, null);
     }
@@ -1241,6 +1250,7 @@ public abstract class Logger implements Serializable, BasicLogger {
      * @param t the throwable
      * @deprecated To log a message with parameters, using {@link #errorv(Throwable, String, Object...)} is recommended.
      */
+    @Deprecated
     public void error(Object message, Object[] params, Throwable t) {
         doLog(Level.ERROR, FQCN, message, params, t);
     }
@@ -1498,6 +1508,7 @@ public abstract class Logger implements Serializable, BasicLogger {
      * @param params the message parameters
      * @deprecated To log a message with parameters, using {@link #fatalv(String, Object...)} is recommended.
      */
+    @Deprecated
     public void fatal(Object message, Object[] params) {
         doLog(Level.FATAL, FQCN, message, params, null);
     }
@@ -1510,6 +1521,7 @@ public abstract class Logger implements Serializable, BasicLogger {
      * @param t the throwable
      * @deprecated To log a message with parameters, using {@link #fatalv(Throwable, String, Object...)} is recommended.
      */
+    @Deprecated
     public void fatal(Object message, Object[] params, Throwable t) {
         doLog(Level.FATAL, FQCN, message, params, t);
     }
@@ -1771,6 +1783,7 @@ public abstract class Logger implements Serializable, BasicLogger {
      * @param params the message parameters
      * @deprecated To log a message with parameters, using {@link #logv(Level, String, Object...)} is recommended.
      */
+    @Deprecated
     public void log(Level level, Object message, Object[] params) {
         doLog(level, FQCN, message, params, null);
     }
@@ -1784,6 +1797,7 @@ public abstract class Logger implements Serializable, BasicLogger {
      * @param t the throwable
      * @deprecated To log a message with parameters, using {@link #logv(Level, Throwable, String, Object...)} is recommended.
      */
+    @Deprecated
     public void log(Level level, Object message, Object[] params, Throwable t) {
         doLog(level, FQCN, message, params, t);
     }

@@ -51,6 +51,8 @@ final class LoggerProviders {
                     return tryJBossLogManager(cl);
                 } else if ("jdk".equalsIgnoreCase(loggerProvider)) {
                     return tryJDK();
+                } else if ("log4j2".equalsIgnoreCase(loggerProvider)) {
+                    return tryLog4j2(cl);
                 } else if ("log4j".equalsIgnoreCase(loggerProvider)) {
                     return tryLog4j(cl);
                 } else if ("slf4j".equalsIgnoreCase(loggerProvider)) {
@@ -58,9 +60,16 @@ final class LoggerProviders {
                 }
             }
         } catch (Throwable t) {
+            // nope...
         }
         try {
             return tryJBossLogManager(cl);
+        } catch (Throwable t) {
+            // nope...
+        }
+        try {
+            // MUST try Log4j 2.x BEFORE Log4j 1.x because Log4j 2.x also passes Log4j 1.x test in some circumstances
+            return tryLog4j2(cl);
         } catch (Throwable t) {
             // nope...
         }
@@ -85,6 +94,15 @@ final class LoggerProviders {
 
     private static LoggerProvider trySlf4j() {
         return new Slf4jLoggerProvider();
+    }
+
+    // JBLOGGING-95 - Add support for Log4j 2.x
+    private static LoggerProvider tryLog4j2(final ClassLoader cl) throws ClassNotFoundException {
+        Class.forName("org.apache.logging.log4j.spi.AbstractLogger", true, cl);
+        LoggerProvider provider = new Log4j2LoggerProvider();
+        // if Log4j 2 has a bad implementation that doesn't extend AbstractLogger, we won't know until getting the first logger throws an exception
+        provider.getLogger("org.jboss.logging");
+        return provider;
     }
 
     private static LoggerProvider tryLog4j(final ClassLoader cl) throws ClassNotFoundException {
