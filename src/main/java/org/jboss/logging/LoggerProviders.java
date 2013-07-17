@@ -98,6 +98,8 @@ final class LoggerProviders {
 
     // JBLOGGING-95 - Add support for Log4j 2.x
     private static LoggerProvider tryLog4j2(final ClassLoader cl) throws ClassNotFoundException {
+        Class.forName("org.apache.logging.log4j.Logger", true, cl);
+        Class.forName("org.apache.logging.log4j.LogManager", true, cl);
         Class.forName("org.apache.logging.log4j.spi.AbstractLogger", true, cl);
         LoggerProvider provider = new Log4j2LoggerProvider();
         // if Log4j 2 has a bad implementation that doesn't extend AbstractLogger, we won't know until getting the first logger throws an exception
