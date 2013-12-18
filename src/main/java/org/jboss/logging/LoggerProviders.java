@@ -20,6 +20,7 @@ package org.jboss.logging;
 
 import java.security.AccessController;
 import java.security.PrivilegedAction;
+import java.util.ServiceLoader;
 import java.util.logging.LogManager;
 
 final class LoggerProviders {
@@ -62,6 +63,18 @@ final class LoggerProviders {
         } catch (Throwable t) {
             // nope...
         }
+
+        // Next try for a service provider
+        try {
+            final ServiceLoader<LoggerProvider> loader = ServiceLoader.load(LoggerProvider.class, cl);
+            if (loader.iterator().hasNext()) {
+                return loader.iterator().next();
+            }
+        } catch (Throwable ignore) {
+            // TODO consider printing the stack trace as it should only happen once
+        }
+
+        // Finally search the class path
         try {
             return tryJBossLogManager(cl);
         } catch (Throwable t) {
