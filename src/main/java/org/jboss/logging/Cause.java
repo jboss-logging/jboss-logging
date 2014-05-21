@@ -29,6 +29,8 @@ import static java.lang.annotation.RetentionPolicy.CLASS;
 /**
  * Mark a parameter as being the "exception cause" parameter rather than a positional format parameter.
  *
+ * @deprecated Use org.jboss.logging.annotations.Cause provided in module org.jboss.logging:jboss-logging-annotations
+ *
  * @author <a href="mailto:david.lloyd@redhat.com">David M. Lloyd</a>
  */
 @Retention(CLASS)
