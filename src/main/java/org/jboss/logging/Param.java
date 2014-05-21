@@ -35,6 +35,8 @@ import static java.lang.annotation.RetentionPolicy.CLASS;
  * The {@link #value()} option will allow an optional class to be specified which will have to match the exact type of
  * the parameter in question, to enable unambiguous resolution. The value must be the fully qualified class name.
  *
+ * @deprecated Use org.jboss.logging.annotations.Param provided in module org.jboss.logging:jboss-logging-annotations
+ *
  * @author <a href="mailto:jperkins@redhat.com">James R. Perkins</a>
  */
 @Target(PARAMETER)

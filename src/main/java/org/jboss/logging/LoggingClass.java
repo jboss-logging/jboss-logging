@@ -30,6 +30,8 @@ import static java.lang.annotation.RetentionPolicy.CLASS;
  * Mark a parameter as specifying the name of the logging class to use.  The parameter
  * may have a type of {@link String} or {@link Class}.
  *
+ * @deprecated Use org.jboss.logging.annotations.LoggingClass provided in module org.jboss.logging:jboss-logging-annotations
+ *
  * @author <a href="mailto:david.lloyd@redhat.com">David M. Lloyd</a>
  */
 @Retention(CLASS)

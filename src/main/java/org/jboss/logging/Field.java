@@ -29,6 +29,8 @@ import static java.lang.annotation.RetentionPolicy.CLASS;
 /**
  * Indicate that a method parameter value should be applied to a field on the resultant exception object.
  *
+ * @deprecated Use org.jboss.logging.annotations.Field provided in module org.jboss.logging:jboss-logging-annotations
+ *
  * @author <a href="mailto:david.lloyd@redhat.com">David M. Lloyd</a>
  */
 @Retention(CLASS)

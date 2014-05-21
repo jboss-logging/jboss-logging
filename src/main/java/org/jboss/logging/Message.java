@@ -30,6 +30,8 @@ import static java.lang.annotation.RetentionPolicy.CLASS;
  * Assigns a message string to a resource method.  The method arguments are used to supply the positional parameter
  * values for the method.
  *
+ * @deprecated Use org.jboss.logging.annotations.Message provided in module org.jboss.logging:jboss-logging-annotations
+ *
  * @author <a href="mailto:david.lloyd@redhat.com">David M. Lloyd</a>
  */
 @Target(METHOD)

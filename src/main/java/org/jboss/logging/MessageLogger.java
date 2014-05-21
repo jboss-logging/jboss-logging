@@ -30,6 +30,8 @@ import static java.lang.annotation.RetentionPolicy.CLASS;
  * Signify that an interface is a typed logger interface.  A message logger interface may optionally extend other message logger
  * interfaces and message bundle interfaces (see {@link MessageBundle}, as well as the {@link org.jboss.logging.BasicLogger} interface.
  *
+ * @deprecated Use org.jboss.logging.annotations.MessageLogger provided in module org.jboss.logging:jboss-logging-annotations
+ *
  * @author <a href="mailto:david.lloyd@redhat.com">David M. Lloyd</a>
  */
 @Retention(CLASS)

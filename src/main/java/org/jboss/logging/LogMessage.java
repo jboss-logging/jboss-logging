@@ -30,6 +30,8 @@ import static java.lang.annotation.RetentionPolicy.CLASS;
  * A typed logger method.  Indicates that this method will log the associated {@link Message} to the logger system, as
  * opposed to being a simple message lookup.
  *
+ * @deprecated Use org.jboss.logging.annotations.LogMessage provided in module org.jboss.logging:jboss-logging-annotations
+ *
  * @author <a href="mailto:david.lloyd@redhat.com">David M. Lloyd</a>
  */
 @Retention(CLASS)

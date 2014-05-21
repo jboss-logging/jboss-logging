@@ -33,6 +33,8 @@ import static java.lang.annotation.RetentionPolicy.CLASS;
  * method will be invoked (or, if the format style is {@link org.jboss.logging.Message.Format#PRINTF PRINTF}, the
  * object may implement {@link java.util.Formattable Formattable} to get extra functionality).
  *
+ * @deprecated Use org.jboss.logging.annotations.FormatWith provided in module org.jboss.logging:jboss-logging-annotations
+ *
  * @author <a href="mailto:david.lloyd@redhat.com">David M. Lloyd</a>
  */
 @Target(PARAMETER)
