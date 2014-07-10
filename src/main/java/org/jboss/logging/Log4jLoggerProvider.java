@@ -51,7 +51,7 @@ final class Log4jLoggerProvider implements LoggerProvider {
     }
 
     public void clearNdc() {
-        NDC.clear();
+        NDC.remove();
     }
 
     public String getNdc() {
