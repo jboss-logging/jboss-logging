@@ -51,9 +51,8 @@ final class Log4j2Logger extends Logger {
         final org.apache.logging.log4j.Level translatedLevel = Log4j2Logger.translate(level);
         if (this.logger.isEnabled(translatedLevel)) {
             try {
-                this.logger.log(null, loggerClassName, translatedLevel,
-                        parameters == null || parameters.length == 0 ? this.messageFactory.newMessage(message) :
-                                this.messageFactory.newMessage(String.valueOf(message), parameters),
+                this.logger.logMessage(loggerClassName, translatedLevel, null,
+                        (parameters == null || parameters.length == 0) ? this.messageFactory.newMessage(message) : this.messageFactory.newMessage(String.valueOf(message), parameters),
                         thrown);
             } catch (Throwable ignored) { }
         }
@@ -64,7 +63,7 @@ final class Log4j2Logger extends Logger {
         final org.apache.logging.log4j.Level translatedLevel = Log4j2Logger.translate(level);
         if (this.logger.isEnabled(translatedLevel)) {
             try {
-                this.logger.log(null, loggerClassName, translatedLevel, new StringFormattedMessage(format, parameters), thrown);
+                this.logger.logMessage(loggerClassName, translatedLevel, null, new StringFormattedMessage(format, parameters), thrown);
             } catch (Throwable ignored) { }
         }
     }
