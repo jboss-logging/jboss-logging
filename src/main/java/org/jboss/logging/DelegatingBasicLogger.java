@@ -2,7 +2,7 @@
  * JBoss, Home of Professional Open Source.
  *
  * Copyright 2011 Red Hat, Inc., and individual contributors
- * as indicated by the @author tags. 
+ * as indicated by the @author tags.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -155,6 +155,126 @@ public class DelegatingBasicLogger implements BasicLogger, Serializable {
     }
 
     @Override
+    public void tracef(final String format, final int arg) {
+        log.tracef(format, arg);
+    }
+
+    @Override
+    public void tracef(final String format, final int arg1, final int arg2) {
+        log.tracef(format, arg1, arg2);
+    }
+
+    @Override
+    public void tracef(final String format, final int arg1, final Object arg2) {
+        log.tracef(format, arg1, arg2);
+    }
+
+    @Override
+    public void tracef(final String format, final int arg1, final int arg2, final int arg3) {
+        log.tracef(format, arg1, arg2, arg3);
+    }
+
+    @Override
+    public void tracef(final String format, final int arg1, final int arg2, final Object arg3) {
+        log.tracef(format, arg1, arg2, arg3);
+    }
+
+    @Override
+    public void tracef(final String format, final int arg1, final Object arg2, final Object arg3) {
+        log.tracef(format, arg1, arg2, arg3);
+    }
+
+    @Override
+    public void tracef(final Throwable t, final String format, final int arg) {
+        log.tracef(t, format, arg);
+    }
+
+    @Override
+    public void tracef(final Throwable t, final String format, final int arg1, final int arg2) {
+        log.tracef(t, format, arg1, arg2);
+    }
+
+    @Override
+    public void tracef(final Throwable t, final String format, final int arg1, final Object arg2) {
+        log.tracef(t, format, arg1, arg2);
+    }
+
+    @Override
+    public void tracef(final Throwable t, final String format, final int arg1, final int arg2, final int arg3) {
+        log.tracef(t, format, arg1, arg2, arg3);
+    }
+
+    @Override
+    public void tracef(final Throwable t, final String format, final int arg1, final int arg2, final Object arg3) {
+        log.tracef(t, format, arg1, arg2, arg3);
+    }
+
+    @Override
+    public void tracef(final Throwable t, final String format, final int arg1, final Object arg2, final Object arg3) {
+        log.tracef(t, format, arg1, arg2, arg3);
+    }
+
+    @Override
+    public void tracef(final String format, final long arg) {
+        log.tracef(format, arg);
+    }
+
+    @Override
+    public void tracef(final String format, final long arg1, final long arg2) {
+        log.tracef(format, arg1, arg2);
+    }
+
+    @Override
+    public void tracef(final String format, final long arg1, final Object arg2) {
+        log.tracef(format, arg1, arg2);
+    }
+
+    @Override
+    public void tracef(final String format, final long arg1, final long arg2, final long arg3) {
+        log.tracef(format, arg1, arg2, arg3);
+    }
+
+    @Override
+    public void tracef(final String format, final long arg1, final long arg2, final Object arg3) {
+        log.tracef(format, arg1, arg2, arg3);
+    }
+
+    @Override
+    public void tracef(final String format, final long arg1, final Object arg2, final Object arg3) {
+        log.tracef(format, arg1, arg2, arg3);
+    }
+
+    @Override
+    public void tracef(final Throwable t, final String format, final long arg) {
+        log.tracef(t, format, arg);
+    }
+
+    @Override
+    public void tracef(final Throwable t, final String format, final long arg1, final long arg2) {
+        log.tracef(t, format, arg1, arg2);
+    }
+
+    @Override
+    public void tracef(final Throwable t, final String format, final long arg1, final Object arg2) {
+        log.tracef(t, format, arg1, arg2);
+    }
+
+    @Override
+    public void tracef(final Throwable t, final String format, final long arg1, final long arg2, final long arg3) {
+        log.tracef(t, format, arg1, arg2, arg3);
+    }
+
+    @Override
+    public void tracef(final Throwable t, final String format, final long arg1, final long arg2, final Object arg3) {
+        log.tracef(t, format, arg1, arg2, arg3);
+    }
+
+    @Override
+    public void tracef(final Throwable t, final String format, final long arg1, final Object arg2, final Object arg3) {
+        log.tracef(t, format, arg1, arg2, arg3);
+    }
+
+    @Override
     public boolean isDebugEnabled() {
         return log.isDebugEnabled();
     }
@@ -257,6 +377,126 @@ public class DelegatingBasicLogger implements BasicLogger, Serializable {
     @Override
     public void debugf(final Throwable t, final String format, final Object param1, final Object param2, final Object param3) {
         log.logf(FQCN, Logger.Level.DEBUG, t, format, param1, param2, param3);
+    }
+
+    @Override
+    public void debugf(final String format, final int arg) {
+        log.debugf(format, arg);
+    }
+
+    @Override
+    public void debugf(final String format, final int arg1, final int arg2) {
+        log.debugf(format, arg1, arg2);
+    }
+
+    @Override
+    public void debugf(final String format, final int arg1, final Object arg2) {
+        log.debugf(format, arg1, arg2);
+    }
+
+    @Override
+    public void debugf(final String format, final int arg1, final int arg2, final int arg3) {
+        log.debugf(format, arg1, arg2, arg3);
+    }
+
+    @Override
+    public void debugf(final String format, final int arg1, final int arg2, final Object arg3) {
+        log.debugf(format, arg1, arg2, arg3);
+    }
+
+    @Override
+    public void debugf(final String format, final int arg1, final Object arg2, final Object arg3) {
+        log.debugf(format, arg1, arg2, arg3);
+    }
+
+    @Override
+    public void debugf(final Throwable t, final String format, final int arg) {
+        log.debugf(t, format, arg);
+    }
+
+    @Override
+    public void debugf(final Throwable t, final String format, final int arg1, final int arg2) {
+        log.debugf(t, format, arg1, arg2);
+    }
+
+    @Override
+    public void debugf(final Throwable t, final String format, final int arg1, final Object arg2) {
+        log.debugf(t, format, arg1, arg2);
+    }
+
+    @Override
+    public void debugf(final Throwable t, final String format, final int arg1, final int arg2, final int arg3) {
+        log.debugf(t, format, arg1, arg2, arg3);
+    }
+
+    @Override
+    public void debugf(final Throwable t, final String format, final int arg1, final int arg2, final Object arg3) {
+        log.debugf(t, format, arg1, arg2, arg3);
+    }
+
+    @Override
+    public void debugf(final Throwable t, final String format, final int arg1, final Object arg2, final Object arg3) {
+        log.debugf(t, format, arg1, arg2, arg3);
+    }
+
+    @Override
+    public void debugf(final String format, final long arg) {
+        log.debugf(format, arg);
+    }
+
+    @Override
+    public void debugf(final String format, final long arg1, final long arg2) {
+        log.debugf(format, arg1, arg2);
+    }
+
+    @Override
+    public void debugf(final String format, final long arg1, final Object arg2) {
+        log.debugf(format, arg1, arg2);
+    }
+
+    @Override
+    public void debugf(final String format, final long arg1, final long arg2, final long arg3) {
+        log.debugf(format, arg1, arg2, arg3);
+    }
+
+    @Override
+    public void debugf(final String format, final long arg1, final long arg2, final Object arg3) {
+        log.debugf(format, arg1, arg2, arg3);
+    }
+
+    @Override
+    public void debugf(final String format, final long arg1, final Object arg2, final Object arg3) {
+        log.debugf(format, arg1, arg2, arg3);
+    }
+
+    @Override
+    public void debugf(final Throwable t, final String format, final long arg) {
+        log.debugf(t, format, arg);
+    }
+
+    @Override
+    public void debugf(final Throwable t, final String format, final long arg1, final long arg2) {
+        log.debugf(t, format, arg1, arg2);
+    }
+
+    @Override
+    public void debugf(final Throwable t, final String format, final long arg1, final Object arg2) {
+        log.debugf(t, format, arg1, arg2);
+    }
+
+    @Override
+    public void debugf(final Throwable t, final String format, final long arg1, final long arg2, final long arg3) {
+        log.debugf(t, format, arg1, arg2, arg3);
+    }
+
+    @Override
+    public void debugf(final Throwable t, final String format, final long arg1, final long arg2, final Object arg3) {
+        log.debugf(t, format, arg1, arg2, arg3);
+    }
+
+    @Override
+    public void debugf(final Throwable t, final String format, final long arg1, final Object arg2, final Object arg3) {
+        log.debugf(t, format, arg1, arg2, arg3);
     }
 
     @Override

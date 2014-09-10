@@ -369,6 +369,150 @@ public abstract class Logger implements Serializable, BasicLogger {
         }
     }
 
+    public void tracef(final String format, final int arg) {
+        if (isEnabled(Level.TRACE)) {
+            doLogf(Level.TRACE, FQCN, format, new Object[] { arg }, null);
+        }
+    }
+
+    public void tracef(final String format, final int arg1, final int arg2) {
+        if (isEnabled(Level.TRACE)) {
+            doLogf(Level.TRACE, FQCN, format, new Object[] { arg1, arg2 }, null);
+        }
+    }
+
+    public void tracef(final String format, final int arg1, final Object arg2) {
+        if (isEnabled(Level.TRACE)) {
+            doLogf(Level.TRACE, FQCN, format, new Object[] { arg1, arg2 }, null);
+        }
+    }
+
+    public void tracef(final String format, final int arg1, final int arg2, final int arg3) {
+        if (isEnabled(Level.TRACE)) {
+            doLogf(Level.TRACE, FQCN, format, new Object[] { arg1, arg2, arg3 }, null);
+        }
+    }
+
+    public void tracef(final String format, final int arg1, final int arg2, final Object arg3) {
+        if (isEnabled(Level.TRACE)) {
+            doLogf(Level.TRACE, FQCN, format, new Object[] { arg1, arg2, arg3 }, null);
+        }
+    }
+
+    public void tracef(final String format, final int arg1, final Object arg2, final Object arg3) {
+        if (isEnabled(Level.TRACE)) {
+            doLogf(Level.TRACE, FQCN, format, new Object[] { arg1, arg2, arg3 }, null);
+        }
+    }
+
+    public void tracef(final Throwable t, final String format, final int arg) {
+        if (isEnabled(Level.TRACE)) {
+            doLogf(Level.TRACE, FQCN, format, new Object[] { arg }, t);
+        }
+    }
+
+    public void tracef(final Throwable t, final String format, final int arg1, final int arg2) {
+        if (isEnabled(Level.TRACE)) {
+            doLogf(Level.TRACE, FQCN, format, new Object[] { arg1, arg2 }, t);
+        }
+    }
+
+    public void tracef(final Throwable t, final String format, final int arg1, final Object arg2) {
+        if (isEnabled(Level.TRACE)) {
+            doLogf(Level.TRACE, FQCN, format, new Object[] { arg1, arg2 }, t);
+        }
+    }
+
+    public void tracef(final Throwable t, final String format, final int arg1, final int arg2, final int arg3) {
+        if (isEnabled(Level.TRACE)) {
+            doLogf(Level.TRACE, FQCN, format, new Object[] { arg1, arg2, arg3 }, t);
+        }
+    }
+
+    public void tracef(final Throwable t, final String format, final int arg1, final int arg2, final Object arg3) {
+        if (isEnabled(Level.TRACE)) {
+            doLogf(Level.TRACE, FQCN, format, new Object[] { arg1, arg2, arg3 }, t);
+        }
+    }
+
+    public void tracef(final Throwable t, final String format, final int arg1, final Object arg2, final Object arg3) {
+        if (isEnabled(Level.TRACE)) {
+            doLogf(Level.TRACE, FQCN, format, new Object[] { arg1, arg2, arg3 }, t);
+        }
+    }
+
+    public void tracef(final String format, final long arg) {
+        if (isEnabled(Level.TRACE)) {
+            doLogf(Level.TRACE, FQCN, format, new Object[] { arg }, null);
+        }
+    }
+
+    public void tracef(final String format, final long arg1, final long arg2) {
+        if (isEnabled(Level.TRACE)) {
+            doLogf(Level.TRACE, FQCN, format, new Object[] { arg1, arg2 }, null);
+        }
+    }
+
+    public void tracef(final String format, final long arg1, final Object arg2) {
+        if (isEnabled(Level.TRACE)) {
+            doLogf(Level.TRACE, FQCN, format, new Object[] { arg1, arg2 }, null);
+        }
+    }
+
+    public void tracef(final String format, final long arg1, final long arg2, final long arg3) {
+        if (isEnabled(Level.TRACE)) {
+            doLogf(Level.TRACE, FQCN, format, new Object[] { arg1, arg2, arg3 }, null);
+        }
+    }
+
+    public void tracef(final String format, final long arg1, final long arg2, final Object arg3) {
+        if (isEnabled(Level.TRACE)) {
+            doLogf(Level.TRACE, FQCN, format, new Object[] { arg1, arg2, arg3 }, null);
+        }
+    }
+
+    public void tracef(final String format, final long arg1, final Object arg2, final Object arg3) {
+        if (isEnabled(Level.TRACE)) {
+            doLogf(Level.TRACE, FQCN, format, new Object[] { arg1, arg2, arg3 }, null);
+        }
+    }
+
+    public void tracef(final Throwable t, final String format, final long arg) {
+        if (isEnabled(Level.TRACE)) {
+            doLogf(Level.TRACE, FQCN, format, new Object[] { arg }, t);
+        }
+    }
+
+    public void tracef(final Throwable t, final String format, final long arg1, final long arg2) {
+        if (isEnabled(Level.TRACE)) {
+            doLogf(Level.TRACE, FQCN, format, new Object[] { arg1, arg2 }, t);
+        }
+    }
+
+    public void tracef(final Throwable t, final String format, final long arg1, final Object arg2) {
+        if (isEnabled(Level.TRACE)) {
+            doLogf(Level.TRACE, FQCN, format, new Object[] { arg1, arg2 }, t);
+        }
+    }
+
+    public void tracef(final Throwable t, final String format, final long arg1, final long arg2, final long arg3) {
+        if (isEnabled(Level.TRACE)) {
+            doLogf(Level.TRACE, FQCN, format, new Object[] { arg1, arg2, arg3 }, t);
+        }
+    }
+
+    public void tracef(final Throwable t, final String format, final long arg1, final long arg2, final Object arg3) {
+        if (isEnabled(Level.TRACE)) {
+            doLogf(Level.TRACE, FQCN, format, new Object[] { arg1, arg2, arg3 }, t);
+        }
+    }
+
+    public void tracef(final Throwable t, final String format, final long arg1, final Object arg2, final Object arg3) {
+        if (isEnabled(Level.TRACE)) {
+            doLogf(Level.TRACE, FQCN, format, new Object[] { arg1, arg2, arg3 }, t);
+        }
+    }
+
     /**
      * Check to see if the {@code DEBUG} level is enabled for this logger.
      *
@@ -646,6 +790,150 @@ public abstract class Logger implements Serializable, BasicLogger {
     public void debugf(Throwable t, String format, Object param1, Object param2, Object param3) {
         if (isEnabled(Level.DEBUG)) {
             doLogf(Level.DEBUG, FQCN, format, new Object[] { param1, param2, param3 }, t);
+        }
+    }
+
+    public void debugf(final String format, final int arg) {
+        if (isEnabled(Level.DEBUG)) {
+            doLogf(Level.DEBUG, FQCN, format, new Object[] { arg }, null);
+        }
+    }
+
+    public void debugf(final String format, final int arg1, final int arg2) {
+        if (isEnabled(Level.DEBUG)) {
+            doLogf(Level.DEBUG, FQCN, format, new Object[] { arg1, arg2 }, null);
+        }
+    }
+
+    public void debugf(final String format, final int arg1, final Object arg2) {
+        if (isEnabled(Level.DEBUG)) {
+            doLogf(Level.DEBUG, FQCN, format, new Object[] { arg1, arg2 }, null);
+        }
+    }
+
+    public void debugf(final String format, final int arg1, final int arg2, final int arg3) {
+        if (isEnabled(Level.DEBUG)) {
+            doLogf(Level.DEBUG, FQCN, format, new Object[] { arg1, arg2, arg3 }, null);
+        }
+    }
+
+    public void debugf(final String format, final int arg1, final int arg2, final Object arg3) {
+        if (isEnabled(Level.DEBUG)) {
+            doLogf(Level.DEBUG, FQCN, format, new Object[] { arg1, arg2, arg3 }, null);
+        }
+    }
+
+    public void debugf(final String format, final int arg1, final Object arg2, final Object arg3) {
+        if (isEnabled(Level.DEBUG)) {
+            doLogf(Level.DEBUG, FQCN, format, new Object[] { arg1, arg2, arg3 }, null);
+        }
+    }
+
+    public void debugf(final Throwable t, final String format, final int arg) {
+        if (isEnabled(Level.DEBUG)) {
+            doLogf(Level.DEBUG, FQCN, format, new Object[] { arg }, t);
+        }
+    }
+
+    public void debugf(final Throwable t, final String format, final int arg1, final int arg2) {
+        if (isEnabled(Level.DEBUG)) {
+            doLogf(Level.DEBUG, FQCN, format, new Object[] { arg1, arg2 }, t);
+        }
+    }
+
+    public void debugf(final Throwable t, final String format, final int arg1, final Object arg2) {
+        if (isEnabled(Level.DEBUG)) {
+            doLogf(Level.DEBUG, FQCN, format, new Object[] { arg1, arg2 }, t);
+        }
+    }
+
+    public void debugf(final Throwable t, final String format, final int arg1, final int arg2, final int arg3) {
+        if (isEnabled(Level.DEBUG)) {
+            doLogf(Level.DEBUG, FQCN, format, new Object[] { arg1, arg2, arg3 }, t);
+        }
+    }
+
+    public void debugf(final Throwable t, final String format, final int arg1, final int arg2, final Object arg3) {
+        if (isEnabled(Level.DEBUG)) {
+            doLogf(Level.DEBUG, FQCN, format, new Object[] { arg1, arg2, arg3 }, t);
+        }
+    }
+
+    public void debugf(final Throwable t, final String format, final int arg1, final Object arg2, final Object arg3) {
+        if (isEnabled(Level.DEBUG)) {
+            doLogf(Level.DEBUG, FQCN, format, new Object[] { arg1, arg2, arg3 }, t);
+        }
+    }
+
+    public void debugf(final String format, final long arg) {
+        if (isEnabled(Level.DEBUG)) {
+            doLogf(Level.DEBUG, FQCN, format, new Object[] { arg }, null);
+        }
+    }
+
+    public void debugf(final String format, final long arg1, final long arg2) {
+        if (isEnabled(Level.DEBUG)) {
+            doLogf(Level.DEBUG, FQCN, format, new Object[] { arg1, arg2 }, null);
+        }
+    }
+
+    public void debugf(final String format, final long arg1, final Object arg2) {
+        if (isEnabled(Level.DEBUG)) {
+            doLogf(Level.DEBUG, FQCN, format, new Object[] { arg1, arg2 }, null);
+        }
+    }
+
+    public void debugf(final String format, final long arg1, final long arg2, final long arg3) {
+        if (isEnabled(Level.DEBUG)) {
+            doLogf(Level.DEBUG, FQCN, format, new Object[] { arg1, arg2, arg3 }, null);
+        }
+    }
+
+    public void debugf(final String format, final long arg1, final long arg2, final Object arg3) {
+        if (isEnabled(Level.DEBUG)) {
+            doLogf(Level.DEBUG, FQCN, format, new Object[] { arg1, arg2, arg3 }, null);
+        }
+    }
+
+    public void debugf(final String format, final long arg1, final Object arg2, final Object arg3) {
+        if (isEnabled(Level.DEBUG)) {
+            doLogf(Level.DEBUG, FQCN, format, new Object[] { arg1, arg2, arg3 }, null);
+        }
+    }
+
+    public void debugf(final Throwable t, final String format, final long arg) {
+        if (isEnabled(Level.DEBUG)) {
+            doLogf(Level.DEBUG, FQCN, format, new Object[] { arg }, t);
+        }
+    }
+
+    public void debugf(final Throwable t, final String format, final long arg1, final long arg2) {
+        if (isEnabled(Level.DEBUG)) {
+            doLogf(Level.DEBUG, FQCN, format, new Object[] { arg1, arg2 }, t);
+        }
+    }
+
+    public void debugf(final Throwable t, final String format, final long arg1, final Object arg2) {
+        if (isEnabled(Level.DEBUG)) {
+            doLogf(Level.DEBUG, FQCN, format, new Object[] { arg1, arg2 }, t);
+        }
+    }
+
+    public void debugf(final Throwable t, final String format, final long arg1, final long arg2, final long arg3) {
+        if (isEnabled(Level.DEBUG)) {
+            doLogf(Level.DEBUG, FQCN, format, new Object[] { arg1, arg2, arg3 }, t);
+        }
+    }
+
+    public void debugf(final Throwable t, final String format, final long arg1, final long arg2, final Object arg3) {
+        if (isEnabled(Level.DEBUG)) {
+            doLogf(Level.DEBUG, FQCN, format, new Object[] { arg1, arg2, arg3 }, t);
+        }
+    }
+
+    public void debugf(final Throwable t, final String format, final long arg1, final Object arg2, final Object arg3) {
+        if (isEnabled(Level.DEBUG)) {
+            doLogf(Level.DEBUG, FQCN, format, new Object[] { arg1, arg2, arg3 }, t);
         }
     }
 

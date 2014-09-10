@@ -2,7 +2,7 @@
  * JBoss, Home of Professional Open Source.
  *
  * Copyright 2010 Red Hat, Inc., and individual contributors
- * as indicated by the @author tags. 
+ * as indicated by the @author tags.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -225,6 +225,242 @@ public interface BasicLogger {
     void tracef(Throwable t, String format, Object param1, Object param2, Object param3);
 
     /**
+     * Issue a formatted log message with a level of TRACE.
+     *
+     * @param format the format string, as per {@link String#format(String, Object...)}
+     * @param arg the parameter
+     */
+    void tracef(String format, int arg);
+
+    /**
+     * Issue a formatted log message with a level of TRACE.
+     *
+     * @param format the format string, as per {@link String#format(String, Object...)}
+     * @param arg1 the first parameter
+     * @param arg2 the second parameter
+     */
+    void tracef(String format, int arg1, int arg2);
+
+    /**
+     * Issue a formatted log message with a level of TRACE.
+     *
+     * @param format the format string, as per {@link String#format(String, Object...)}
+     * @param arg1 the first parameter
+     * @param arg2 the second parameter
+     */
+    void tracef(String format, int arg1, Object arg2);
+
+    /**
+     * Issue a formatted log message with a level of TRACE.
+     *
+     * @param format the format string, as per {@link String#format(String, Object...)}
+     * @param arg1 the first parameter
+     * @param arg2 the second parameter
+     * @param arg3 the third parameter
+     */
+    void tracef(String format, int arg1, int arg2, int arg3);
+
+    /**
+     * Issue a formatted log message with a level of TRACE.
+     *
+     * @param format the format string, as per {@link String#format(String, Object...)}
+     * @param arg1 the first parameter
+     * @param arg2 the second parameter
+     * @param arg3 the third parameter
+     */
+    void tracef(String format, int arg1, int arg2, Object arg3);
+
+    /**
+     * Issue a formatted log message with a level of TRACE.
+     *
+     * @param format the format string, as per {@link String#format(String, Object...)}
+     * @param arg1 the first parameter
+     * @param arg2 the second parameter
+     * @param arg3 the third parameter
+     */
+    void tracef(String format, int arg1, Object arg2, Object arg3);
+
+    /**
+     * Issue a formatted log message with a level of TRACE.
+     *
+     * @param t the throwable
+     * @param format the format string, as per {@link String#format(String, Object...)}
+     * @param arg the parameter
+     */
+    void tracef(Throwable t, String format, int arg);
+
+    /**
+     * Issue a formatted log message with a level of TRACE.
+     *
+     * @param t the throwable
+     * @param format the format string, as per {@link String#format(String, Object...)}
+     * @param arg1 the first parameter
+     * @param arg2 the second parameter
+     */
+    void tracef(Throwable t, String format, int arg1, int arg2);
+
+    /**
+     * Issue a formatted log message with a level of TRACE.
+     *
+     * @param t the throwable
+     * @param format the format string, as per {@link String#format(String, Object...)}
+     * @param arg1 the first parameter
+     * @param arg2 the second parameter
+     */
+    void tracef(Throwable t, String format, int arg1, Object arg2);
+
+    /**
+     * Issue a formatted log message with a level of TRACE.
+     *
+     * @param t the throwable
+     * @param format the format string, as per {@link String#format(String, Object...)}
+     * @param arg1 the first parameter
+     * @param arg2 the second parameter
+     * @param arg3 the third parameter
+     */
+    void tracef(Throwable t, String format, int arg1, int arg2, int arg3);
+
+    /**
+     * Issue a formatted log message with a level of TRACE.
+     *
+     * @param t the throwable
+     * @param format the format string, as per {@link String#format(String, Object...)}
+     * @param arg1 the first parameter
+     * @param arg2 the second parameter
+     * @param arg3 the third parameter
+     */
+    void tracef(Throwable t, String format, int arg1, int arg2, Object arg3);
+
+    /**
+     * Issue a formatted log message with a level of TRACE.
+     *
+     * @param t the throwable
+     * @param format the format string, as per {@link String#format(String, Object...)}
+     * @param arg1 the first parameter
+     * @param arg2 the second parameter
+     * @param arg3 the third parameter
+     */
+    void tracef(Throwable t, String format, int arg1, Object arg2, Object arg3);
+
+    /**
+     * Issue a formatted log message with a level of TRACE.
+     *
+     * @param format the format string, as per {@link String#format(String, Object...)}
+     * @param arg the parameter
+     */
+    void tracef(String format, long arg);
+
+    /**
+     * Issue a formatted log message with a level of TRACE.
+     *
+     * @param format the format string, as per {@link String#format(String, Object...)}
+     * @param arg1 the first parameter
+     * @param arg2 the second parameter
+     */
+    void tracef(String format, long arg1, long arg2);
+
+    /**
+     * Issue a formatted log message with a level of TRACE.
+     *
+     * @param format the format string, as per {@link String#format(String, Object...)}
+     * @param arg1 the first parameter
+     * @param arg2 the second parameter
+     */
+    void tracef(String format, long arg1, Object arg2);
+
+    /**
+     * Issue a formatted log message with a level of TRACE.
+     *
+     * @param format the format string, as per {@link String#format(String, Object...)}
+     * @param arg1 the first parameter
+     * @param arg2 the second parameter
+     * @param arg3 the third parameter
+     */
+    void tracef(String format, long arg1, long arg2, long arg3);
+
+    /**
+     * Issue a formatted log message with a level of TRACE.
+     *
+     * @param format the format string, as per {@link String#format(String, Object...)}
+     * @param arg1 the first parameter
+     * @param arg2 the second parameter
+     * @param arg3 the third parameter
+     */
+    void tracef(String format, long arg1, long arg2, Object arg3);
+
+    /**
+     * Issue a formatted log message with a level of TRACE.
+     *
+     * @param format the format string, as per {@link String#format(String, Object...)}
+     * @param arg1 the first parameter
+     * @param arg2 the second parameter
+     * @param arg3 the third parameter
+     */
+    void tracef(String format, long arg1, Object arg2, Object arg3);
+
+    /**
+     * Issue a formatted log message with a level of TRACE.
+     *
+     * @param t the throwable
+     * @param format the format string, as per {@link String#format(String, Object...)}
+     * @param arg the parameter
+     */
+    void tracef(Throwable t, String format, long arg);
+
+    /**
+     * Issue a formatted log message with a level of TRACE.
+     *
+     * @param t the throwable
+     * @param format the format string, as per {@link String#format(String, Object...)}
+     * @param arg1 the first parameter
+     * @param arg2 the second parameter
+     */
+    void tracef(Throwable t, String format, long arg1, long arg2);
+
+    /**
+     * Issue a formatted log message with a level of TRACE.
+     *
+     * @param t the throwable
+     * @param format the format string, as per {@link String#format(String, Object...)}
+     * @param arg1 the first parameter
+     * @param arg2 the second parameter
+     */
+    void tracef(Throwable t, String format, long arg1, Object arg2);
+
+    /**
+     * Issue a formatted log message with a level of TRACE.
+     *
+     * @param t the throwable
+     * @param format the format string, as per {@link String#format(String, Object...)}
+     * @param arg1 the first parameter
+     * @param arg2 the second parameter
+     * @param arg3 the third parameter
+     */
+    void tracef(Throwable t, String format, long arg1, long arg2, long arg3);
+
+    /**
+     * Issue a formatted log message with a level of TRACE.
+     *
+     * @param t the throwable
+     * @param format the format string, as per {@link String#format(String, Object...)}
+     * @param arg1 the first parameter
+     * @param arg2 the second parameter
+     * @param arg3 the third parameter
+     */
+    void tracef(Throwable t, String format, long arg1, long arg2, Object arg3);
+
+    /**
+     * Issue a formatted log message with a level of TRACE.
+     *
+     * @param t the throwable
+     * @param format the format string, as per {@link String#format(String, Object...)}
+     * @param arg1 the first parameter
+     * @param arg2 the second parameter
+     * @param arg3 the third parameter
+     */
+    void tracef(Throwable t, String format, long arg1, Object arg2, Object arg3);
+
+    /**
      * Check to see if the {@code DEBUG} level is enabled for this logger.
      *
      * @return {@code true} if messages logged at {@link org.jboss.logging.Logger.Level#DEBUG} may be accepted, {@code false} otherwise
@@ -412,6 +648,242 @@ public interface BasicLogger {
      * @param param3 the third parameter
      */
     void debugf(Throwable t, String format, Object param1, Object param2, Object param3);
+
+    /**
+     * Issue a formatted log message with a level of DEBUG.
+     *
+     * @param format the format string, as per {@link String#format(String, Object...)}
+     * @param arg the parameter
+     */
+    void debugf(String format, int arg);
+
+    /**
+     * Issue a formatted log message with a level of DEBUG.
+     *
+     * @param format the format string, as per {@link String#format(String, Object...)}
+     * @param arg1 the first parameter
+     * @param arg2 the second parameter
+     */
+    void debugf(String format, int arg1, int arg2);
+
+    /**
+     * Issue a formatted log message with a level of DEBUG.
+     *
+     * @param format the format string, as per {@link String#format(String, Object...)}
+     * @param arg1 the first parameter
+     * @param arg2 the second parameter
+     */
+    void debugf(String format, int arg1, Object arg2);
+
+    /**
+     * Issue a formatted log message with a level of DEBUG.
+     *
+     * @param format the format string, as per {@link String#format(String, Object...)}
+     * @param arg1 the first parameter
+     * @param arg2 the second parameter
+     * @param arg3 the third parameter
+     */
+    void debugf(String format, int arg1, int arg2, int arg3);
+
+    /**
+     * Issue a formatted log message with a level of DEBUG.
+     *
+     * @param format the format string, as per {@link String#format(String, Object...)}
+     * @param arg1 the first parameter
+     * @param arg2 the second parameter
+     * @param arg3 the third parameter
+     */
+    void debugf(String format, int arg1, int arg2, Object arg3);
+
+    /**
+     * Issue a formatted log message with a level of DEBUG.
+     *
+     * @param format the format string, as per {@link String#format(String, Object...)}
+     * @param arg1 the first parameter
+     * @param arg2 the second parameter
+     * @param arg3 the third parameter
+     */
+    void debugf(String format, int arg1, Object arg2, Object arg3);
+
+    /**
+     * Issue a formatted log message with a level of DEBUG.
+     *
+     * @param t the throwable
+     * @param format the format string, as per {@link String#format(String, Object...)}
+     * @param arg the parameter
+     */
+    void debugf(Throwable t, String format, int arg);
+
+    /**
+     * Issue a formatted log message with a level of DEBUG.
+     *
+     * @param t the throwable
+     * @param format the format string, as per {@link String#format(String, Object...)}
+     * @param arg1 the first parameter
+     * @param arg2 the second parameter
+     */
+    void debugf(Throwable t, String format, int arg1, int arg2);
+
+    /**
+     * Issue a formatted log message with a level of DEBUG.
+     *
+     * @param t the throwable
+     * @param format the format string, as per {@link String#format(String, Object...)}
+     * @param arg1 the first parameter
+     * @param arg2 the second parameter
+     */
+    void debugf(Throwable t, String format, int arg1, Object arg2);
+
+    /**
+     * Issue a formatted log message with a level of DEBUG.
+     *
+     * @param t the throwable
+     * @param format the format string, as per {@link String#format(String, Object...)}
+     * @param arg1 the first parameter
+     * @param arg2 the second parameter
+     * @param arg3 the third parameter
+     */
+    void debugf(Throwable t, String format, int arg1, int arg2, int arg3);
+
+    /**
+     * Issue a formatted log message with a level of DEBUG.
+     *
+     * @param t the throwable
+     * @param format the format string, as per {@link String#format(String, Object...)}
+     * @param arg1 the first parameter
+     * @param arg2 the second parameter
+     * @param arg3 the third parameter
+     */
+    void debugf(Throwable t, String format, int arg1, int arg2, Object arg3);
+
+    /**
+     * Issue a formatted log message with a level of DEBUG.
+     *
+     * @param t the throwable
+     * @param format the format string, as per {@link String#format(String, Object...)}
+     * @param arg1 the first parameter
+     * @param arg2 the second parameter
+     * @param arg3 the third parameter
+     */
+    void debugf(Throwable t, String format, int arg1, Object arg2, Object arg3);
+
+    /**
+     * Issue a formatted log message with a level of DEBUG.
+     *
+     * @param format the format string, as per {@link String#format(String, Object...)}
+     * @param arg the parameter
+     */
+    void debugf(String format, long arg);
+
+    /**
+     * Issue a formatted log message with a level of DEBUG.
+     *
+     * @param format the format string, as per {@link String#format(String, Object...)}
+     * @param arg1 the first parameter
+     * @param arg2 the second parameter
+     */
+    void debugf(String format, long arg1, long arg2);
+
+    /**
+     * Issue a formatted log message with a level of DEBUG.
+     *
+     * @param format the format string, as per {@link String#format(String, Object...)}
+     * @param arg1 the first parameter
+     * @param arg2 the second parameter
+     */
+    void debugf(String format, long arg1, Object arg2);
+
+    /**
+     * Issue a formatted log message with a level of DEBUG.
+     *
+     * @param format the format string, as per {@link String#format(String, Object...)}
+     * @param arg1 the first parameter
+     * @param arg2 the second parameter
+     * @param arg3 the third parameter
+     */
+    void debugf(String format, long arg1, long arg2, long arg3);
+
+    /**
+     * Issue a formatted log message with a level of DEBUG.
+     *
+     * @param format the format string, as per {@link String#format(String, Object...)}
+     * @param arg1 the first parameter
+     * @param arg2 the second parameter
+     * @param arg3 the third parameter
+     */
+    void debugf(String format, long arg1, long arg2, Object arg3);
+
+    /**
+     * Issue a formatted log message with a level of DEBUG.
+     *
+     * @param format the format string, as per {@link String#format(String, Object...)}
+     * @param arg1 the first parameter
+     * @param arg2 the second parameter
+     * @param arg3 the third parameter
+     */
+    void debugf(String format, long arg1, Object arg2, Object arg3);
+
+    /**
+     * Issue a formatted log message with a level of DEBUG.
+     *
+     * @param t the throwable
+     * @param format the format string, as per {@link String#format(String, Object...)}
+     * @param arg the parameter
+     */
+    void debugf(Throwable t, String format, long arg);
+
+    /**
+     * Issue a formatted log message with a level of DEBUG.
+     *
+     * @param t the throwable
+     * @param format the format string, as per {@link String#format(String, Object...)}
+     * @param arg1 the first parameter
+     * @param arg2 the second parameter
+     */
+    void debugf(Throwable t, String format, long arg1, long arg2);
+
+    /**
+     * Issue a formatted log message with a level of DEBUG.
+     *
+     * @param t the throwable
+     * @param format the format string, as per {@link String#format(String, Object...)}
+     * @param arg1 the first parameter
+     * @param arg2 the second parameter
+     */
+    void debugf(Throwable t, String format, long arg1, Object arg2);
+
+    /**
+     * Issue a formatted log message with a level of DEBUG.
+     *
+     * @param t the throwable
+     * @param format the format string, as per {@link String#format(String, Object...)}
+     * @param arg1 the first parameter
+     * @param arg2 the second parameter
+     * @param arg3 the third parameter
+     */
+    void debugf(Throwable t, String format, long arg1, long arg2, long arg3);
+
+    /**
+     * Issue a formatted log message with a level of DEBUG.
+     *
+     * @param t the throwable
+     * @param format the format string, as per {@link String#format(String, Object...)}
+     * @param arg1 the first parameter
+     * @param arg2 the second parameter
+     * @param arg3 the third parameter
+     */
+    void debugf(Throwable t, String format, long arg1, long arg2, Object arg3);
+
+    /**
+     * Issue a formatted log message with a level of DEBUG.
+     *
+     * @param t the throwable
+     * @param format the format string, as per {@link String#format(String, Object...)}
+     * @param arg1 the first parameter
+     * @param arg2 the second parameter
+     * @param arg3 the third parameter
+     */
+    void debugf(Throwable t, String format, long arg1, Object arg2, Object arg3);
 
     /**
      * Check to see if the {@code INFO} level is enabled for this logger.
