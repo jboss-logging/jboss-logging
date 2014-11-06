@@ -21,6 +21,9 @@ package org.jboss.logging;
 import java.security.AccessController;
 import java.security.PrivilegedAction;
 import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.ConcurrentMap;
+
 import org.jboss.logmanager.LogContext;
 import org.jboss.logmanager.MDC;
 import org.jboss.logmanager.NDC;
@@ -30,18 +33,54 @@ import static org.jboss.logmanager.Logger.AttachmentKey;
 final class JBossLogManagerProvider implements LoggerProvider {
 
     private static final AttachmentKey<Logger> KEY = new AttachmentKey<Logger>();
+    private static final AttachmentKey<ConcurrentMap<String, Logger>> LEGACY_KEY = new AttachmentKey<ConcurrentMap<String, Logger>>();
 
     public Logger getLogger(final String name) {
         final SecurityManager sm = System.getSecurityManager();
         if (sm != null) {
             return AccessController.doPrivileged(new PrivilegedAction<Logger>() {
                 public Logger run() {
-                    return doGetLogger(name);
+                    try {
+                        return doGetLogger(name) ;
+                    } catch (NoSuchMethodError ignore) {
+                    }
+                    // fallback
+                    return doLegacyGetLogger(name);
                 }
             });
         } else {
-            return doGetLogger(name);
+            try {
+                return doGetLogger(name) ;
+            } catch (NoSuchMethodError ignore) {
+            }
+            // fallback
+            return doLegacyGetLogger(name);
         }
+    }
+
+    private static Logger doLegacyGetLogger(final String name) {
+        final org.jboss.logmanager.Logger lmLogger = LogContext.getLogContext().getLogger("");
+        ConcurrentMap<String, Logger> loggers = lmLogger.getAttachment(LEGACY_KEY);
+        if (loggers == null) {
+            loggers = new ConcurrentHashMap<String, Logger>();
+            final ConcurrentMap<String, Logger> appearing = lmLogger.attachIfAbsent(LEGACY_KEY, loggers);
+            if (appearing != null) {
+                loggers = appearing;
+            }
+        }
+
+        Logger l = loggers.get(name);
+        if (l != null) {
+            return l;
+        }
+
+        final org.jboss.logmanager.Logger logger = org.jboss.logmanager.Logger.getLogger(name);
+        l = new JBossLogManagerLogger(name, logger);
+        final Logger appearing = loggers.putIfAbsent(name, l);
+        if (appearing == null) {
+            return l;
+        }
+        return appearing;
     }
 
     private static Logger doGetLogger(final String name) {
