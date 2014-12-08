@@ -1,16 +1,19 @@
 /*
  * JBoss, Home of Professional Open Source.
- * 
+ *
  * Copyright 2011 Red Hat, Inc.
- * 
- * Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance with
- * the License. You may obtain a copy of the License at
- * 
- * http://www.apache.org/licenses/LICENSE-2.0
- * 
- * Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on
- * an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the License for the
- * specific language governing permissions and limitations under the License.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  */
 
 package org.jboss.logging;
@@ -23,7 +26,6 @@ import java.util.ServiceLoader;
 import java.util.logging.LogManager;
 
 final class LoggerProviders {
-
     static final String LOGGING_PROVIDER_KEY = "org.jboss.logging.provider";
 
     static final LoggerProvider PROVIDER = find();
@@ -40,7 +42,6 @@ final class LoggerProviders {
         try {
             // Check the system property
             final String loggerProvider = AccessController.doPrivileged(new PrivilegedAction<String>() {
-
                 @Override
                 public String run() {
                     return System.getProperty(LOGGING_PROVIDER_KEY);
@@ -69,7 +70,7 @@ final class LoggerProviders {
         try {
             final ServiceLoader<LoggerProvider> loader = ServiceLoader.load(LoggerProvider.class, cl);
             final Iterator<LoggerProvider> iter = loader.iterator();
-            for (;;) {
+            for (; ; ) {
                 try {
                     if (!iter.hasNext()) {
                         break;
@@ -142,15 +143,14 @@ final class LoggerProviders {
         Class.forName("org.apache.logging.log4j.LogManager", true, cl);
         Class.forName("org.apache.logging.log4j.spi.AbstractLogger", true, cl);
         LoggerProvider provider = new Log4j2LoggerProvider();
-        // if Log4j 2 has a bad implementation that doesn't extend AbstractLogger, we won't know until getting the first
-        // logger throws an exception
+        // if Log4j 2 has a bad implementation that doesn't extend AbstractLogger, we won't know until getting the first logger throws an exception
         logProvider(provider, via);
         return provider;
     }
 
     private static LoggerProvider tryLog4j(final ClassLoader cl, final String via) throws ClassNotFoundException {
         Class.forName("org.apache.log4j.LogManager", true, cl);
-        // JBLOGGING-65 - slf4j can disguise itself as log4j. Test for a class that slf4j doesn't provide.
+        // JBLOGGING-65 - slf4j can disguise itself as log4j.  Test for a class that slf4j doesn't provide.
         // JBLOGGING-94 - JBoss Logging does not detect org.apache.logging.log4j:log4j-1.2-api:2.0
         Class.forName("org.apache.log4j.config.PropertySetter", true, cl);
         final LoggerProvider provider = new Log4j2LoggerProvider();
