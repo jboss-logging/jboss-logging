@@ -42,6 +42,7 @@ final class LoggerProviders {
         try {
             // Check the system property
             final String loggerProvider = AccessController.doPrivileged(new PrivilegedAction<String>() {
+                @Override
                 public String run() {
                     return System.getProperty(LOGGING_PROVIDER_KEY);
                 }
@@ -57,6 +58,8 @@ final class LoggerProviders {
                     return tryLog4j(cl, "system property");
                 } else if ("slf4j".equalsIgnoreCase(loggerProvider)) {
                     return trySlf4j("system property");
+                } else if ("tinylog".equalsIgnoreCase(loggerProvider)) {
+                    return tryTinylog("system property");
                 }
             }
         } catch (Throwable t) {
@@ -67,15 +70,18 @@ final class LoggerProviders {
         try {
             final ServiceLoader<LoggerProvider> loader = ServiceLoader.load(LoggerProvider.class, cl);
             final Iterator<LoggerProvider> iter = loader.iterator();
-            for (; ; )
+            for (; ; ) {
                 try {
-                    if (!iter.hasNext()) break;
+                    if (!iter.hasNext()) {
+                        break;
+                    }
                     LoggerProvider provider = iter.next();
                     // Attempt to get a logger, if it fails keep trying
                     logProvider(provider, "service loader");
                     return provider;
                 } catch (ServiceConfigurationError ignore) {
                 }
+            }
         } catch (Throwable ignore) {
             // TODO consider printing the stack trace as it should only happen once
         }
@@ -83,6 +89,12 @@ final class LoggerProviders {
         // Finally search the class path
         try {
             return tryJBossLogManager(cl, null);
+        } catch (Throwable t) {
+            // nope...
+        }
+        try {
+            // MUST try tinylog BEFORE Log4j 1.x and SLF4J because optional compatibility layers can pass these tests
+            return tryTinylog(null);
         } catch (Throwable t) {
             // nope...
         }
@@ -115,6 +127,12 @@ final class LoggerProviders {
 
     private static LoggerProvider trySlf4j(final String via) {
         final LoggerProvider provider = new Slf4jLoggerProvider();
+        logProvider(provider, via);
+        return provider;
+    }
+
+    private static LoggerProvider tryTinylog(final String via) {
+        final LoggerProvider provider = new TinylogLoggerProvider();
         logProvider(provider, via);
         return provider;
     }
