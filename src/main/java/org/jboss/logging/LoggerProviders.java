@@ -135,7 +135,7 @@ final class LoggerProviders {
         // JBLOGGING-65 - slf4j can disguise itself as log4j.  Test for a class that slf4j doesn't provide.
         // JBLOGGING-94 - JBoss Logging does not detect org.apache.logging.log4j:log4j-1.2-api:2.0
         Class.forName("org.apache.log4j.config.PropertySetter", true, cl);
-        final LoggerProvider provider = new Log4j2LoggerProvider();
+        final LoggerProvider provider = new Log4jLoggerProvider();
         logProvider(provider, via);
         return provider;
     }
