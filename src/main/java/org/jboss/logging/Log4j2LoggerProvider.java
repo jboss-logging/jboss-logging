@@ -31,6 +31,11 @@ final class Log4j2LoggerProvider implements LoggerProvider {
     }
 
     @Override
+    public void clearMdc() {
+        ThreadContext.clearMap();
+    }
+
+    @Override
     public Object putMdc(String key, Object value) {
         try {
             return ThreadContext.get(key);

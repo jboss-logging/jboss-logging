@@ -36,6 +36,10 @@ final class Slf4jLoggerProvider extends AbstractLoggerProvider implements Logger
         return new Slf4jLogger(name, l);
     }
 
+    public void clearMdc() {
+        MDC.clear();
+    }
+
     public Object putMdc(final String key, final Object value) {
         try {
             return MDC.get(key);

@@ -26,6 +26,13 @@ abstract class AbstractMdcLoggerProvider extends AbstractLoggerProvider {
 
     private final ThreadLocal<Map<String, Object>> mdcMap = new ThreadLocal<Map<String, Object>>();
 
+    public void clearMdc() {
+        final Map<String, Object> map = mdcMap.get();
+        if (map != null) {
+            map.clear();
+        }
+    }
+
     public Object getMdc(String key) {
         return mdcMap.get() == null ? null : mdcMap.get().get(key);
     }

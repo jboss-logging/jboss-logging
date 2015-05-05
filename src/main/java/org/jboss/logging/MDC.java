@@ -74,4 +74,11 @@ public final class MDC {
     public static Map<String, Object> getMap() {
         return LoggerProviders.PROVIDER.getMdcMap();
     }
+
+    /**
+     * Clears the message diagnostics context.
+     */
+    public static void clear() {
+        LoggerProviders.PROVIDER.clearMdc();
+    }
 }

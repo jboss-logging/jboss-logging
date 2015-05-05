@@ -98,6 +98,10 @@ final class JBossLogManagerProvider implements LoggerProvider {
         }
     }
 
+    public void clearMdc() {
+        MDC.clear();
+    }
+
     public Object putMdc(final String key, final Object value) {
         return MDC.put(key, String.valueOf(value));
     }

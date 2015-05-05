@@ -30,6 +30,10 @@ final class Log4jLoggerProvider implements LoggerProvider {
         return new Log4jLogger("".equals(name) ? "ROOT" : name);
     }
 
+    public void clearMdc() {
+        MDC.clear();
+    }
+
     public Object getMdc(String key) {
         return MDC.get(key);
     }

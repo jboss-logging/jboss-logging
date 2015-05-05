@@ -39,6 +39,11 @@ public interface LoggerProvider {
     Logger getLogger(String name);
 
     /**
+     * Removes all entries from the message diagnostics context.
+     */
+    void clearMdc();
+
+    /**
      * Puts the value onto the message diagnostics context.
      *
      * @param key   the key for the value
