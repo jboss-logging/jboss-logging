@@ -18,7 +18,9 @@
 
 package org.jboss.logging;
 
+import java.util.Collections;
 import java.util.Map;
+
 import org.slf4j.LoggerFactory;
 import org.slf4j.MDC;
 import org.slf4j.spi.LocationAwareLogger;
@@ -29,7 +31,8 @@ final class Slf4jLoggerProvider extends AbstractLoggerProvider implements Logger
         org.slf4j.Logger l = LoggerFactory.getLogger(name);
         try {
             return new Slf4jLocationAwareLogger(name, (LocationAwareLogger) l);
-        } catch (Throwable ignored) {}
+        } catch (Throwable ignored) {
+        }
         return new Slf4jLogger(name, l);
     }
 
@@ -53,8 +56,9 @@ final class Slf4jLoggerProvider extends AbstractLoggerProvider implements Logger
         MDC.remove(key);
     }
 
-    @SuppressWarnings({ "unchecked" })
     public Map<String, Object> getMdcMap() {
-        return MDC.getCopyOfContextMap();
+        @SuppressWarnings({"unchecked"})
+        final Map<String, Object> map = MDC.getCopyOfContextMap();
+        return map == null ? Collections.<String, Object>emptyMap() : map;
     }
 }
