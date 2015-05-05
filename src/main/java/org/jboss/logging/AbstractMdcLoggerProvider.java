@@ -18,6 +18,7 @@
 
 package org.jboss.logging;
 
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -25,12 +26,20 @@ abstract class AbstractMdcLoggerProvider extends AbstractLoggerProvider {
 
     private final ThreadLocal<Map<String, Object>> mdcMap = new ThreadLocal<Map<String, Object>>();
 
+    public void clearMdc() {
+        final Map<String, Object> map = mdcMap.get();
+        if (map != null) {
+            map.clear();
+        }
+    }
+
     public Object getMdc(String key) {
         return mdcMap.get() == null ? null : mdcMap.get().get(key);
     }
 
     public Map<String, Object> getMdcMap() {
-        return mdcMap.get();
+        final Map<String, Object> map = mdcMap.get();
+        return map == null ? Collections.<String, Object>emptyMap() : map;
     }
 
     public Object putMdc(String key, Object value) {

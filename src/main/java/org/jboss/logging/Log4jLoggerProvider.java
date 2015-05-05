@@ -18,6 +18,7 @@
 
 package org.jboss.logging;
 
+import java.util.Collections;
 import java.util.Map;
 
 import org.apache.log4j.MDC;
@@ -29,13 +30,18 @@ final class Log4jLoggerProvider implements LoggerProvider {
         return new Log4jLogger("".equals(name) ? "ROOT" : name);
     }
 
+    public void clearMdc() {
+        MDC.clear();
+    }
+
     public Object getMdc(String key) {
         return MDC.get(key);
     }
 
-    @SuppressWarnings("unchecked")
     public Map<String, Object> getMdcMap() {
-        return MDC.getContext();
+        @SuppressWarnings("unchecked")
+        final Map<String, Object> map = MDC.getContext();
+        return map == null ? Collections.<String, Object>emptyMap() : map;
     }
 
     public Object putMdc(String key, Object val) {
