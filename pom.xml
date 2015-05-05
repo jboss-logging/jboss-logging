@@ -128,7 +128,7 @@
                             ${project.groupId}.*;version=${project.version};-split-package:=error
                         </Export-Package>
                         <Import-Package>
-                            org.apache.log4j|org.apache.logging.log4j|org.slf4j|org.slf4j.spi|org.jboss.logmanager;resolution:=optional,*
+                            *;resolution:=optional
                         </Import-Package>
                     </instructions>
                 </configuration>
