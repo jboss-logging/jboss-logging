@@ -5,7 +5,7 @@
     <modelVersion>4.0.0</modelVersion>
     <groupId>org.jboss.logging</groupId>
     <artifactId>jboss-logging</artifactId>
-    <version>3.3.0.Alpha1-SNAPSHOT</version>
+    <version>3.3.0.Beta1</version>
     <packaging>jar</packaging>
     <name>JBoss Logging 3</name>
     <url>http://www.jboss.org</url>
@@ -103,7 +103,7 @@
                     <doctitle><![CDATA[JBoss Logging ]]>${project.version}</doctitle>
                     <header><![CDATA[JBoss Logging ]]>${project.version}</header>
                     <footer><![CDATA[JBoss Logging ]]>${project.version}</footer>
-                    <bottom><![CDATA[<i>Copyright &#169; 2014 Red Hat, Inc.</i>]]></bottom>
+                    <bottom><![CDATA[<i>Copyright &#169; 2015 Red Hat, Inc.</i>]]></bottom>
                     <links>
                         <link>http://java.sun.com/javase/6/docs/api/</link>
                     </links>
