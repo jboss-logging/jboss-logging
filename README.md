@@ -11,3 +11,9 @@ I have witnessed this in OpenJPA+javaxvalidation+Tomcat environment where myweba
 Modified two classes to fix memory leak.<br/>
 org.jboss.logging.JDKLevel<br/>
 org.jboss.logging.JDKLogger<br/>
+
+<b>Build</b><br/>
+Clone files to a local folder<br/>
+Run <i>mvn package</i> in a command console<br/>
+Copy a new target/jboss-logging.jar file to a webapp<br/>
+
