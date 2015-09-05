@@ -67,14 +67,14 @@ final class JDKLogger extends Logger {
 
     private static java.util.logging.Level translate(final Level level) {
         if (level != null) switch (level) {
-            case FATAL: return JDKLevel.FATAL;
-            case ERROR: return JDKLevel.ERROR;
-            case WARN:  return JDKLevel.WARN;
-            case INFO:  return JDKLevel.INFO;
-            case DEBUG: return JDKLevel.DEBUG;
-            case TRACE: return JDKLevel.TRACE;
+            case FATAL: return java.util.logging.Level.SEVERE; //JDKLevel.FATAL;
+            case ERROR: return java.util.logging.Level.SEVERE; //JDKLevel.ERROR;
+            case WARN:  return java.util.logging.Level.WARNING; //JDKLevel.WARN;
+            case INFO:  return java.util.logging.Level.INFO; //JDKLevel.INFO;
+            case DEBUG: return java.util.logging.Level.FINE; //JDKLevel.DEBUG;
+            case TRACE: return java.util.logging.Level.FINER; //JDKLevel.TRACE;
         }
-        return JDKLevel.ALL;
+        return java.util.logging.Level.ALL; //JDKLevel.ALL;
     }
 
     public boolean isEnabled(final Level level) {
