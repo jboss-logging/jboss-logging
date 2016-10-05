@@ -32,13 +32,16 @@ final class Slf4jLogger extends Logger {
     }
 
     public boolean isEnabled(final Level level) {
-        if (level != null) switch (level) {
-            case FATAL: return logger.isErrorEnabled();
-            case ERROR: return logger.isErrorEnabled();
-            case WARN:  return logger.isWarnEnabled();
-            case INFO:  return logger.isInfoEnabled();
-            case DEBUG: return logger.isDebugEnabled();
-            case TRACE: return logger.isTraceEnabled();
+        if (level == Level.TRACE) {
+            return logger.isTraceEnabled();
+        } else if (level == Level.DEBUG) {
+            return logger.isDebugEnabled();
+        } else if (level == Level.INFO) {
+            return logger.isInfoEnabled();
+        } else if (level == Level.WARN) {
+            return logger.isWarnEnabled();
+        } else if (level == Level.ERROR || level == Level.FATAL) {
+            return logger.isErrorEnabled();
         }
         return true;
     }
@@ -46,23 +49,16 @@ final class Slf4jLogger extends Logger {
     protected void doLog(final Level level, final String loggerClassName, final Object message, final Object[] parameters, final Throwable thrown) {
         if (isEnabled(level)) try {
             final String text = parameters == null || parameters.length == 0 ? String.valueOf(message) : MessageFormat.format(String.valueOf(message), parameters);
-            switch (level) {
-                case FATAL:
-                case ERROR:
-                    logger.error(text, thrown);
-                    return;
-                case WARN:
-                    logger.warn(text, thrown);
-                    return;
-                case INFO:
-                    logger.info(text, thrown);
-                    return;
-                case DEBUG:
-                    logger.debug(text, thrown);
-                    return;
-                case TRACE:
-                    logger.trace(text, thrown);
-                    return;
+            if (level == Level.INFO) {
+                logger.info(text, thrown);
+            } else if (level == Level.WARN) {
+                logger.warn(text, thrown);
+            } else if (level == Level.ERROR || level == Level.FATAL) {
+                logger.error(text, thrown);
+            } else if (level == Level.DEBUG) {
+                logger.debug(text, thrown);
+            } else if (level == Level.TRACE) {
+                logger.debug(text, thrown);
             }
         } catch (Throwable ignored) {}
     }
@@ -70,23 +66,16 @@ final class Slf4jLogger extends Logger {
     protected void doLogf(final Level level, final String loggerClassName, final String format, final Object[] parameters, final Throwable thrown) {
         if (isEnabled(level)) try {
             final String text = parameters == null ? String.format(format) : String.format(format, parameters);
-            switch (level) {
-                case FATAL:
-                case ERROR:
-                    logger.error(text, thrown);
-                    return;
-                case WARN:
-                    logger.warn(text, thrown);
-                    return;
-                case INFO:
-                    logger.info(text, thrown);
-                    return;
-                case DEBUG:
-                    logger.debug(text, thrown);
-                    return;
-                case TRACE:
-                    logger.trace(text, thrown);
-                    return;
+            if (level == Level.INFO) {
+                logger.info(text, thrown);
+            } else if (level == Level.WARN) {
+                logger.warn(text, thrown);
+            } else if (level == Level.ERROR || level == Level.FATAL) {
+                logger.error(text, thrown);
+            } else if (level == Level.DEBUG) {
+                logger.debug(text, thrown);
+            } else if (level == Level.TRACE) {
+                logger.debug(text, thrown);
             }
         } catch (Throwable ignored) {}
     }

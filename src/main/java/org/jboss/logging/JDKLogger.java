@@ -66,13 +66,18 @@ final class JDKLogger extends Logger {
     }
 
     private static java.util.logging.Level translate(final Level level) {
-        if (level != null) switch (level) {
-            case FATAL: return JDKLevel.FATAL;
-            case ERROR: return JDKLevel.ERROR;
-            case WARN:  return JDKLevel.WARN;
-            case INFO:  return JDKLevel.INFO;
-            case DEBUG: return JDKLevel.DEBUG;
-            case TRACE: return JDKLevel.TRACE;
+        if (level == Level.TRACE) {
+            return JDKLevel.TRACE;
+        } else if (level == Level.DEBUG) {
+            return JDKLevel.DEBUG;
+        } else if (level == Level.INFO) {
+            return JDKLevel.INFO;
+        } else if (level == Level.WARN) {
+            return JDKLevel.WARN;
+        } else if (level == Level.ERROR) {
+            return JDKLevel.ERROR;
+        } else if (level == Level.FATAL) {
+            return JDKLevel.FATAL;
         }
         return JDKLevel.ALL;
     }

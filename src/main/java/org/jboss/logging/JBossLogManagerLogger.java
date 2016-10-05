@@ -55,13 +55,18 @@ final class JBossLogManagerLogger extends Logger {
     }
 
     private static java.util.logging.Level translate(final Level level) {
-        if (level != null) switch (level) {
-            case FATAL: return org.jboss.logmanager.Level.FATAL;
-            case ERROR: return org.jboss.logmanager.Level.ERROR;
-            case WARN:  return org.jboss.logmanager.Level.WARN;
-            case INFO:  return org.jboss.logmanager.Level.INFO;
-            case DEBUG: return org.jboss.logmanager.Level.DEBUG;
-            case TRACE: return org.jboss.logmanager.Level.TRACE;
+        if (level == Level.TRACE) {
+            return org.jboss.logmanager.Level.TRACE;
+        } if (level == Level.DEBUG) {
+            return org.jboss.logmanager.Level.DEBUG;
+        } else if (level == Level.INFO) {
+            return org.jboss.logmanager.Level.INFO;
+        } else if (level == Level.WARN) {
+            return org.jboss.logmanager.Level.WARN;
+        } else if (level == Level.ERROR) {
+            return org.jboss.logmanager.Level.ERROR;
+        } else if (level == Level.FATAL) {
+            return org.jboss.logmanager.Level.FATAL;
         }
         return org.jboss.logmanager.Level.ALL;
     }
