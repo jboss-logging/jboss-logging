@@ -70,7 +70,12 @@ final class JDKLogger extends Logger {
             return JDKLevel.TRACE;
         } else if (level == Level.DEBUG) {
             return JDKLevel.DEBUG;
-        } else if (level == Level.INFO) {
+        }
+        return infoOrHigher(level);
+    }
+
+    private static java.util.logging.Level infoOrHigher(final Level level) {
+        if (level == Level.INFO) {
             return JDKLevel.INFO;
         } else if (level == Level.WARN) {
             return JDKLevel.WARN;
