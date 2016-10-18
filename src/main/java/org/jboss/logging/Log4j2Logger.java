@@ -73,7 +73,12 @@ final class Log4j2Logger extends Logger {
             return org.apache.logging.log4j.Level.TRACE;
         } else if (level == Level.DEBUG) {
             return org.apache.logging.log4j.Level.DEBUG;
-        } else if (level == Level.INFO) {
+        }
+        return infoOrHigher(level);
+    }
+
+    private static org.apache.logging.log4j.Level infoOrHigher(final Level level) {
+        if (level == Level.INFO) {
             return org.apache.logging.log4j.Level.INFO;
         } else if (level == Level.WARN) {
             return org.apache.logging.log4j.Level.WARN;

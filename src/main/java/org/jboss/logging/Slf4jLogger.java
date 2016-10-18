@@ -36,7 +36,12 @@ final class Slf4jLogger extends Logger {
             return logger.isTraceEnabled();
         } else if (level == Level.DEBUG) {
             return logger.isDebugEnabled();
-        } else if (level == Level.INFO) {
+        }
+        return infoOrHigherEnabled(level);
+    }
+
+    private boolean infoOrHigherEnabled(final Level level) {
+        if (level == Level.INFO) {
             return logger.isInfoEnabled();
         } else if (level == Level.WARN) {
             return logger.isWarnEnabled();
