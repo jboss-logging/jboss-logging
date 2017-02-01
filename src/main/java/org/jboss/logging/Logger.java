@@ -2513,7 +2513,7 @@ public abstract class Logger implements Serializable, BasicLogger {
      * @return the typed logger
      */
     public static <T> T getMessageLogger(Class<T> type, String category) {
-        return getMessageLogger(type, category, Locale.getDefault());
+        return getMessageLogger(type, category, LoggingLocale.getLocale());
     }
 
     /**
