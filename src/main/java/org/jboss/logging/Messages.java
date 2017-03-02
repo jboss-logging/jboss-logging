@@ -43,7 +43,7 @@ public final class Messages {
      * @return the bundle
      */
     public static <T> T getBundle(Class<T> type) {
-        return getBundle(type, Locale.getDefault());
+        return getBundle(type, LoggingLocale.getLocale());
     }
 
     /**
