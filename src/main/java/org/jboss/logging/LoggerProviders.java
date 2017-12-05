@@ -31,10 +31,14 @@ final class LoggerProviders {
     static final LoggerProvider PROVIDER = find();
 
     private static LoggerProvider find() {
-        return findProvider();
+        return findProvider(null);
     }
 
-    private static LoggerProvider findProvider() {
+    static LoggerProvider findDelegate(Class<?> ignoredServiceClass) {
+        return findProvider(ignoredServiceClass);
+    }
+
+    private static LoggerProvider findProvider(Class<?> ignoredServiceClass) {
         // Since the impl classes refer to the back-end frameworks directly, if this classloader can't find the target
         // log classes, then it doesn't really matter if they're possibly available from the TCCL because we won't be
         // able to find it anyway
@@ -71,6 +75,7 @@ final class LoggerProviders {
                 try {
                     if (!iter.hasNext()) break;
                     LoggerProvider provider = iter.next();
+                    if (ignoredServiceClass != null && ignoredServiceClass.isInstance(provider)) continue;
                     // Attempt to get a logger, if it fails keep trying
                     logProvider(provider, "service loader");
                     return provider;
