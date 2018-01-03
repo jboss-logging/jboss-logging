@@ -25,6 +25,12 @@ import org.apache.logging.log4j.ThreadContext;
 
 final class Log4j2LoggerProvider implements LoggerProvider {
 
+    /**
+    * A zero-argument constructor needs to be accessible from {@link java.util.ServiceLoader}
+    */
+    public Log4j2LoggerProvider() {
+    }
+
     @Override
     public Log4j2Logger getLogger(String name) {
         return new Log4j2Logger(name);

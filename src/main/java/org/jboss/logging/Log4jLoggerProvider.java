@@ -26,6 +26,12 @@ import org.apache.log4j.NDC;
 
 final class Log4jLoggerProvider implements LoggerProvider {
 
+    /**
+    * A zero-argument constructor needs to be accessible from {@link java.util.ServiceLoader}
+    */
+    public Log4jLoggerProvider() {
+    }
+
     public Logger getLogger(final String name) {
         return new Log4jLogger("".equals(name) ? "ROOT" : name);
     }

@@ -27,6 +27,12 @@ import org.slf4j.spi.LocationAwareLogger;
 
 final class Slf4jLoggerProvider extends AbstractLoggerProvider implements LoggerProvider {
 
+    /**
+    * A zero-argument constructor needs to be accessible from {@link java.util.ServiceLoader}
+    */
+    public Slf4jLoggerProvider() {
+    }
+
     public Logger getLogger(final String name) {
         org.slf4j.Logger l = LoggerFactory.getLogger(name);
         try {
