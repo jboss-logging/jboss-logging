@@ -20,6 +20,12 @@ package org.jboss.logging;
 
 final class JDKLoggerProvider extends AbstractMdcLoggerProvider implements LoggerProvider {
 
+    /**
+    * A zero-argument constructor needs to be accessible from {@link java.util.ServiceLoader}
+    */
+    public JDKLoggerProvider() {
+    }
+
     public Logger getLogger(final String name) {
         return new JDKLogger(name);
     }

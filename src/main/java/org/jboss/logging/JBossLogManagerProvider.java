@@ -35,6 +35,12 @@ final class JBossLogManagerProvider implements LoggerProvider {
     private static final AttachmentKey<Logger> KEY = new AttachmentKey<Logger>();
     private static final AttachmentKey<ConcurrentMap<String, Logger>> LEGACY_KEY = new AttachmentKey<ConcurrentMap<String, Logger>>();
 
+    /**
+    * A zero-argument constructor needs to be accessible from {@link java.util.ServiceLoader}
+    */
+    public JBossLogManagerProvider() {
+    }
+
     public Logger getLogger(final String name) {
         final SecurityManager sm = System.getSecurityManager();
         if (sm != null) {
