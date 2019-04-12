@@ -33,7 +33,7 @@
         <!-- Dependency versions -->
         <version.org.apache.log4j>1.2.16</version.org.apache.log4j>
         <version.org.apache.logging.log4j>2.0</version.org.apache.logging.log4j>
-        <version.org.jboss.logmanager>1.5.2.Final</version.org.jboss.logmanager>
+        <version.org.jboss.logmanager>2.1.9.Final</version.org.jboss.logmanager>
         <version.org.sfl4j>1.7.2</version.org.sfl4j>
     </properties>
 
