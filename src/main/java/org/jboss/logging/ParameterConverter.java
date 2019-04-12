@@ -2,7 +2,7 @@
  * JBoss, Home of Professional Open Source.
  *
  * Copyright 2010 Red Hat, Inc., and individual contributors
- * as indicated by the @author tags. 
+ * as indicated by the @author tags.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -26,13 +26,15 @@ import java.util.Locale;
  *
  * @author <a href="mailto:david.lloyd@redhat.com">David M. Lloyd</a>
  * @param <I> the input type
+ * @deprecated this is not currently used anywhere and no replacement will be created
  */
+@Deprecated
 public interface ParameterConverter<I> {
 
     /**
      * Convert the parameter to its string or string-equivalent representation.  The returned value will be passed in
      * as a parameter to either a {@link java.text.MessageFormat} or {@link java.util.Formatter} instance, depending
-     * on the setting of {@link Message#format()}.
+     * on the setting of {@code org.jboss.logging.annotation.Message.format}.
      *
      * @param locale the locale
      * @param parameter the parameter
