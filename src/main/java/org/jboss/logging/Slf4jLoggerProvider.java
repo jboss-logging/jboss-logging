@@ -19,6 +19,7 @@
 package org.jboss.logging;
 
 import java.util.Collections;
+import java.util.LinkedHashMap;
 import java.util.Map;
 
 import org.slf4j.LoggerFactory;
@@ -60,9 +61,9 @@ final class Slf4jLoggerProvider extends AbstractLoggerProvider implements Logger
         MDC.remove(key);
     }
 
+    @SuppressWarnings("unchecked")
     public Map<String, Object> getMdcMap() {
-        @SuppressWarnings({"unchecked"})
-        final Map<String, Object> map = MDC.getCopyOfContextMap();
-        return map == null ? Collections.<String, Object>emptyMap() : map;
+        final Map copy = MDC.getCopyOfContextMap();
+        return copy == null ? Collections.emptyMap() : new LinkedHashMap<>(copy);
     }
 }
