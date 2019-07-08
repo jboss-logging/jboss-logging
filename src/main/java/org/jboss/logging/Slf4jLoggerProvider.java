@@ -30,9 +30,8 @@ final class Slf4jLoggerProvider extends AbstractLoggerProvider implements Logger
 
     public Logger getLogger(final String name) {
         org.slf4j.Logger l = LoggerFactory.getLogger(name);
-        try {
+        if (l instanceof LocationAwareLogger) {
             return new Slf4jLocationAwareLogger(name, (LocationAwareLogger) l);
-        } catch (Throwable ignored) {
         }
         return new Slf4jLogger(name, l);
     }
