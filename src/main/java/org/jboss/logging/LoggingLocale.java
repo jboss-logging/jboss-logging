@@ -18,8 +18,6 @@
 
 package org.jboss.logging;
 
-import java.security.AccessController;
-import java.security.PrivilegedAction;
 import java.util.Locale;
 
 /**
@@ -51,12 +49,7 @@ class LoggingLocale {
     }
 
     private static Locale getDefaultLocale() {
-        final String bcp47Tag = AccessController.doPrivileged(new PrivilegedAction<String>() {
-            @Override
-            public String run() {
-                return System.getProperty("org.jboss.logging.locale", "");
-            }
-        });
+        final String bcp47Tag = SecurityActions.getSystemProperty("org.jboss.logging.locale", "");
         if (bcp47Tag.trim().isEmpty()) {
             return Locale.getDefault();
         }
