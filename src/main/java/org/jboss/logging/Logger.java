@@ -2526,52 +2526,58 @@ public abstract class Logger implements Serializable, BasicLogger {
      * @return the typed logger
      */
     public static <T> T getMessageLogger(final Class<T> type, final String category, final Locale locale) {
+        if (System.getSecurityManager() == null)
+            return doGetMessageLogger(type, category, locale);
         return doPrivileged(new PrivilegedAction<T>() {
             public T run() {
-                String language = locale.getLanguage();
-                String country = locale.getCountry();
-                String variant = locale.getVariant();
-
-                Class<? extends T> loggerClass = null;
-                final ClassLoader classLoader = type.getClassLoader();
-                final String typeName = type.getName();
-                if (variant != null && variant.length() > 0) try {
-                    loggerClass = Class.forName(join(typeName, "$logger", language, country, variant), true, classLoader).asSubclass(type);
-                } catch (ClassNotFoundException e) {
-                    // ignore
-                }
-                if (loggerClass == null && country != null && country.length() > 0) try {
-                    loggerClass = Class.forName(join(typeName, "$logger", language, country, null), true, classLoader).asSubclass(type);
-                } catch (ClassNotFoundException e) {
-                    // ignore
-                }
-                if (loggerClass == null && language != null && language.length() > 0) try {
-                    loggerClass = Class.forName(join(typeName, "$logger", language, null, null), true, classLoader).asSubclass(type);
-                } catch (ClassNotFoundException e) {
-                    // ignore
-                }
-                if (loggerClass == null) try {
-                    loggerClass = Class.forName(join(typeName, "$logger", null, null, null), true, classLoader).asSubclass(type);
-                } catch (ClassNotFoundException e) {
-                    throw new IllegalArgumentException("Invalid logger " + type + " (implementation not found in " + classLoader + ")");
-                }
-                final Constructor<? extends T> constructor;
-                try {
-                    constructor = loggerClass.getConstructor(Logger.class);
-                } catch (NoSuchMethodException e) {
-                    throw new IllegalArgumentException("Logger implementation " + loggerClass + " has no matching constructor");
-                }
-                try {
-                    return constructor.newInstance(Logger.getLogger(category));
-                } catch (InstantiationException e) {
-                    throw new IllegalArgumentException("Logger implementation " + loggerClass + " could not be instantiated", e);
-                } catch (IllegalAccessException e) {
-                    throw new IllegalArgumentException("Logger implementation " + loggerClass + " could not be instantiated", e);
-                } catch (InvocationTargetException e) {
-                    throw new IllegalArgumentException("Logger implementation " + loggerClass + " could not be instantiated", e.getCause());
-                }
+                return doGetMessageLogger(type, category, locale);
             }
         });
+    }
+
+    private static <T> T doGetMessageLogger(final Class<T> type, final String category, final Locale locale) {
+        String language = locale.getLanguage();
+        String country = locale.getCountry();
+        String variant = locale.getVariant();
+
+        Class<? extends T> loggerClass = null;
+        final ClassLoader classLoader = type.getClassLoader();
+        final String typeName = type.getName();
+        if (variant != null && variant.length() > 0) try {
+            loggerClass = Class.forName(join(typeName, "$logger", language, country, variant), true, classLoader).asSubclass(type);
+        } catch (ClassNotFoundException e) {
+            // ignore
+        }
+        if (loggerClass == null && country != null && country.length() > 0) try {
+            loggerClass = Class.forName(join(typeName, "$logger", language, country, null), true, classLoader).asSubclass(type);
+        } catch (ClassNotFoundException e) {
+            // ignore
+        }
+        if (loggerClass == null && language != null && language.length() > 0) try {
+            loggerClass = Class.forName(join(typeName, "$logger", language, null, null), true, classLoader).asSubclass(type);
+        } catch (ClassNotFoundException e) {
+            // ignore
+        }
+        if (loggerClass == null) try {
+            loggerClass = Class.forName(join(typeName, "$logger", null, null, null), true, classLoader).asSubclass(type);
+        } catch (ClassNotFoundException e) {
+            throw new IllegalArgumentException("Invalid logger " + type + " (implementation not found in " + classLoader + ")");
+        }
+        final Constructor<? extends T> constructor;
+        try {
+            constructor = loggerClass.getConstructor(Logger.class);
+        } catch (NoSuchMethodException e) {
+            throw new IllegalArgumentException("Logger implementation " + loggerClass + " has no matching constructor");
+        }
+        try {
+            return constructor.newInstance(Logger.getLogger(category));
+        } catch (InstantiationException e) {
+            throw new IllegalArgumentException("Logger implementation " + loggerClass + " could not be instantiated", e);
+        } catch (IllegalAccessException e) {
+            throw new IllegalArgumentException("Logger implementation " + loggerClass + " could not be instantiated", e);
+        } catch (InvocationTargetException e) {
+            throw new IllegalArgumentException("Logger implementation " + loggerClass + " could not be instantiated", e.getCause());
+        }
     }
 
     private static String join(String interfaceName, String a, String b, String c, String d) {
