@@ -18,8 +18,6 @@
 
 package org.jboss.logging;
 
-import java.security.AccessController;
-import java.security.PrivilegedAction;
 import java.util.Iterator;
 import java.util.ServiceConfigurationError;
 import java.util.ServiceLoader;
@@ -41,11 +39,7 @@ final class LoggerProviders {
         final ClassLoader cl = LoggerProviders.class.getClassLoader();
         try {
             // Check the system property
-            final String loggerProvider = AccessController.doPrivileged(new PrivilegedAction<String>() {
-                public String run() {
-                    return System.getProperty(LOGGING_PROVIDER_KEY);
-                }
-            });
+            final String loggerProvider = SecurityActions.getSystemProperty(LOGGING_PROVIDER_KEY);
             if (loggerProvider != null) {
                 if ("jboss".equalsIgnoreCase(loggerProvider)) {
                     return tryJBossLogManager(cl, "system property");
