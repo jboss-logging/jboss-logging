@@ -52,7 +52,7 @@ final class Log4j2Logger extends Logger {
         if (this.logger.isEnabled(translatedLevel)) {
             try {
                 this.logger.logMessage(loggerClassName, translatedLevel, null,
-                        (parameters == null || parameters.length == 0) ? this.messageFactory.newMessage(message) : this.messageFactory.newMessage(String.valueOf(message), parameters),
+                        (parameters == null || parameters.length == 0) ? this.messageFactory.newMessage(String.valueOf(message)) : this.messageFactory.newMessage(String.valueOf(message), parameters),
                         thrown);
             } catch (Throwable ignored) { }
         }
