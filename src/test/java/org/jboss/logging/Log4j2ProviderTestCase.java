@@ -43,7 +43,7 @@ import org.junit.jupiter.api.Test;
 /**
  * @author <a href="mailto:jperkins@redhat.com">James R. Perkins</a>
  */
-public class Log4j2ManagerTestCase extends AbstractLoggerTestCase {
+public class Log4j2ProviderTestCase extends AbstractLoggerTestCase {
     private TestAppender appender;
     private Logger logger;
 
@@ -58,11 +58,6 @@ public class Log4j2ManagerTestCase extends AbstractLoggerTestCase {
         final LoggerContext ctx = (LoggerContext) LogManager.getContext(false);
         final Configuration config = ctx.getConfiguration();
         appender = (TestAppender) config.getAppenders().get("TestAppender");
-    }
-
-    @Test
-    public void testLogger() {
-        Assertions.assertTrue(logger instanceof Log4j2Logger);
     }
 
     @Test
@@ -101,11 +96,7 @@ public class Log4j2ManagerTestCase extends AbstractLoggerTestCase {
         logger.log(level, msg);
 
         Assertions.assertTrue(logger.isEnabled(level), String.format("Logger not enabled for level %s", level));
-
-        final LogEvent event = appender.queue.poll();
-        Assertions.assertNotNull(event, String.format("No record found for %s", level));
-        Assertions.assertEquals(level.name(), event.getLevel().toString());
-        Assertions.assertEquals(msg, event.getMessage().getFormattedMessage());
+        testLog(msg, level);
     }
 
     @Override
@@ -119,6 +110,11 @@ public class Log4j2ManagerTestCase extends AbstractLoggerTestCase {
     @Override
     Logger getLogger() {
         return logger;
+    }
+
+    @Override
+    Class<? extends Logger> getLoggerClass() {
+        return Log4j2Logger.class;
     }
 
     @SuppressWarnings("unused")

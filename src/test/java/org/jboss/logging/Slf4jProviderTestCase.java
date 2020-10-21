@@ -21,49 +21,47 @@ package org.jboss.logging;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.LinkedBlockingQueue;
 
-import org.apache.log4j.AppenderSkeleton;
-import org.apache.log4j.Level;
-import org.apache.log4j.spi.LoggingEvent;
+import ch.qos.logback.classic.Level;
+import ch.qos.logback.classic.LoggerContext;
+import ch.qos.logback.classic.spi.ILoggingEvent;
+import ch.qos.logback.core.AppenderBase;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.slf4j.LoggerFactory;
 
 /**
  * @author <a href="mailto:jperkins@redhat.com">James R. Perkins</a>
  */
-public class Log4jManagerTestCase extends AbstractLoggerTestCase {
+public class Slf4jProviderTestCase extends AbstractLoggerTestCase {
     private TestAppender appender;
     private Logger logger;
 
     @BeforeAll
     public static void setup() {
-        System.setProperty("org.jboss.logging.provider", "log4j");
+        System.setProperty("org.jboss.logging.provider", "slf4j");
     }
 
     @BeforeEach
     public void setupLogContext() {
         logger = Logger.getLogger(getClass());
-        appender = createAppender(logger.getName());
+        appender = createHandler(logger.getName());
     }
 
     @AfterEach
     public void removeAppender() {
-        org.apache.log4j.Logger.getLogger(logger.getName()).removeAppender(appender);
-        appender.close();
-    }
-
-    @Test
-    public void testLogger() {
-        Assertions.assertTrue(logger instanceof Log4jLogger);
+        ch.qos.logback.classic.Logger lbLogger = (ch.qos.logback.classic.Logger) LoggerFactory.getLogger(logger.getName());
+        lbLogger.detachAppender(appender);
+        appender.stop();
     }
 
     @Test
     public void testMdc() {
         MDC.put("test.key", "value");
         Assertions.assertEquals("value", MDC.get("test.key"));
-        Assertions.assertEquals("value", org.apache.log4j.MDC.get("test.key"));
+        Assertions.assertEquals("value", org.slf4j.MDC.get("test.key"));
     }
 
     @Test
@@ -74,16 +72,10 @@ public class Log4jManagerTestCase extends AbstractLoggerTestCase {
         Assertions.assertEquals("value1 value2", NDC.get());
         Assertions.assertEquals(2, NDC.getDepth());
 
-        // Test the log manager values
-        Assertions.assertEquals("value1 value2", org.apache.log4j.NDC.get());
-        Assertions.assertEquals(2, org.apache.log4j.NDC.getDepth());
-
         // Pop the stack
         Assertions.assertEquals("value2", NDC.pop());
         Assertions.assertEquals(1, NDC.getDepth());
         Assertions.assertEquals("value1", NDC.get());
-        Assertions.assertEquals("value1", org.apache.log4j.NDC.get());
-        Assertions.assertEquals(1, org.apache.log4j.NDC.getDepth());
     }
 
     @Override
@@ -92,19 +84,16 @@ public class Log4jManagerTestCase extends AbstractLoggerTestCase {
         logger.log(level, msg);
 
         Assertions.assertTrue(logger.isEnabled(level), String.format("Logger not enabled for level %s", level));
-
-        final LoggingEvent event = appender.queue.poll();
-        Assertions.assertNotNull(event, String.format("No record found for %s", level));
-        Assertions.assertEquals(level.name(), event.getLevel().toString());
-        Assertions.assertEquals(msg, event.getMessage());
+        testLog(msg, level);
     }
 
     @Override
     void testLog(final String msg, final Logger.Level level) {
-        final LoggingEvent event = appender.queue.poll();
+        final ILoggingEvent event = appender.queue.poll();
         Assertions.assertNotNull(event, String.format("No record found for %s", level));
-        Assertions.assertEquals(level.name(), event.getLevel().toString());
-        Assertions.assertEquals(msg, event.getMessage());
+        final Logger.Level translatedLevel = level == Logger.Level.FATAL ? Logger.Level.ERROR : level;
+        Assertions.assertEquals(translatedLevel.name(), event.getLevel().toString());
+        Assertions.assertEquals(msg, event.getFormattedMessage());
     }
 
     @Override
@@ -112,30 +101,29 @@ public class Log4jManagerTestCase extends AbstractLoggerTestCase {
         return logger;
     }
 
-    private static TestAppender createAppender(final String loggerName) {
+    @Override
+    Class<? extends Logger> getLoggerClass() {
+        return Slf4jLocationAwareLogger.class;
+    }
+
+    private static TestAppender createHandler(final String loggerName) {
+        final LoggerContext context = (LoggerContext) LoggerFactory.getILoggerFactory();
         final TestAppender appender = new TestAppender();
-        final org.apache.log4j.Logger log4jLogger = org.apache.log4j.Logger.getLogger(loggerName);
-        log4jLogger.addAppender(appender);
-        log4jLogger.setLevel(Level.ALL);
+        appender.setContext(context);
+        appender.start();
+
+        ch.qos.logback.classic.Logger lbLogger = (ch.qos.logback.classic.Logger) LoggerFactory.getLogger(loggerName);
+        lbLogger.addAppender(appender);
+        lbLogger.setLevel(Level.ALL);
         return appender;
     }
 
-    private static class TestAppender extends AppenderSkeleton {
-        final BlockingQueue<LoggingEvent> queue = new LinkedBlockingQueue<>();
+    public static class TestAppender extends AppenderBase<ILoggingEvent> {
+        final BlockingQueue<ILoggingEvent> queue = new LinkedBlockingQueue<>();
 
         @Override
-        protected void append(final LoggingEvent loggingEvent) {
-            queue.add(loggingEvent);
-        }
-
-        @Override
-        public void close() throws SecurityException {
-            queue.clear();
-        }
-
-        @Override
-        public boolean requiresLayout() {
-            return false;
+        protected void append(final ILoggingEvent event) {
+            queue.add(event);
         }
     }
 }

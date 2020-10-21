@@ -253,6 +253,26 @@
                             </classpathDependencyExcludes>
                         </configuration>
                     </execution>
+                    <execution>
+                        <id>jul-cp-test</id>
+                        <goals>
+                            <goal>test</goal>
+                        </goals>
+                        <configuration>
+                            <skip>false</skip>
+                            <testClassesDirectory>${cp.test.classes.dir}</testClassesDirectory>
+                            <includes>
+                                <include>**/JulClassPathTestCase.java</include>
+                            </includes>
+                            <classpathDependencyExcludes>
+                                <classpathDependencyExclude>org.apache.logging.log4j</classpathDependencyExclude>
+                                <classpathDependencyExclude>org.jboss.logmanager</classpathDependencyExclude>
+                                <classpathDependencyExclude>log4j</classpathDependencyExclude>
+                                <classpathDependencyExclude>org.slf4j</classpathDependencyExclude>
+                                <classpathDependencyExclude>ch.qos.logback</classpathDependencyExclude>
+                            </classpathDependencyExcludes>
+                        </configuration>
+                    </execution>
                 </executions>
             </plugin>
             <!-- Adding OSGI metadata to the JAR without changing the packaging type. -->

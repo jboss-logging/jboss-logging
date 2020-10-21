@@ -33,7 +33,7 @@ import org.junit.jupiter.api.Test;
 /**
  * @author <a href="mailto:jperkins@redhat.com">James R. Perkins</a>
  */
-public class JulManagerTestCase extends AbstractLoggerTestCase {
+public class JulProviderTestCase extends AbstractLoggerTestCase {
     private TestHandler handler;
     private Logger logger;
 
@@ -52,11 +52,6 @@ public class JulManagerTestCase extends AbstractLoggerTestCase {
     public void removeHandler() {
         java.util.logging.Logger.getLogger(logger.getName()).removeHandler(handler);
         handler.close();
-    }
-
-    @Test
-    public void testLogger() {
-        Assertions.assertTrue(logger instanceof JDKLogger);
     }
 
     @Test
@@ -85,11 +80,7 @@ public class JulManagerTestCase extends AbstractLoggerTestCase {
         logger.log(level, msg);
 
         Assertions.assertTrue(logger.isEnabled(level), String.format("Logger not enabled for level %s", level));
-
-        final LogRecord logRecord = handler.queue.poll();
-        Assertions.assertNotNull(logRecord, String.format("No record found for %s", level));
-        Assertions.assertEquals(level.name(), logRecord.getLevel().getName());
-        Assertions.assertEquals(msg, logRecord.getMessage());
+        testLog(msg, level);
     }
 
     @Override
@@ -105,7 +96,12 @@ public class JulManagerTestCase extends AbstractLoggerTestCase {
         return logger;
     }
 
-    private TestHandler createHandler(final String loggerName) {
+    @Override
+    Class<? extends Logger> getLoggerClass() {
+        return JDKLogger.class;
+    }
+
+    private static TestHandler createHandler(final String loggerName) {
         final TestHandler handler = new TestHandler();
         final java.util.logging.Logger julLogger = java.util.logging.Logger.getLogger(loggerName);
         julLogger.addHandler(handler);

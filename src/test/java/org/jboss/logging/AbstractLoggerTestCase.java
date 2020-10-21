@@ -19,6 +19,8 @@
 package org.jboss.logging;
 
 import org.junit.jupiter.api.AfterAll;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
 /**
@@ -29,6 +31,17 @@ abstract class AbstractLoggerTestCase {
     @AfterAll
     public static void clearProviderProperty() {
         System.clearProperty("org.jboss.logging.provider");
+    }
+
+    @AfterEach
+    public void clearDiagnostics() {
+        MDC.clear();
+        NDC.clear();
+    }
+
+    @Test
+    public void testLogger() {
+        Assertions.assertEquals(getLoggerClass(), getLogger().getClass());
     }
 
     @Test
@@ -79,4 +92,6 @@ abstract class AbstractLoggerTestCase {
     abstract void testLog(String msg, Logger.Level level);
 
     abstract Logger getLogger();
+
+    abstract Class<? extends Logger> getLoggerClass();
 }

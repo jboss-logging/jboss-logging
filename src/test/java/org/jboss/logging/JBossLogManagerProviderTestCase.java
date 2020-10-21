@@ -37,7 +37,7 @@ import org.junit.jupiter.api.Test;
 /**
  * @author <a href="mailto:jperkins@redhat.com">James R. Perkins</a>
  */
-public class JBossLogManagerTestCase extends AbstractLoggerTestCase {
+public class JBossLogManagerProviderTestCase extends AbstractLoggerTestCase {
     private static final LogContextSelector DEFAULT_SELECTOR = LogContext.getLogContextSelector();
     private static final AtomicBoolean SET_LOG_MANAGER = new AtomicBoolean(true);
 
@@ -66,18 +66,13 @@ public class JBossLogManagerTestCase extends AbstractLoggerTestCase {
         logContext = LogContext.create();
         LogContext.setLogContextSelector(() -> logContext);
         logger = Logger.getLogger(getClass());
-        handler = createHandler(logger.getName());
+        handler = createHandler(logContext, logger.getName());
     }
 
     @AfterEach
     public void closeLogContext() throws Exception {
         logContext.close();
         LogContext.setLogContextSelector(DEFAULT_SELECTOR);
-    }
-
-    @Test
-    public void testLogger() {
-        Assertions.assertEquals(JBossLogManagerLogger.class, logger.getClass());
     }
 
     @Test
@@ -114,11 +109,7 @@ public class JBossLogManagerTestCase extends AbstractLoggerTestCase {
         logger.log(level, msg);
 
         Assertions.assertTrue(logger.isEnabled(level), String.format("Logger not enabled for level %s", level));
-
-        final LogRecord logRecord = handler.queue.poll();
-        Assertions.assertNotNull(logRecord, String.format("No record found for %s", level));
-        Assertions.assertEquals(level.name(), logRecord.getLevel().getName());
-        Assertions.assertEquals(msg, logRecord.getMessage());
+        testLog(msg, level);
     }
 
     @Override
@@ -134,7 +125,12 @@ public class JBossLogManagerTestCase extends AbstractLoggerTestCase {
         return logger;
     }
 
-    private TestHandler createHandler(final String loggerName) {
+    @Override
+    Class<? extends Logger> getLoggerClass() {
+        return JBossLogManagerLogger.class;
+    }
+
+    private static TestHandler createHandler(final LogContext logContext, final String loggerName) {
         final TestHandler handler = new TestHandler();
         final java.util.logging.Logger julLogger = logContext.getLogger(loggerName);
         julLogger.addHandler(handler);
