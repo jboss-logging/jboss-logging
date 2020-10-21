@@ -58,11 +58,6 @@ public class Slf4jProviderTestCase extends AbstractLoggerTestCase {
     }
 
     @Test
-    public void testLogger() {
-        Assertions.assertTrue(logger instanceof Slf4jLogger || logger instanceof Slf4jLocationAwareLogger);
-    }
-
-    @Test
     public void testMdc() {
         MDC.put("test.key", "value");
         Assertions.assertEquals("value", MDC.get("test.key"));
@@ -89,12 +84,7 @@ public class Slf4jProviderTestCase extends AbstractLoggerTestCase {
         logger.log(level, msg);
 
         Assertions.assertTrue(logger.isEnabled(level), String.format("Logger not enabled for level %s", level));
-
-        final ILoggingEvent event = appender.queue.poll();
-        Assertions.assertNotNull(event, String.format("No record found for %s", level));
-        final Logger.Level translatedLevel = level == Logger.Level.FATAL ? Logger.Level.ERROR : level;
-        Assertions.assertEquals(translatedLevel.name(), event.getLevel().toString());
-        Assertions.assertEquals(msg, event.getFormattedMessage());
+        testLog(msg, level);
     }
 
     @Override
@@ -109,6 +99,11 @@ public class Slf4jProviderTestCase extends AbstractLoggerTestCase {
     @Override
     Logger getLogger() {
         return logger;
+    }
+
+    @Override
+    Class<? extends Logger> getLoggerClass() {
+        return Slf4jLocationAwareLogger.class;
     }
 
     private static TestAppender createHandler(final String loggerName) {

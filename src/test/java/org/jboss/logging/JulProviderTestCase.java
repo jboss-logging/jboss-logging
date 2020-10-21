@@ -55,11 +55,6 @@ public class JulProviderTestCase extends AbstractLoggerTestCase {
     }
 
     @Test
-    public void testLogger() {
-        Assertions.assertTrue(logger instanceof JDKLogger);
-    }
-
-    @Test
     public void testMdc() {
         MDC.put("test.key", "value");
         Assertions.assertEquals("value", MDC.get("test.key"));
@@ -85,11 +80,7 @@ public class JulProviderTestCase extends AbstractLoggerTestCase {
         logger.log(level, msg);
 
         Assertions.assertTrue(logger.isEnabled(level), String.format("Logger not enabled for level %s", level));
-
-        final LogRecord logRecord = handler.queue.poll();
-        Assertions.assertNotNull(logRecord, String.format("No record found for %s", level));
-        Assertions.assertEquals(level.name(), logRecord.getLevel().getName());
-        Assertions.assertEquals(msg, logRecord.getMessage());
+        testLog(msg, level);
     }
 
     @Override
@@ -105,7 +96,12 @@ public class JulProviderTestCase extends AbstractLoggerTestCase {
         return logger;
     }
 
-    private TestHandler createHandler(final String loggerName) {
+    @Override
+    Class<? extends Logger> getLoggerClass() {
+        return JDKLogger.class;
+    }
+
+    private static TestHandler createHandler(final String loggerName) {
         final TestHandler handler = new TestHandler();
         final java.util.logging.Logger julLogger = java.util.logging.Logger.getLogger(loggerName);
         julLogger.addHandler(handler);

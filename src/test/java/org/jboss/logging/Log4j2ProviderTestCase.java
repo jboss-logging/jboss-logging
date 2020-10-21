@@ -61,11 +61,6 @@ public class Log4j2ProviderTestCase extends AbstractLoggerTestCase {
     }
 
     @Test
-    public void testLogger() {
-        Assertions.assertTrue(logger instanceof Log4j2Logger);
-    }
-
-    @Test
     public void testMdc() {
         MDC.put("test.key", "value");
         Assertions.assertEquals("value", MDC.get("test.key"));
@@ -101,11 +96,7 @@ public class Log4j2ProviderTestCase extends AbstractLoggerTestCase {
         logger.log(level, msg);
 
         Assertions.assertTrue(logger.isEnabled(level), String.format("Logger not enabled for level %s", level));
-
-        final LogEvent event = appender.queue.poll();
-        Assertions.assertNotNull(event, String.format("No record found for %s", level));
-        Assertions.assertEquals(level.name(), event.getLevel().toString());
-        Assertions.assertEquals(msg, event.getMessage().getFormattedMessage());
+        testLog(msg, level);
     }
 
     @Override
@@ -119,6 +110,11 @@ public class Log4j2ProviderTestCase extends AbstractLoggerTestCase {
     @Override
     Logger getLogger() {
         return logger;
+    }
+
+    @Override
+    Class<? extends Logger> getLoggerClass() {
+        return Log4j2Logger.class;
     }
 
     @SuppressWarnings("unused")

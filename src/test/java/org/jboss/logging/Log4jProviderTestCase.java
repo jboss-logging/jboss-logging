@@ -55,11 +55,6 @@ public class Log4jProviderTestCase extends AbstractLoggerTestCase {
     }
 
     @Test
-    public void testLogger() {
-        Assertions.assertTrue(logger instanceof Log4jLogger);
-    }
-
-    @Test
     public void testMdc() {
         MDC.put("test.key", "value");
         Assertions.assertEquals("value", MDC.get("test.key"));
@@ -92,11 +87,7 @@ public class Log4jProviderTestCase extends AbstractLoggerTestCase {
         logger.log(level, msg);
 
         Assertions.assertTrue(logger.isEnabled(level), String.format("Logger not enabled for level %s", level));
-
-        final LoggingEvent event = appender.queue.poll();
-        Assertions.assertNotNull(event, String.format("No record found for %s", level));
-        Assertions.assertEquals(level.name(), event.getLevel().toString());
-        Assertions.assertEquals(msg, event.getMessage());
+        testLog(msg, level);
     }
 
     @Override
@@ -110,6 +101,11 @@ public class Log4jProviderTestCase extends AbstractLoggerTestCase {
     @Override
     Logger getLogger() {
         return logger;
+    }
+
+    @Override
+    Class<? extends Logger> getLoggerClass() {
+        return Log4jLogger.class;
     }
 
     private static TestAppender createAppender(final String loggerName) {
