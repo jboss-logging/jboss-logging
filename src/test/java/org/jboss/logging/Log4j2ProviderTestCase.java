@@ -43,7 +43,7 @@ import org.junit.jupiter.api.Test;
 /**
  * @author <a href="mailto:jperkins@redhat.com">James R. Perkins</a>
  */
-public class Log4j2ManagerTestCase extends AbstractLoggerTestCase {
+public class Log4j2ProviderTestCase extends AbstractLoggerTestCase {
     private TestAppender appender;
     private Logger logger;
 

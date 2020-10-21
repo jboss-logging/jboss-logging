@@ -24,7 +24,7 @@
         </TestAppender>
     </Appenders>
     <Loggers>
-        <Logger name="org.jboss.logging.Log4j2ManagerTestCase" level="All">
+        <Logger name="org.jboss.logging.Log4j2ProviderTestCase" level="All">
             <AppenderRef ref="TestAppender" level="All"/>
         </Logger>
     </Loggers>
