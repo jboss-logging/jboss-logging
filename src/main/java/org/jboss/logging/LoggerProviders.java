@@ -147,7 +147,7 @@ final class LoggerProviders {
 
     private static void logProvider(final LoggerProvider provider, final String via) {
         // Log a debug message indicating which logger we are using
-        final Logger logger = provider.getLogger(LoggerProviders.class.getPackage().getName());
+        final Logger logger = provider.getLogger("org.jboss.logging");
         if (via == null) {
             logger.debugf("Logging Provider: %s", provider.getClass().getName());
         } else {
