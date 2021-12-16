@@ -18,7 +18,7 @@
     <parent>
         <groupId>org.jboss</groupId>
         <artifactId>jboss-parent</artifactId>
-        <version>37</version>
+        <version>39</version>
     </parent>
 
     <licenses>
@@ -31,12 +31,12 @@
 
     <properties>
         <!-- Dependency versions -->
-        <version.ch.qos.logback>1.2.3</version.ch.qos.logback>
-        <version.org.apache.log4j>1.2.16</version.org.apache.log4j>
-        <version.org.apache.logging.log4j>2.11.2</version.org.apache.logging.log4j>
-        <version.org.jboss.logmanager>2.1.9.Final</version.org.jboss.logmanager>
-        <version.org.junit>5.7.0</version.org.junit>
-        <version.org.sfl4j>1.7.25</version.org.sfl4j>
+        <version.ch.qos.logback>1.2.8</version.ch.qos.logback>
+        <version.org.apache.log4j>1.2.17</version.org.apache.log4j>
+        <version.org.apache.logging.log4j>2.16.0</version.org.apache.logging.log4j>
+        <version.org.jboss.logmanager>2.1.18.Final</version.org.jboss.logmanager>
+        <version.org.junit>5.8.2</version.org.junit>
+        <version.org.sfl4j>1.7.32</version.org.sfl4j>
 
         <maven.test.redirectTestOutputToFile>true</maven.test.redirectTestOutputToFile>
         <cp.test.classes.dir>${project.build.directory}${file.separator}cp-test-classes</cp.test.classes.dir>
