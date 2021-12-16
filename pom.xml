@@ -31,7 +31,7 @@
 
     <properties>
         <!-- Dependency versions -->
-        <version.ch.qos.logback>1.2.3</version.ch.qos.logback>
+        <version.ch.qos.logback>1.2.8</version.ch.qos.logback>
         <version.org.apache.log4j>1.2.16</version.org.apache.log4j>
         <version.org.apache.logging.log4j>2.11.2</version.org.apache.logging.log4j>
         <version.org.jboss.logmanager>2.1.9.Final</version.org.jboss.logmanager>
