@@ -38,6 +38,9 @@
         <version.org.junit>5.8.2</version.org.junit>
         <version.org.sfl4j>1.7.32</version.org.sfl4j>
 
+        <!-- Override the parent version to compile with Java 17 -->
+        <version.bundle.plugin>5.1.3</version.bundle.plugin>
+
         <maven.test.redirectTestOutputToFile>true</maven.test.redirectTestOutputToFile>
         <cp.test.classes.dir>${project.build.directory}${file.separator}cp-test-classes</cp.test.classes.dir>
     </properties>
