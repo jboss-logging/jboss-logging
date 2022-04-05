@@ -32,11 +32,13 @@
     <properties>
         <!-- Dependency versions -->
         <version.ch.qos.logback>1.2.8</version.ch.qos.logback>
+        <version.module-info>1.2</version.module-info>
         <version.org.apache.log4j>1.2.17</version.org.apache.log4j>
         <version.org.apache.logging.log4j>2.17.1</version.org.apache.logging.log4j>
         <version.org.jboss.logmanager>2.1.18.Final</version.org.jboss.logmanager>
         <version.org.junit>5.8.2</version.org.junit>
         <version.org.sfl4j>1.7.32</version.org.sfl4j>
+        <version.surefire.plugin>3.0.0-M5</version.surefire.plugin>
 
         <!-- Override the parent version to compile with Java 17 -->
         <version.bundle.plugin>5.1.3</version.bundle.plugin>
@@ -156,6 +158,7 @@
                     <!-- Required so we can test the various providers -->
                     <reuseForks>false</reuseForks>
                     <skip>true</skip>
+                    <useModulePath>false</useModulePath>
                 </configuration>
                 <executions>
                     <execution>
@@ -316,6 +319,20 @@
                         <phase>process-classes</phase>
                         <goals>
                             <goal>manifest</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+            <plugin>
+                <groupId>io.github.dmlloyd.module-info</groupId>
+                <artifactId>module-info</artifactId>
+                <version>${version.module-info}</version>
+                <executions>
+                    <execution>
+                        <id>module-info</id>
+                        <phase>process-classes</phase>
+                        <goals>
+                            <goal>generate</goal>
                         </goals>
                     </execution>
                 </executions>
