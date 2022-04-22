@@ -1,0 +1,14 @@
+name: org.jboss.logging
+
+requires:
+  - module: org.jboss.logmanager
+    static: true
+  - module: org.slf4j
+    static: true
+  - module: log4j.api # log4j 1, theoretically
+    static: true
+  - module: org.apache.logging.log4j
+    static: true
+
+uses:
+  - org.jboss.logging.LoggerProvider
