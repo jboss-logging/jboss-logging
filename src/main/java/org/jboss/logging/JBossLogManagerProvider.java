@@ -103,21 +103,20 @@ final class JBossLogManagerProvider implements LoggerProvider {
     }
 
     public Object putMdc(final String key, final Object value) {
-        return MDC.put(key, String.valueOf(value));
+        return MDC.putObject(key, value);
     }
 
     public Object getMdc(final String key) {
-        return MDC.get(key);
+        return MDC.getObject(key);
     }
 
     public void removeMdc(final String key) {
-        MDC.remove(key);
+        MDC.removeObject(key);
     }
 
-    @SuppressWarnings({ "unchecked" })
     public Map<String, Object> getMdcMap() {
         // we can re-define the erasure of this map because MDC does not make further use of the copy
-        return (Map)MDC.copy();
+        return MDC.copyObject();
     }
 
     public void clearNdc() {
