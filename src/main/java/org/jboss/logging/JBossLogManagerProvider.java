@@ -30,23 +30,25 @@ import org.jboss.logmanager.NDC;
 
 import static org.jboss.logmanager.Logger.AttachmentKey;
 
-final class JBossLogManagerProvider implements LoggerProvider {
+/**
+ * An implementation of the {@linkplain LoggerProvider log provider} for the JBoss Log Manager.
+ */
+public final class JBossLogManagerProvider implements LoggerProvider {
 
-    private static final AttachmentKey<Logger> KEY = new AttachmentKey<Logger>();
-    private static final AttachmentKey<ConcurrentMap<String, Logger>> LEGACY_KEY = new AttachmentKey<ConcurrentMap<String, Logger>>();
+    private static final AttachmentKey<Logger> KEY = new AttachmentKey<>();
+    private static final AttachmentKey<ConcurrentMap<String, Logger>> LEGACY_KEY = new AttachmentKey<>();
 
+    @Override
     public Logger getLogger(final String name) {
         final SecurityManager sm = System.getSecurityManager();
         if (sm != null) {
-            return AccessController.doPrivileged(new PrivilegedAction<Logger>() {
-                public Logger run() {
-                    try {
-                        return doGetLogger(name) ;
-                    } catch (NoSuchMethodError ignore) {
-                    }
-                    // fallback
-                    return doLegacyGetLogger(name);
+            return AccessController.doPrivileged((PrivilegedAction<Logger>) () -> {
+                try {
+                    return doGetLogger(name) ;
+                } catch (NoSuchMethodError ignore) {
                 }
+                // fallback
+                return doLegacyGetLogger(name);
             });
         } else {
             try {
@@ -62,7 +64,7 @@ final class JBossLogManagerProvider implements LoggerProvider {
         final org.jboss.logmanager.Logger lmLogger = LogContext.getLogContext().getLogger("");
         ConcurrentMap<String, Logger> loggers = lmLogger.getAttachment(LEGACY_KEY);
         if (loggers == null) {
-            loggers = new ConcurrentHashMap<String, Logger>();
+            loggers = new ConcurrentHashMap<>();
             final ConcurrentMap<String, Logger> appearing = lmLogger.attachIfAbsent(LEGACY_KEY, loggers);
             if (appearing != null) {
                 loggers = appearing;
@@ -98,51 +100,63 @@ final class JBossLogManagerProvider implements LoggerProvider {
         }
     }
 
+    @Override
     public void clearMdc() {
         MDC.clear();
     }
 
+    @Override
     public Object putMdc(final String key, final Object value) {
         return MDC.putObject(key, value);
     }
 
+    @Override
     public Object getMdc(final String key) {
         return MDC.getObject(key);
     }
 
+    @Override
     public void removeMdc(final String key) {
         MDC.removeObject(key);
     }
 
+    @Override
     public Map<String, Object> getMdcMap() {
         // we can re-define the erasure of this map because MDC does not make further use of the copy
         return MDC.copyObject();
     }
 
+    @Override
     public void clearNdc() {
         NDC.clear();
     }
 
+    @Override
     public String getNdc() {
         return NDC.get();
     }
 
+    @Override
     public int getNdcDepth() {
         return NDC.getDepth();
     }
 
+    @Override
     public String popNdc() {
         return NDC.pop();
     }
 
+    @Override
     public String peekNdc() {
         return NDC.get();
     }
 
+    @Override
     public void pushNdc(final String message) {
         NDC.push(message);
     }
 
+    @Override
     public void setNdcMaxDepth(final int maxDepth) {
         NDC.trimTo(maxDepth);
     }

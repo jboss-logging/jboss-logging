@@ -18,8 +18,13 @@
 
 package org.jboss.logging;
 
-final class JDKLoggerProvider extends AbstractMdcLoggerProvider implements LoggerProvider {
+/**
+ * An implementation of the {@linkplain LoggerProvider log provider} for the
+ * {@linkplain java.util.logging.LogManager JDK Log Manager}.
+ */
+public final class JDKLoggerProvider extends AbstractMdcLoggerProvider implements LoggerProvider {
 
+    @Override
     public Logger getLogger(final String name) {
         return new JDKLogger(name);
     }
