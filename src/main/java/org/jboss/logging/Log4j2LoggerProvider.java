@@ -23,7 +23,13 @@ import java.util.Map;
 
 import org.apache.logging.log4j.ThreadContext;
 
-final class Log4j2LoggerProvider implements LoggerProvider {
+/**
+ * An implementation of the {@linkplain LoggerProvider log provider} for Log4j 2.
+ * <p>
+ * This binds to the Log4j 2 API and does not require a specific implementation of the Log4j 2 API.
+ * </p>
+ */
+public final class Log4j2LoggerProvider implements LoggerProvider {
 
     @Override
     public Log4j2Logger getLogger(String name) {
@@ -56,7 +62,7 @@ final class Log4j2LoggerProvider implements LoggerProvider {
 
     @Override
     public Map<String, Object> getMdcMap() {
-        return new HashMap<String, Object>(ThreadContext.getImmutableContext());
+        return new HashMap<>(ThreadContext.getImmutableContext());
     }
 
     @Override

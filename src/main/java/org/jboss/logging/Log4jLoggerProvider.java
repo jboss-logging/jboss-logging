@@ -24,26 +24,37 @@ import java.util.Map;
 import org.apache.log4j.MDC;
 import org.apache.log4j.NDC;
 
-final class Log4jLoggerProvider implements LoggerProvider {
+/**
+ * An implementation of the {@linkplain LoggerProvider log provider} for log4j.
+ * <p>
+ * Please note that log4j reached end of life on August 5, 2015. Prefer using a log manager and provider.
+ * </p>
+ */
+public final class Log4jLoggerProvider implements LoggerProvider {
 
+    @Override
     public Logger getLogger(final String name) {
         return new Log4jLogger("".equals(name) ? "ROOT" : name);
     }
 
+    @Override
     public void clearMdc() {
         MDC.clear();
     }
 
+    @Override
     public Object getMdc(String key) {
         return MDC.get(key);
     }
 
+    @Override
     public Map<String, Object> getMdcMap() {
         @SuppressWarnings("unchecked")
         final Map<String, Object> map = MDC.getContext();
-        return map == null ? Collections.<String, Object>emptyMap() : map;
+        return map == null ? Collections.emptyMap() : map;
     }
 
+    @Override
     public Object putMdc(String key, Object val) {
         try {
             return MDC.get(key);
@@ -52,34 +63,42 @@ final class Log4jLoggerProvider implements LoggerProvider {
         }
     }
 
+    @Override
     public void removeMdc(String key) {
         MDC.remove(key);
     }
 
+    @Override
     public void clearNdc() {
         NDC.remove();
     }
 
+    @Override
     public String getNdc() {
         return NDC.get();
     }
 
+    @Override
     public int getNdcDepth() {
         return NDC.getDepth();
     }
 
+    @Override
     public String peekNdc() {
         return NDC.peek();
     }
 
+    @Override
     public String popNdc() {
         return NDC.pop();
     }
 
+    @Override
     public void pushNdc(String message) {
         NDC.push(message);
     }
 
+    @Override
     public void setNdcMaxDepth(int maxDepth) {
         NDC.setMaxDepth(maxDepth);
     }

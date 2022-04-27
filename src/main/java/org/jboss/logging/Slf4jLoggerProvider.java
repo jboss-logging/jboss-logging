@@ -26,8 +26,12 @@ import org.slf4j.LoggerFactory;
 import org.slf4j.MDC;
 import org.slf4j.spi.LocationAwareLogger;
 
-final class Slf4jLoggerProvider extends AbstractLoggerProvider implements LoggerProvider {
+/**
+ * An implementation of the {@linkplain LoggerProvider log provider} for slf4j with Logback as the log manager.
+ */
+public final class Slf4jLoggerProvider extends AbstractLoggerProvider implements LoggerProvider {
 
+    @Override
     public Logger getLogger(final String name) {
         org.slf4j.Logger l = LoggerFactory.getLogger(name);
         if (l instanceof LocationAwareLogger) {
@@ -36,10 +40,12 @@ final class Slf4jLoggerProvider extends AbstractLoggerProvider implements Logger
         return new Slf4jLogger(name, l);
     }
 
+    @Override
     public void clearMdc() {
         MDC.clear();
     }
 
+    @Override
     public Object putMdc(final String key, final Object value) {
         try {
             return MDC.get(key);
@@ -52,17 +58,19 @@ final class Slf4jLoggerProvider extends AbstractLoggerProvider implements Logger
         }
     }
 
+    @Override
     public Object getMdc(final String key) {
         return MDC.get(key);
     }
 
+    @Override
     public void removeMdc(final String key) {
         MDC.remove(key);
     }
 
-    @SuppressWarnings("unchecked")
+    @Override
     public Map<String, Object> getMdcMap() {
-        final Map copy = MDC.getCopyOfContextMap();
+        final Map<String, String> copy = MDC.getCopyOfContextMap();
         return copy == null ? Collections.emptyMap() : new LinkedHashMap<>(copy);
     }
 }

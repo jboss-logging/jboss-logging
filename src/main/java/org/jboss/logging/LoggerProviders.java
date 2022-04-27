@@ -81,13 +81,7 @@ final class LoggerProviders {
             // nope...
         }
         try {
-            // MUST try Log4j 2.x BEFORE Log4j 1.x because Log4j 2.x also passes Log4j 1.x test in some circumstances
             return tryLog4j2(cl, null);
-        } catch (Throwable t) {
-            // nope...
-        }
-        try {
-            return tryLog4j(cl, null);
         } catch (Throwable t) {
             // nope...
         }
@@ -95,6 +89,12 @@ final class LoggerProviders {
             // only use slf4j if Logback is in use
             Class.forName("ch.qos.logback.classic.Logger", false, cl);
             return trySlf4j(null);
+        } catch (Throwable t) {
+            // nope...
+        }
+        try {
+            // log4j has been EOL'd since 2015. It should be checked last.
+            return tryLog4j(cl, null);
         } catch (Throwable t) {
             // nope...
         }
