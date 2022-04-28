@@ -24,7 +24,7 @@
     <licenses>
         <license>
             <name>Apache License, version 2.0</name>
-            <url>http://www.apache.org/licenses/LICENSE-2.0.txt</url>
+            <url>https://www.apache.org/licenses/LICENSE-2.0.txt</url>
             <distribution>repo</distribution>
         </license>
     </licenses>
@@ -42,6 +42,11 @@
 
         <!-- Override the parent version to compile with Java 17 -->
         <version.bundle.plugin>5.1.3</version.bundle.plugin>
+
+        <!-- Require at least Java 11 to compile -->
+        <jdk.min.version>11</jdk.min.version>
+        <maven.compiler.target>11</maven.compiler.target>
+        <maven.compiler.source>11</maven.compiler.source>
 
         <maven.test.redirectTestOutputToFile>true</maven.test.redirectTestOutputToFile>
         <cp.test.classes.dir>${project.build.directory}${file.separator}cp-test-classes</cp.test.classes.dir>
@@ -119,14 +124,22 @@
         <plugins>
             <plugin>
                 <artifactId>maven-compiler-plugin</artifactId>
+                <configuration>
+                    <release>11</release>
+                    <testRelease>11</testRelease>
+                </configuration>
                 <executions>
                     <execution>
-                        <id>default-test-compile</id>
+                        <id>default-testCompile</id>
                         <goals>
                             <goal>testCompile</goal>
                         </goals>
                         <phase>test-compile</phase>
                         <configuration>
+                            <!-- This is a hack which allows the test-compile to succeed with missing optional modules.
+                                 See https://issues.apache.org/jira/browse/MCOMPILER-494 for details.
+                            -->
+                            <release>8</release>
                             <testExcludes>
                                 <testExclude>**/*ClassPathTestCase.java</testExclude>
                             </testExcludes>
@@ -139,6 +152,10 @@
                         </goals>
                         <phase>test-compile</phase>
                         <configuration>
+                            <!-- This is a hack which allows the test-compile to succeed with missing optional modules.
+                                 See https://issues.apache.org/jira/browse/MCOMPILER-494 for details.
+                            -->
+                            <release>8</release>
                             <outputDirectory>${cp.test.classes.dir}</outputDirectory>
                             <skip>${skip.cp.tests}</skip>
                             <testIncludes>
@@ -288,6 +305,13 @@
                     <archive>
                         <manifestFile>${project.build.outputDirectory}/META-INF/MANIFEST.MF</manifestFile>
                     </archive>
+                </configuration>
+            </plugin>
+            <plugin>
+                <artifactId>maven-javadoc-plugin</artifactId>
+                <configuration>
+                    <additionalJOption>--no-module-directories</additionalJOption>
+                    <doclint>none</doclint>
                 </configuration>
             </plugin>
             <plugin>
