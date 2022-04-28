@@ -312,6 +312,10 @@
                 <configuration>
                     <additionalJOption>--no-module-directories</additionalJOption>
                     <doclint>none</doclint>
+                    <!-- Get around issues with module errors when producing JavaDocs for releases. The generated JavaDoc
+                         is still generated with the Java 9+ style.
+                    -->
+                    <release>8</release>
                 </configuration>
             </plugin>
             <plugin>
