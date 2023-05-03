@@ -13,6 +13,7 @@ objects which may have complex `toString()` methods.
 ----
 private static final Logger LOGGER = Logger.getLogger(Customer.class);
 
+
 public Customer getCustomer(final int id) {
     LOGGER.debugf("Looking up customer %d", id);
     try {
