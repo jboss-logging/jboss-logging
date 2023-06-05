@@ -18,6 +18,8 @@
 
 package org.jboss.logging;
 
+import static org.jboss.logmanager.Logger.AttachmentKey;
+
 import java.security.AccessController;
 import java.security.PrivilegedAction;
 import java.util.Map;
@@ -27,8 +29,6 @@ import java.util.concurrent.ConcurrentMap;
 import org.jboss.logmanager.LogContext;
 import org.jboss.logmanager.MDC;
 import org.jboss.logmanager.NDC;
-
-import static org.jboss.logmanager.Logger.AttachmentKey;
 
 /**
  * An implementation of the {@linkplain LoggerProvider log provider} for the JBoss Log Manager.
@@ -44,7 +44,7 @@ public final class JBossLogManagerProvider implements LoggerProvider {
         if (sm != null) {
             return AccessController.doPrivileged((PrivilegedAction<Logger>) () -> {
                 try {
-                    return doGetLogger(name) ;
+                    return doGetLogger(name);
                 } catch (NoSuchMethodError ignore) {
                 }
                 // fallback
@@ -52,7 +52,7 @@ public final class JBossLogManagerProvider implements LoggerProvider {
             });
         } else {
             try {
-                return doGetLogger(name) ;
+                return doGetLogger(name);
             } catch (NoSuchMethodError ignore) {
             }
             // fallback

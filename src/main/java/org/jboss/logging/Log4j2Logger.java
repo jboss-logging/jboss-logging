@@ -35,9 +35,10 @@ final class Log4j2Logger extends Logger {
         super(name);
         org.apache.logging.log4j.Logger logger = LogManager.getLogger(name);
         if (!(logger instanceof AbstractLogger)) {
-            throw new LoggingException("The logger for [" + name + "] does not extend AbstractLogger. Actual logger: " + logger.getClass().getName());
+            throw new LoggingException("The logger for [" + name + "] does not extend AbstractLogger. Actual logger: "
+                    + logger.getClass().getName());
         }
-        this.logger = (AbstractLogger)logger;
+        this.logger = (AbstractLogger) logger;
         this.messageFactory = new MessageFormatMessageFactory();
     }
 
@@ -47,24 +48,30 @@ final class Log4j2Logger extends Logger {
     }
 
     @Override
-    protected void doLog(final Level level, final String loggerClassName, final Object message, final Object[] parameters, final Throwable thrown) {
+    protected void doLog(final Level level, final String loggerClassName, final Object message, final Object[] parameters,
+            final Throwable thrown) {
         final org.apache.logging.log4j.Level translatedLevel = Log4j2Logger.translate(level);
         if (this.logger.isEnabled(translatedLevel)) {
             try {
                 this.logger.logMessage(loggerClassName, translatedLevel, null,
-                        (parameters == null || parameters.length == 0) ? this.messageFactory.newMessage(String.valueOf(message)) : this.messageFactory.newMessage(String.valueOf(message), parameters),
+                        (parameters == null || parameters.length == 0) ? this.messageFactory.newMessage(String.valueOf(message))
+                                : this.messageFactory.newMessage(String.valueOf(message), parameters),
                         thrown);
-            } catch (Throwable ignored) { }
+            } catch (Throwable ignored) {
+            }
         }
     }
 
     @Override
-    protected void doLogf(final Level level, final String loggerClassName, final String format, final Object[] parameters, final Throwable thrown) {
+    protected void doLogf(final Level level, final String loggerClassName, final String format, final Object[] parameters,
+            final Throwable thrown) {
         final org.apache.logging.log4j.Level translatedLevel = Log4j2Logger.translate(level);
         if (this.logger.isEnabled(translatedLevel)) {
             try {
-                this.logger.logMessage(loggerClassName, translatedLevel, null, new StringFormattedMessage(format, parameters), thrown);
-            } catch (Throwable ignored) { }
+                this.logger.logMessage(loggerClassName, translatedLevel, null, new StringFormattedMessage(format, parameters),
+                        thrown);
+            } catch (Throwable ignored) {
+            }
         }
     }
 

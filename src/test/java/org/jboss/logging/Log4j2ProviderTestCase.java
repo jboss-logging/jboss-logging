@@ -139,9 +139,9 @@ public class Log4j2ProviderTestCase extends AbstractLoggerTestCase {
 
         @PluginFactory
         public static TestAppender createAppender(@PluginAttribute("name") String name,
-                                                  @PluginElement("Layout") Layout<? extends Serializable> layout,
-                                                  @PluginElement("Filter") final Filter filter,
-                                                  @PluginAttribute("otherAttribute") String otherAttribute) {
+                @PluginElement("Layout") Layout<? extends Serializable> layout,
+                @PluginElement("Filter") final Filter filter,
+                @PluginAttribute("otherAttribute") String otherAttribute) {
             if (name == null) {
                 LOGGER.error("No name provided for TestAppender");
                 return null;

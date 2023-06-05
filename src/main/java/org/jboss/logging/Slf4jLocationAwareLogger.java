@@ -22,6 +22,7 @@ import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.lang.reflect.UndeclaredThrowableException;
 import java.text.MessageFormat;
+
 import org.slf4j.spi.LocationAwareLogger;
 
 final class Slf4jLocationAwareLogger extends Logger {
@@ -58,25 +59,35 @@ final class Slf4jLocationAwareLogger extends Logger {
     }
 
     public boolean isEnabled(final Level level) {
-        if (level != null) switch (level) {
-            case FATAL: return logger.isErrorEnabled();
-            case ERROR: return logger.isErrorEnabled();
-            case WARN:  return logger.isWarnEnabled();
-            case INFO:  return logger.isInfoEnabled();
-            case DEBUG: return logger.isDebugEnabled();
-            case TRACE: return logger.isTraceEnabled();
-        }
+        if (level != null)
+            switch (level) {
+                case FATAL:
+                    return logger.isErrorEnabled();
+                case ERROR:
+                    return logger.isErrorEnabled();
+                case WARN:
+                    return logger.isWarnEnabled();
+                case INFO:
+                    return logger.isInfoEnabled();
+                case DEBUG:
+                    return logger.isDebugEnabled();
+                case TRACE:
+                    return logger.isTraceEnabled();
+            }
         return true;
     }
 
-    protected void doLog(final Level level, final String loggerClassName, final Object message, final Object[] parameters, final Throwable thrown) {
+    protected void doLog(final Level level, final String loggerClassName, final Object message, final Object[] parameters,
+            final Throwable thrown) {
         if (isEnabled(level)) {
-            final String text = parameters == null || parameters.length == 0 ? String.valueOf(message) : MessageFormat.format(String.valueOf(message), parameters);
+            final String text = parameters == null || parameters.length == 0 ? String.valueOf(message)
+                    : MessageFormat.format(String.valueOf(message), parameters);
             doLog(logger, loggerClassName, translate(level), text, thrown);
         }
     }
 
-    protected void doLogf(final Level level, final String loggerClassName, final String format, final Object[] parameters, final Throwable thrown) {
+    protected void doLogf(final Level level, final String loggerClassName, final String format, final Object[] parameters,
+            final Throwable thrown) {
         if (isEnabled(level)) {
             final String text = parameters == null ? String.format(format) : String.format(format, parameters);
             doLog(logger, loggerClassName, translate(level), text, thrown);
@@ -106,14 +117,20 @@ final class Slf4jLocationAwareLogger extends Logger {
     }
 
     private static int translate(Level level) {
-        if (level != null) switch (level) {
-            case FATAL:
-            case ERROR: return LocationAwareLogger.ERROR_INT;
-            case WARN:  return LocationAwareLogger.WARN_INT;
-            case INFO:  return LocationAwareLogger.INFO_INT;
-            case DEBUG: return LocationAwareLogger.DEBUG_INT;
-            case TRACE: return LocationAwareLogger.TRACE_INT;
-        }
+        if (level != null)
+            switch (level) {
+                case FATAL:
+                case ERROR:
+                    return LocationAwareLogger.ERROR_INT;
+                case WARN:
+                    return LocationAwareLogger.WARN_INT;
+                case INFO:
+                    return LocationAwareLogger.INFO_INT;
+                case DEBUG:
+                    return LocationAwareLogger.DEBUG_INT;
+                case TRACE:
+                    return LocationAwareLogger.TRACE_INT;
+            }
         return LocationAwareLogger.TRACE_INT;
     }
 }

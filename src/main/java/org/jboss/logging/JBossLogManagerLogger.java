@@ -35,18 +35,21 @@ final class JBossLogManagerLogger extends Logger {
         return logger.isLoggable(translate(level));
     }
 
-    protected void doLog(final Level level, final String loggerClassName, final Object message, final Object[] parameters, final Throwable thrown) {
+    protected void doLog(final Level level, final String loggerClassName, final Object message, final Object[] parameters,
+            final Throwable thrown) {
         java.util.logging.Level translatedLevel = translate(level);
         if (logger.isLoggable(translatedLevel)) {
-          if (parameters == null) {
-            logger.log(loggerClassName, translatedLevel, String.valueOf(message), thrown);
-          } else {
-            logger.log(loggerClassName, translatedLevel, String.valueOf(message), ExtLogRecord.FormatStyle.MESSAGE_FORMAT, parameters, thrown);
-          }
+            if (parameters == null) {
+                logger.log(loggerClassName, translatedLevel, String.valueOf(message), thrown);
+            } else {
+                logger.log(loggerClassName, translatedLevel, String.valueOf(message), ExtLogRecord.FormatStyle.MESSAGE_FORMAT,
+                        parameters, thrown);
+            }
         }
     }
 
-    protected void doLogf(final Level level, final String loggerClassName, final String format, final Object[] parameters, final Throwable thrown) {
+    protected void doLogf(final Level level, final String loggerClassName, final String format, final Object[] parameters,
+            final Throwable thrown) {
         if (parameters == null) {
             logger.log(loggerClassName, translate(level), format, thrown);
         } else {

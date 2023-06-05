@@ -39,7 +39,7 @@ abstract class AbstractMdcLoggerProvider extends AbstractLoggerProvider {
 
     public Map<String, Object> getMdcMap() {
         final Map<String, Object> map = mdcMap.get();
-        return map == null ? Collections.<String, Object>emptyMap() : map;
+        return map == null ? Collections.<String, Object> emptyMap() : map;
     }
 
     public Object putMdc(String key, Object value) {
