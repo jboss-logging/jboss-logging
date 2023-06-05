@@ -40,7 +40,7 @@ class JBossLogRecord extends LogRecord {
     }
 
     public String getSourceClassName() {
-        if (! resolved) {
+        if (!resolved) {
             resolve();
         }
         return super.getSourceClassName();
@@ -52,7 +52,7 @@ class JBossLogRecord extends LogRecord {
     }
 
     public String getSourceMethodName() {
-        if (! resolved) {
+        if (!resolved) {
             resolve();
         }
         return super.getSourceMethodName();
@@ -70,7 +70,7 @@ class JBossLogRecord extends LogRecord {
         for (StackTraceElement element : stack) {
             final String className = element.getClassName();
             if (found) {
-                if (! loggerClassName.equals(className)) {
+                if (!loggerClassName.equals(className)) {
                     setSourceClassName(className);
                     setSourceMethodName(element.getMethodName());
                     return;

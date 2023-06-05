@@ -52,12 +52,14 @@ public class CustomProviderTestCase {
         }
 
         @Override
-        protected void doLog(final Level level, final String loggerClassName, final Object message, final Object[] parameters, final Throwable thrown) {
+        protected void doLog(final Level level, final String loggerClassName, final Object message, final Object[] parameters,
+                final Throwable thrown) {
 
         }
 
         @Override
-        protected void doLogf(final Level level, final String loggerClassName, final String format, final Object[] parameters, final Throwable thrown) {
+        protected void doLogf(final Level level, final String loggerClassName, final String format, final Object[] parameters,
+                final Throwable thrown) {
 
         }
 

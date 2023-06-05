@@ -61,9 +61,10 @@ final class LoggerProviders {
         try {
             final ServiceLoader<LoggerProvider> loader = ServiceLoader.load(LoggerProvider.class, cl);
             final Iterator<LoggerProvider> iter = loader.iterator();
-            for (; ; )
+            for (;;)
                 try {
-                    if (!iter.hasNext()) break;
+                    if (!iter.hasNext())
+                        break;
                     LoggerProvider provider = iter.next();
                     // Attempt to get a logger, if it fails keep trying
                     logProvider(provider, "service loader");
@@ -137,7 +138,8 @@ final class LoggerProviders {
     private static LoggerProvider tryJBossLogManager(final ClassLoader cl, final String via) throws ClassNotFoundException {
         final Class<? extends LogManager> logManagerClass = LogManager.getLogManager().getClass();
         if (logManagerClass == Class.forName("org.jboss.logmanager.LogManager", false, cl)
-                && Class.forName("org.jboss.logmanager.Logger$AttachmentKey", true, cl).getClassLoader() == logManagerClass.getClassLoader()) {
+                && Class.forName("org.jboss.logmanager.Logger$AttachmentKey", true, cl).getClassLoader() == logManagerClass
+                        .getClassLoader()) {
             final LoggerProvider provider = new JBossLogManagerProvider();
             logProvider(provider, via);
             return provider;

@@ -61,7 +61,9 @@ abstract class AbstractLoggerProvider {
 
     public void setNdcMaxDepth(int maxDepth) {
         final ArrayDeque<Entry> stack = ndcStack.get();
-        if (stack != null) while (stack.size() > maxDepth) stack.pop();
+        if (stack != null)
+            while (stack.size() > maxDepth)
+                stack.pop();
     }
 
     private static class Entry {

@@ -32,11 +32,11 @@ import java.util.Locale;
 public interface ParameterConverter<I> {
 
     /**
-     * Convert the parameter to its string or string-equivalent representation.  The returned value will be passed in
+     * Convert the parameter to its string or string-equivalent representation. The returned value will be passed in
      * as a parameter to either a {@link java.text.MessageFormat} or {@link java.util.Formatter} instance, depending
      * on the setting of {@code org.jboss.logging.annotation.Message.format}.
      *
-     * @param locale the locale
+     * @param locale    the locale
      * @param parameter the parameter
      * @return the converted value
      */

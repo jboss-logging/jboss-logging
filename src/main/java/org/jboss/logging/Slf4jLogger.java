@@ -51,37 +51,44 @@ final class Slf4jLogger extends Logger {
         return true;
     }
 
-    protected void doLog(final Level level, final String loggerClassName, final Object message, final Object[] parameters, final Throwable thrown) {
-        if (isEnabled(level)) try {
-            final String text = parameters == null || parameters.length == 0 ? String.valueOf(message) : MessageFormat.format(String.valueOf(message), parameters);
-            if (level == Level.INFO) {
-                logger.info(text, thrown);
-            } else if (level == Level.WARN) {
-                logger.warn(text, thrown);
-            } else if (level == Level.ERROR || level == Level.FATAL) {
-                logger.error(text, thrown);
-            } else if (level == Level.DEBUG) {
-                logger.debug(text, thrown);
-            } else if (level == Level.TRACE) {
-                logger.debug(text, thrown);
+    protected void doLog(final Level level, final String loggerClassName, final Object message, final Object[] parameters,
+            final Throwable thrown) {
+        if (isEnabled(level))
+            try {
+                final String text = parameters == null || parameters.length == 0 ? String.valueOf(message)
+                        : MessageFormat.format(String.valueOf(message), parameters);
+                if (level == Level.INFO) {
+                    logger.info(text, thrown);
+                } else if (level == Level.WARN) {
+                    logger.warn(text, thrown);
+                } else if (level == Level.ERROR || level == Level.FATAL) {
+                    logger.error(text, thrown);
+                } else if (level == Level.DEBUG) {
+                    logger.debug(text, thrown);
+                } else if (level == Level.TRACE) {
+                    logger.debug(text, thrown);
+                }
+            } catch (Throwable ignored) {
             }
-        } catch (Throwable ignored) {}
     }
 
-    protected void doLogf(final Level level, final String loggerClassName, final String format, final Object[] parameters, final Throwable thrown) {
-        if (isEnabled(level)) try {
-            final String text = parameters == null ? String.format(format) : String.format(format, parameters);
-            if (level == Level.INFO) {
-                logger.info(text, thrown);
-            } else if (level == Level.WARN) {
-                logger.warn(text, thrown);
-            } else if (level == Level.ERROR || level == Level.FATAL) {
-                logger.error(text, thrown);
-            } else if (level == Level.DEBUG) {
-                logger.debug(text, thrown);
-            } else if (level == Level.TRACE) {
-                logger.debug(text, thrown);
+    protected void doLogf(final Level level, final String loggerClassName, final String format, final Object[] parameters,
+            final Throwable thrown) {
+        if (isEnabled(level))
+            try {
+                final String text = parameters == null ? String.format(format) : String.format(format, parameters);
+                if (level == Level.INFO) {
+                    logger.info(text, thrown);
+                } else if (level == Level.WARN) {
+                    logger.warn(text, thrown);
+                } else if (level == Level.ERROR || level == Level.FATAL) {
+                    logger.error(text, thrown);
+                } else if (level == Level.DEBUG) {
+                    logger.debug(text, thrown);
+                } else if (level == Level.TRACE) {
+                    logger.debug(text, thrown);
+                }
+            } catch (Throwable ignored) {
             }
-        } catch (Throwable ignored) {}
     }
 }

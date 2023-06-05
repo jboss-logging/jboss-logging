@@ -75,3 +75,7 @@ discovered.
     <version>${version.org.jboss.logging}</version>
 </dependency>
 ----
+
+== Contributing
+
+See the link:CONTRIBUTING.adoc[contributing guide].

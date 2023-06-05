@@ -2,7 +2,7 @@
  * JBoss, Home of Professional Open Source.
  *
  * Copyright 2010 Red Hat, Inc., and individual contributors
- * as indicated by the @author tags. 
+ * as indicated by the @author tags.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -19,11 +19,11 @@
 
 package org.jboss.logging;
 
+import static java.security.AccessController.doPrivileged;
+
 import java.lang.reflect.Field;
 import java.security.PrivilegedAction;
 import java.util.Locale;
-
-import static java.security.AccessController.doPrivileged;
 
 /**
  * A factory class to produce message bundle implementations.
@@ -36,10 +36,11 @@ public final class Messages {
     }
 
     /**
-     * Get a message bundle of the given type.  Equivalent to <code>{@link #getBundle(Class, java.util.Locale) getBundle}(type, Locale.getDefault())</code>.
+     * Get a message bundle of the given type. Equivalent to
+     * <code>{@link #getBundle(Class, java.util.Locale) getBundle}(type, Locale.getDefault())</code>.
      *
      * @param type the bundle type class
-     * @param <T> the bundle type
+     * @param <T>  the bundle type
      * @return the bundle
      */
     public static <T> T getBundle(Class<T> type) {
@@ -49,9 +50,9 @@ public final class Messages {
     /**
      * Get a message bundle of the given type.
      *
-     * @param type the bundle type class
+     * @param type   the bundle type class
      * @param locale the message locale to use
-     * @param <T> the bundle type
+     * @param <T>    the bundle type
      * @return the bundle
      */
     public static <T> T getBundle(final Class<T> type, final Locale locale) {
@@ -71,26 +72,36 @@ public final class Messages {
         String variant = locale.getVariant();
 
         Class<? extends T> bundleClass = null;
-        if (variant != null && variant.length() > 0) try {
-            bundleClass = Class.forName(join(type.getName(), "$bundle", language, country, variant), true, type.getClassLoader()).asSubclass(type);
-        } catch (ClassNotFoundException e) {
-            // ignore
-        }
-        if (bundleClass == null && country != null && country.length() > 0) try {
-            bundleClass = Class.forName(join(type.getName(), "$bundle", language, country, null), true, type.getClassLoader()).asSubclass(type);
-        } catch (ClassNotFoundException e) {
-            // ignore
-        }
-        if (bundleClass == null && language != null && language.length() > 0) try {
-            bundleClass = Class.forName(join(type.getName(), "$bundle", language, null, null), true, type.getClassLoader()).asSubclass(type);
-        } catch (ClassNotFoundException e) {
-            // ignore
-        }
-        if (bundleClass == null) try {
-            bundleClass = Class.forName(join(type.getName(), "$bundle", null, null, null), true, type.getClassLoader()).asSubclass(type);
-        } catch (ClassNotFoundException e) {
-            throw new IllegalArgumentException("Invalid bundle " + type + " (implementation not found)");
-        }
+        if (variant != null && variant.length() > 0)
+            try {
+                bundleClass = Class
+                        .forName(join(type.getName(), "$bundle", language, country, variant), true, type.getClassLoader())
+                        .asSubclass(type);
+            } catch (ClassNotFoundException e) {
+                // ignore
+            }
+        if (bundleClass == null && country != null && country.length() > 0)
+            try {
+                bundleClass = Class
+                        .forName(join(type.getName(), "$bundle", language, country, null), true, type.getClassLoader())
+                        .asSubclass(type);
+            } catch (ClassNotFoundException e) {
+                // ignore
+            }
+        if (bundleClass == null && language != null && language.length() > 0)
+            try {
+                bundleClass = Class.forName(join(type.getName(), "$bundle", language, null, null), true, type.getClassLoader())
+                        .asSubclass(type);
+            } catch (ClassNotFoundException e) {
+                // ignore
+            }
+        if (bundleClass == null)
+            try {
+                bundleClass = Class.forName(join(type.getName(), "$bundle", null, null, null), true, type.getClassLoader())
+                        .asSubclass(type);
+            } catch (ClassNotFoundException e) {
+                throw new IllegalArgumentException("Invalid bundle " + type + " (implementation not found)");
+            }
         final Field field;
         try {
             field = bundleClass.getField("INSTANCE");

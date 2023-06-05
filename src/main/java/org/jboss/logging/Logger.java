@@ -18,13 +18,13 @@
 
 package org.jboss.logging;
 
+import static java.security.AccessController.doPrivileged;
+
 import java.io.Serializable;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 import java.security.PrivilegedAction;
 import java.util.Locale;
-
-import static java.security.AccessController.doPrivileged;
 
 /**
  * An abstracted logging entry point.
@@ -70,22 +70,22 @@ public abstract class Logger implements Serializable, BasicLogger {
     /**
      * Implementation log method (standard parameter formatting).
      *
-     * @param level the level
+     * @param level           the level
      * @param loggerClassName the logger class name
-     * @param message the message to log
-     * @param parameters the parameters of the message
-     * @param thrown the exception which was thrown, if any
+     * @param message         the message to log
+     * @param parameters      the parameters of the message
+     * @param thrown          the exception which was thrown, if any
      */
     protected abstract void doLog(Level level, String loggerClassName, Object message, Object[] parameters, Throwable thrown);
 
     /**
      * Implementation log method (printf formatting).
      *
-     * @param level the level
+     * @param level           the level
      * @param loggerClassName the logger class name
-     * @param format the format string to log
-     * @param parameters the parameters of the message
-     * @param thrown the exception which was thrown, if any
+     * @param format          the format string to log
+     * @param parameters      the parameters of the message
+     * @param thrown          the exception which was thrown, if any
      */
     protected abstract void doLogf(Level level, String loggerClassName, String format, Object[] parameters, Throwable thrown);
 
@@ -111,7 +111,7 @@ public abstract class Logger implements Serializable, BasicLogger {
      * Issue a log message and throwable with a level of TRACE.
      *
      * @param message the message
-     * @param t the throwable
+     * @param t       the throwable
      */
     public void trace(Object message, Throwable t) {
         doLog(Level.TRACE, FQCN, message, null, t);
@@ -121,8 +121,8 @@ public abstract class Logger implements Serializable, BasicLogger {
      * Issue a log message and throwable with a level of TRACE and a specific logger class name.
      *
      * @param loggerFqcn the logger class name
-     * @param message the message
-     * @param t the throwable
+     * @param message    the message
+     * @param t          the throwable
      */
     public void trace(String loggerFqcn, Object message, Throwable t) {
         doLog(Level.TRACE, loggerFqcn, message, null, t);
@@ -132,7 +132,7 @@ public abstract class Logger implements Serializable, BasicLogger {
      * Issue a log message with parameters with a level of TRACE.
      *
      * @param message the message
-     * @param params the message parameters
+     * @param params  the message parameters
      * @deprecated To log a message with parameters, using {@link #tracev(String, Object...)} is recommended.
      */
     @Deprecated
@@ -144,8 +144,8 @@ public abstract class Logger implements Serializable, BasicLogger {
      * Issue a log message with parameters and a throwable with a level of TRACE.
      *
      * @param message the message
-     * @param params the message parameters
-     * @param t the throwable
+     * @param params  the message parameters
+     * @param t       the throwable
      * @deprecated To log a message with parameters, using {@link #tracev(Throwable, String, Object...)} is recommended.
      */
     @Deprecated
@@ -157,9 +157,9 @@ public abstract class Logger implements Serializable, BasicLogger {
      * Issue a log message with parameters and a throwable with a level of TRACE.
      *
      * @param loggerFqcn the logger class name
-     * @param message the message
-     * @param params the message parameters
-     * @param t the throwable
+     * @param message    the message
+     * @param params     the message parameters
+     * @param t          the throwable
      */
     public void trace(String loggerFqcn, Object message, Object[] params, Throwable t) {
         doLog(Level.TRACE, loggerFqcn, message, params, t);
@@ -217,7 +217,7 @@ public abstract class Logger implements Serializable, BasicLogger {
     /**
      * Issue a log message with a level of TRACE using {@link java.text.MessageFormat}-style formatting.
      *
-     * @param t the throwable
+     * @param t      the throwable
      * @param format the message format string
      * @param params the parameters
      */
@@ -228,7 +228,7 @@ public abstract class Logger implements Serializable, BasicLogger {
     /**
      * Issue a log message with a level of TRACE using {@link java.text.MessageFormat}-style formatting.
      *
-     * @param t the throwable
+     * @param t      the throwable
      * @param format the message format string
      * @param param1 the sole parameter
      */
@@ -241,7 +241,7 @@ public abstract class Logger implements Serializable, BasicLogger {
     /**
      * Issue a log message with a level of TRACE using {@link java.text.MessageFormat}-style formatting.
      *
-     * @param t the throwable
+     * @param t      the throwable
      * @param format the message format string
      * @param param1 the first parameter
      * @param param2 the second parameter
@@ -255,7 +255,7 @@ public abstract class Logger implements Serializable, BasicLogger {
     /**
      * Issue a log message with a level of TRACE using {@link java.text.MessageFormat}-style formatting.
      *
-     * @param t the throwable
+     * @param t      the throwable
      * @param format the message format string
      * @param param1 the first parameter
      * @param param2 the second parameter
@@ -319,7 +319,7 @@ public abstract class Logger implements Serializable, BasicLogger {
     /**
      * Issue a formatted log message with a level of TRACE.
      *
-     * @param t the throwable
+     * @param t      the throwable
      * @param format the format string, as per {@link String#format(String, Object...)}
      * @param params the parameters
      */
@@ -330,7 +330,7 @@ public abstract class Logger implements Serializable, BasicLogger {
     /**
      * Issue a formatted log message with a level of TRACE.
      *
-     * @param t the throwable
+     * @param t      the throwable
      * @param format the format string, as per {@link String#format(String, Object...)}
      * @param param1 the sole parameter
      */
@@ -343,7 +343,7 @@ public abstract class Logger implements Serializable, BasicLogger {
     /**
      * Issue a formatted log message with a level of TRACE.
      *
-     * @param t the throwable
+     * @param t      the throwable
      * @param format the format string, as per {@link String#format(String, Object...)}
      * @param param1 the first parameter
      * @param param2 the second parameter
@@ -357,7 +357,7 @@ public abstract class Logger implements Serializable, BasicLogger {
     /**
      * Issue a formatted log message with a level of TRACE.
      *
-     * @param t the throwable
+     * @param t      the throwable
      * @param format the format string, as per {@link String#format(String, Object...)}
      * @param param1 the first parameter
      * @param param2 the second parameter
@@ -535,7 +535,7 @@ public abstract class Logger implements Serializable, BasicLogger {
      * Issue a log message and throwable with a level of DEBUG.
      *
      * @param message the message
-     * @param t the throwable
+     * @param t       the throwable
      */
     public void debug(Object message, Throwable t) {
         doLog(Level.DEBUG, FQCN, message, null, t);
@@ -545,8 +545,8 @@ public abstract class Logger implements Serializable, BasicLogger {
      * Issue a log message and throwable with a level of DEBUG and a specific logger class name.
      *
      * @param loggerFqcn the logger class name
-     * @param message the message
-     * @param t the throwable
+     * @param message    the message
+     * @param t          the throwable
      */
     public void debug(String loggerFqcn, Object message, Throwable t) {
         doLog(Level.DEBUG, loggerFqcn, message, null, t);
@@ -556,7 +556,7 @@ public abstract class Logger implements Serializable, BasicLogger {
      * Issue a log message with parameters with a level of DEBUG.
      *
      * @param message the message
-     * @param params the message parameters
+     * @param params  the message parameters
      * @deprecated To log a message with parameters, using {@link #debugv(String, Object...)} is recommended.
      */
     @Deprecated
@@ -568,8 +568,8 @@ public abstract class Logger implements Serializable, BasicLogger {
      * Issue a log message with parameters and a throwable with a level of DEBUG.
      *
      * @param message the message
-     * @param params the message parameters
-     * @param t the throwable
+     * @param params  the message parameters
+     * @param t       the throwable
      * @deprecated To log a message with parameters, using {@link #debugv(Throwable, String, Object...)} is recommended.
      */
     @Deprecated
@@ -581,9 +581,9 @@ public abstract class Logger implements Serializable, BasicLogger {
      * Issue a log message with parameters and a throwable with a level of DEBUG.
      *
      * @param loggerFqcn the logger class name
-     * @param message the message
-     * @param params the message parameters
-     * @param t the throwable
+     * @param message    the message
+     * @param params     the message parameters
+     * @param t          the throwable
      */
     public void debug(String loggerFqcn, Object message, Object[] params, Throwable t) {
         doLog(Level.DEBUG, loggerFqcn, message, params, t);
@@ -641,7 +641,7 @@ public abstract class Logger implements Serializable, BasicLogger {
     /**
      * Issue a log message with a level of DEBUG using {@link java.text.MessageFormat}-style formatting.
      *
-     * @param t the throwable
+     * @param t      the throwable
      * @param format the message format string
      * @param params the parameters
      */
@@ -652,7 +652,7 @@ public abstract class Logger implements Serializable, BasicLogger {
     /**
      * Issue a log message with a level of DEBUG using {@link java.text.MessageFormat}-style formatting.
      *
-     * @param t the throwable
+     * @param t      the throwable
      * @param format the message format string
      * @param param1 the sole parameter
      */
@@ -665,7 +665,7 @@ public abstract class Logger implements Serializable, BasicLogger {
     /**
      * Issue a log message with a level of DEBUG using {@link java.text.MessageFormat}-style formatting.
      *
-     * @param t the throwable
+     * @param t      the throwable
      * @param format the message format string
      * @param param1 the first parameter
      * @param param2 the second parameter
@@ -679,7 +679,7 @@ public abstract class Logger implements Serializable, BasicLogger {
     /**
      * Issue a log message with a level of DEBUG using {@link java.text.MessageFormat}-style formatting.
      *
-     * @param t the throwable
+     * @param t      the throwable
      * @param format the message format string
      * @param param1 the first parameter
      * @param param2 the second parameter
@@ -743,7 +743,7 @@ public abstract class Logger implements Serializable, BasicLogger {
     /**
      * Issue a formatted log message with a level of DEBUG.
      *
-     * @param t the throwable
+     * @param t      the throwable
      * @param format the format string, as per {@link String#format(String, Object...)}
      * @param params the parameters
      */
@@ -754,7 +754,7 @@ public abstract class Logger implements Serializable, BasicLogger {
     /**
      * Issue a formatted log message with a level of DEBUG.
      *
-     * @param t the throwable
+     * @param t      the throwable
      * @param format the format string, as per {@link String#format(String, Object...)}
      * @param param1 the sole parameter
      */
@@ -767,7 +767,7 @@ public abstract class Logger implements Serializable, BasicLogger {
     /**
      * Issue a formatted log message with a level of DEBUG.
      *
-     * @param t the throwable
+     * @param t      the throwable
      * @param format the format string, as per {@link String#format(String, Object...)}
      * @param param1 the first parameter
      * @param param2 the second parameter
@@ -781,7 +781,7 @@ public abstract class Logger implements Serializable, BasicLogger {
     /**
      * Issue a formatted log message with a level of DEBUG.
      *
-     * @param t the throwable
+     * @param t      the throwable
      * @param format the format string, as per {@link String#format(String, Object...)}
      * @param param1 the first parameter
      * @param param2 the second parameter
@@ -959,7 +959,7 @@ public abstract class Logger implements Serializable, BasicLogger {
      * Issue a log message and throwable with a level of INFO.
      *
      * @param message the message
-     * @param t the throwable
+     * @param t       the throwable
      */
     public void info(Object message, Throwable t) {
         doLog(Level.INFO, FQCN, message, null, t);
@@ -969,8 +969,8 @@ public abstract class Logger implements Serializable, BasicLogger {
      * Issue a log message and throwable with a level of INFO and a specific logger class name.
      *
      * @param loggerFqcn the logger class name
-     * @param message the message
-     * @param t the throwable
+     * @param message    the message
+     * @param t          the throwable
      */
     public void info(String loggerFqcn, Object message, Throwable t) {
         doLog(Level.INFO, loggerFqcn, message, null, t);
@@ -980,7 +980,7 @@ public abstract class Logger implements Serializable, BasicLogger {
      * Issue a log message with parameters with a level of INFO.
      *
      * @param message the message
-     * @param params the message parameters
+     * @param params  the message parameters
      * @deprecated To log a message with parameters, using {@link #infov(String, Object...)} is recommended.
      */
     @Deprecated
@@ -992,8 +992,8 @@ public abstract class Logger implements Serializable, BasicLogger {
      * Issue a log message with parameters and a throwable with a level of INFO.
      *
      * @param message the message
-     * @param params the message parameters
-     * @param t the throwable
+     * @param params  the message parameters
+     * @param t       the throwable
      * @deprecated To log a message with parameters, using {@link #infov(Throwable, String, Object...)} is recommended.
      */
     @Deprecated
@@ -1005,9 +1005,9 @@ public abstract class Logger implements Serializable, BasicLogger {
      * Issue a log message with parameters and a throwable with a level of INFO.
      *
      * @param loggerFqcn the logger class name
-     * @param message the message
-     * @param params the message parameters
-     * @param t the throwable
+     * @param message    the message
+     * @param params     the message parameters
+     * @param t          the throwable
      */
     public void info(String loggerFqcn, Object message, Object[] params, Throwable t) {
         doLog(Level.INFO, loggerFqcn, message, params, t);
@@ -1065,7 +1065,7 @@ public abstract class Logger implements Serializable, BasicLogger {
     /**
      * Issue a log message with a level of INFO using {@link java.text.MessageFormat}-style formatting.
      *
-     * @param t the throwable
+     * @param t      the throwable
      * @param format the message format string
      * @param params the parameters
      */
@@ -1076,7 +1076,7 @@ public abstract class Logger implements Serializable, BasicLogger {
     /**
      * Issue a log message with a level of INFO using {@link java.text.MessageFormat}-style formatting.
      *
-     * @param t the throwable
+     * @param t      the throwable
      * @param format the message format string
      * @param param1 the sole parameter
      */
@@ -1089,7 +1089,7 @@ public abstract class Logger implements Serializable, BasicLogger {
     /**
      * Issue a log message with a level of INFO using {@link java.text.MessageFormat}-style formatting.
      *
-     * @param t the throwable
+     * @param t      the throwable
      * @param format the message format string
      * @param param1 the first parameter
      * @param param2 the second parameter
@@ -1103,7 +1103,7 @@ public abstract class Logger implements Serializable, BasicLogger {
     /**
      * Issue a log message with a level of INFO using {@link java.text.MessageFormat}-style formatting.
      *
-     * @param t the throwable
+     * @param t      the throwable
      * @param format the message format string
      * @param param1 the first parameter
      * @param param2 the second parameter
@@ -1167,7 +1167,7 @@ public abstract class Logger implements Serializable, BasicLogger {
     /**
      * Issue a formatted log message with a level of INFO.
      *
-     * @param t the throwable
+     * @param t      the throwable
      * @param format the format string, as per {@link String#format(String, Object...)}
      * @param params the parameters
      */
@@ -1178,7 +1178,7 @@ public abstract class Logger implements Serializable, BasicLogger {
     /**
      * Issue a formatted log message with a level of INFO.
      *
-     * @param t the throwable
+     * @param t      the throwable
      * @param format the format string, as per {@link String#format(String, Object...)}
      * @param param1 the sole parameter
      */
@@ -1191,7 +1191,7 @@ public abstract class Logger implements Serializable, BasicLogger {
     /**
      * Issue a formatted log message with a level of INFO.
      *
-     * @param t the throwable
+     * @param t      the throwable
      * @param format the format string, as per {@link String#format(String, Object...)}
      * @param param1 the first parameter
      * @param param2 the second parameter
@@ -1205,7 +1205,7 @@ public abstract class Logger implements Serializable, BasicLogger {
     /**
      * Issue a formatted log message with a level of INFO.
      *
-     * @param t the throwable
+     * @param t      the throwable
      * @param format the format string, as per {@link String#format(String, Object...)}
      * @param param1 the first parameter
      * @param param2 the second parameter
@@ -1230,7 +1230,7 @@ public abstract class Logger implements Serializable, BasicLogger {
      * Issue a log message and throwable with a level of WARN.
      *
      * @param message the message
-     * @param t the throwable
+     * @param t       the throwable
      */
     public void warn(Object message, Throwable t) {
         doLog(Level.WARN, FQCN, message, null, t);
@@ -1240,8 +1240,8 @@ public abstract class Logger implements Serializable, BasicLogger {
      * Issue a log message and throwable with a level of WARN and a specific logger class name.
      *
      * @param loggerFqcn the logger class name
-     * @param message the message
-     * @param t the throwable
+     * @param message    the message
+     * @param t          the throwable
      */
     public void warn(String loggerFqcn, Object message, Throwable t) {
         doLog(Level.WARN, loggerFqcn, message, null, t);
@@ -1251,7 +1251,7 @@ public abstract class Logger implements Serializable, BasicLogger {
      * Issue a log message with parameters with a level of WARN.
      *
      * @param message the message
-     * @param params the message parameters
+     * @param params  the message parameters
      * @deprecated To log a message with parameters, using {@link #warnv(String, Object...)} is recommended.
      */
     @Deprecated
@@ -1263,8 +1263,8 @@ public abstract class Logger implements Serializable, BasicLogger {
      * Issue a log message with parameters and a throwable with a level of WARN.
      *
      * @param message the message
-     * @param params the message parameters
-     * @param t the throwable
+     * @param params  the message parameters
+     * @param t       the throwable
      * @deprecated To log a message with parameters, using {@link #warnv(Throwable, String, Object...)} is recommended.
      */
     @Deprecated
@@ -1276,9 +1276,9 @@ public abstract class Logger implements Serializable, BasicLogger {
      * Issue a log message with parameters and a throwable with a level of WARN.
      *
      * @param loggerFqcn the logger class name
-     * @param message the message
-     * @param params the message parameters
-     * @param t the throwable
+     * @param message    the message
+     * @param params     the message parameters
+     * @param t          the throwable
      */
     public void warn(String loggerFqcn, Object message, Object[] params, Throwable t) {
         doLog(Level.WARN, loggerFqcn, message, params, t);
@@ -1336,7 +1336,7 @@ public abstract class Logger implements Serializable, BasicLogger {
     /**
      * Issue a log message with a level of WARN using {@link java.text.MessageFormat}-style formatting.
      *
-     * @param t the throwable
+     * @param t      the throwable
      * @param format the message format string
      * @param params the parameters
      */
@@ -1347,7 +1347,7 @@ public abstract class Logger implements Serializable, BasicLogger {
     /**
      * Issue a log message with a level of WARN using {@link java.text.MessageFormat}-style formatting.
      *
-     * @param t the throwable
+     * @param t      the throwable
      * @param format the message format string
      * @param param1 the sole parameter
      */
@@ -1360,7 +1360,7 @@ public abstract class Logger implements Serializable, BasicLogger {
     /**
      * Issue a log message with a level of WARN using {@link java.text.MessageFormat}-style formatting.
      *
-     * @param t the throwable
+     * @param t      the throwable
      * @param format the message format string
      * @param param1 the first parameter
      * @param param2 the second parameter
@@ -1374,7 +1374,7 @@ public abstract class Logger implements Serializable, BasicLogger {
     /**
      * Issue a log message with a level of WARN using {@link java.text.MessageFormat}-style formatting.
      *
-     * @param t the throwable
+     * @param t      the throwable
      * @param format the message format string
      * @param param1 the first parameter
      * @param param2 the second parameter
@@ -1438,7 +1438,7 @@ public abstract class Logger implements Serializable, BasicLogger {
     /**
      * Issue a formatted log message with a level of WARN.
      *
-     * @param t the throwable
+     * @param t      the throwable
      * @param format the format string, as per {@link String#format(String, Object...)}
      * @param params the parameters
      */
@@ -1449,7 +1449,7 @@ public abstract class Logger implements Serializable, BasicLogger {
     /**
      * Issue a formatted log message with a level of WARN.
      *
-     * @param t the throwable
+     * @param t      the throwable
      * @param format the format string, as per {@link String#format(String, Object...)}
      * @param param1 the sole parameter
      */
@@ -1462,7 +1462,7 @@ public abstract class Logger implements Serializable, BasicLogger {
     /**
      * Issue a formatted log message with a level of WARN.
      *
-     * @param t the throwable
+     * @param t      the throwable
      * @param format the format string, as per {@link String#format(String, Object...)}
      * @param param1 the first parameter
      * @param param2 the second parameter
@@ -1476,7 +1476,7 @@ public abstract class Logger implements Serializable, BasicLogger {
     /**
      * Issue a formatted log message with a level of WARN.
      *
-     * @param t the throwable
+     * @param t      the throwable
      * @param format the format string, as per {@link String#format(String, Object...)}
      * @param param1 the first parameter
      * @param param2 the second parameter
@@ -1501,7 +1501,7 @@ public abstract class Logger implements Serializable, BasicLogger {
      * Issue a log message and throwable with a level of ERROR.
      *
      * @param message the message
-     * @param t the throwable
+     * @param t       the throwable
      */
     public void error(Object message, Throwable t) {
         doLog(Level.ERROR, FQCN, message, null, t);
@@ -1511,8 +1511,8 @@ public abstract class Logger implements Serializable, BasicLogger {
      * Issue a log message and throwable with a level of ERROR and a specific logger class name.
      *
      * @param loggerFqcn the logger class name
-     * @param message the message
-     * @param t the throwable
+     * @param message    the message
+     * @param t          the throwable
      */
     public void error(String loggerFqcn, Object message, Throwable t) {
         doLog(Level.ERROR, loggerFqcn, message, null, t);
@@ -1522,7 +1522,7 @@ public abstract class Logger implements Serializable, BasicLogger {
      * Issue a log message with parameters with a level of ERROR.
      *
      * @param message the message
-     * @param params the message parameters
+     * @param params  the message parameters
      * @deprecated To log a message with parameters, using {@link #errorv(String, Object...)} is recommended.
      */
     @Deprecated
@@ -1534,8 +1534,8 @@ public abstract class Logger implements Serializable, BasicLogger {
      * Issue a log message with parameters and a throwable with a level of ERROR.
      *
      * @param message the message
-     * @param params the message parameters
-     * @param t the throwable
+     * @param params  the message parameters
+     * @param t       the throwable
      * @deprecated To log a message with parameters, using {@link #errorv(Throwable, String, Object...)} is recommended.
      */
     @Deprecated
@@ -1547,9 +1547,9 @@ public abstract class Logger implements Serializable, BasicLogger {
      * Issue a log message with parameters and a throwable with a level of ERROR.
      *
      * @param loggerFqcn the logger class name
-     * @param message the message
-     * @param params the message parameters
-     * @param t the throwable
+     * @param message    the message
+     * @param params     the message parameters
+     * @param t          the throwable
      */
     public void error(String loggerFqcn, Object message, Object[] params, Throwable t) {
         doLog(Level.ERROR, loggerFqcn, message, params, t);
@@ -1607,7 +1607,7 @@ public abstract class Logger implements Serializable, BasicLogger {
     /**
      * Issue a log message with a level of ERROR using {@link java.text.MessageFormat}-style formatting.
      *
-     * @param t the throwable
+     * @param t      the throwable
      * @param format the message format string
      * @param params the parameters
      */
@@ -1618,7 +1618,7 @@ public abstract class Logger implements Serializable, BasicLogger {
     /**
      * Issue a log message with a level of ERROR using {@link java.text.MessageFormat}-style formatting.
      *
-     * @param t the throwable
+     * @param t      the throwable
      * @param format the message format string
      * @param param1 the sole parameter
      */
@@ -1631,7 +1631,7 @@ public abstract class Logger implements Serializable, BasicLogger {
     /**
      * Issue a log message with a level of ERROR using {@link java.text.MessageFormat}-style formatting.
      *
-     * @param t the throwable
+     * @param t      the throwable
      * @param format the message format string
      * @param param1 the first parameter
      * @param param2 the second parameter
@@ -1645,7 +1645,7 @@ public abstract class Logger implements Serializable, BasicLogger {
     /**
      * Issue a log message with a level of ERROR using {@link java.text.MessageFormat}-style formatting.
      *
-     * @param t the throwable
+     * @param t      the throwable
      * @param format the message format string
      * @param param1 the first parameter
      * @param param2 the second parameter
@@ -1709,7 +1709,7 @@ public abstract class Logger implements Serializable, BasicLogger {
     /**
      * Issue a formatted log message with a level of ERROR.
      *
-     * @param t the throwable
+     * @param t      the throwable
      * @param format the format string, as per {@link String#format(String, Object...)}
      * @param params the parameters
      */
@@ -1720,7 +1720,7 @@ public abstract class Logger implements Serializable, BasicLogger {
     /**
      * Issue a formatted log message with a level of ERROR.
      *
-     * @param t the throwable
+     * @param t      the throwable
      * @param format the format string, as per {@link String#format(String, Object...)}
      * @param param1 the sole parameter
      */
@@ -1733,7 +1733,7 @@ public abstract class Logger implements Serializable, BasicLogger {
     /**
      * Issue a formatted log message with a level of ERROR.
      *
-     * @param t the throwable
+     * @param t      the throwable
      * @param format the format string, as per {@link String#format(String, Object...)}
      * @param param1 the first parameter
      * @param param2 the second parameter
@@ -1747,7 +1747,7 @@ public abstract class Logger implements Serializable, BasicLogger {
     /**
      * Issue a formatted log message with a level of ERROR.
      *
-     * @param t the throwable
+     * @param t      the throwable
      * @param format the format string, as per {@link String#format(String, Object...)}
      * @param param1 the first parameter
      * @param param2 the second parameter
@@ -1772,7 +1772,7 @@ public abstract class Logger implements Serializable, BasicLogger {
      * Issue a log message and throwable with a level of FATAL.
      *
      * @param message the message
-     * @param t the throwable
+     * @param t       the throwable
      */
     public void fatal(Object message, Throwable t) {
         doLog(Level.FATAL, FQCN, message, null, t);
@@ -1782,8 +1782,8 @@ public abstract class Logger implements Serializable, BasicLogger {
      * Issue a log message and throwable with a level of FATAL and a specific logger class name.
      *
      * @param loggerFqcn the logger class name
-     * @param message the message
-     * @param t the throwable
+     * @param message    the message
+     * @param t          the throwable
      */
     public void fatal(String loggerFqcn, Object message, Throwable t) {
         doLog(Level.FATAL, loggerFqcn, message, null, t);
@@ -1793,7 +1793,7 @@ public abstract class Logger implements Serializable, BasicLogger {
      * Issue a log message with parameters with a level of FATAL.
      *
      * @param message the message
-     * @param params the message parameters
+     * @param params  the message parameters
      * @deprecated To log a message with parameters, using {@link #fatalv(String, Object...)} is recommended.
      */
     @Deprecated
@@ -1805,8 +1805,8 @@ public abstract class Logger implements Serializable, BasicLogger {
      * Issue a log message with parameters and a throwable with a level of FATAL.
      *
      * @param message the message
-     * @param params the message parameters
-     * @param t the throwable
+     * @param params  the message parameters
+     * @param t       the throwable
      * @deprecated To log a message with parameters, using {@link #fatalv(Throwable, String, Object...)} is recommended.
      */
     @Deprecated
@@ -1818,9 +1818,9 @@ public abstract class Logger implements Serializable, BasicLogger {
      * Issue a log message with parameters and a throwable with a level of FATAL.
      *
      * @param loggerFqcn the logger class name
-     * @param message the message
-     * @param params the message parameters
-     * @param t the throwable
+     * @param message    the message
+     * @param params     the message parameters
+     * @param t          the throwable
      */
     public void fatal(String loggerFqcn, Object message, Object[] params, Throwable t) {
         doLog(Level.FATAL, loggerFqcn, message, params, t);
@@ -1878,7 +1878,7 @@ public abstract class Logger implements Serializable, BasicLogger {
     /**
      * Issue a log message with a level of FATAL using {@link java.text.MessageFormat}-style formatting.
      *
-     * @param t the throwable
+     * @param t      the throwable
      * @param format the message format string
      * @param params the parameters
      */
@@ -1889,7 +1889,7 @@ public abstract class Logger implements Serializable, BasicLogger {
     /**
      * Issue a log message with a level of FATAL using {@link java.text.MessageFormat}-style formatting.
      *
-     * @param t the throwable
+     * @param t      the throwable
      * @param format the message format string
      * @param param1 the sole parameter
      */
@@ -1902,7 +1902,7 @@ public abstract class Logger implements Serializable, BasicLogger {
     /**
      * Issue a log message with a level of FATAL using {@link java.text.MessageFormat}-style formatting.
      *
-     * @param t the throwable
+     * @param t      the throwable
      * @param format the message format string
      * @param param1 the first parameter
      * @param param2 the second parameter
@@ -1916,7 +1916,7 @@ public abstract class Logger implements Serializable, BasicLogger {
     /**
      * Issue a log message with a level of FATAL using {@link java.text.MessageFormat}-style formatting.
      *
-     * @param t the throwable
+     * @param t      the throwable
      * @param format the message format string
      * @param param1 the first parameter
      * @param param2 the second parameter
@@ -1980,7 +1980,7 @@ public abstract class Logger implements Serializable, BasicLogger {
     /**
      * Issue a formatted log message with a level of FATAL.
      *
-     * @param t the throwable
+     * @param t      the throwable
      * @param format the format string, as per {@link String#format(String, Object...)}
      * @param params the parameters
      */
@@ -1991,7 +1991,7 @@ public abstract class Logger implements Serializable, BasicLogger {
     /**
      * Issue a formatted log message with a level of FATAL.
      *
-     * @param t the throwable
+     * @param t      the throwable
      * @param format the format string, as per {@link String#format(String, Object...)}
      * @param param1 the sole parameter
      */
@@ -2004,7 +2004,7 @@ public abstract class Logger implements Serializable, BasicLogger {
     /**
      * Issue a formatted log message with a level of FATAL.
      *
-     * @param t the throwable
+     * @param t      the throwable
      * @param format the format string, as per {@link String#format(String, Object...)}
      * @param param1 the first parameter
      * @param param2 the second parameter
@@ -2018,7 +2018,7 @@ public abstract class Logger implements Serializable, BasicLogger {
     /**
      * Issue a formatted log message with a level of FATAL.
      *
-     * @param t the throwable
+     * @param t      the throwable
      * @param format the format string, as per {@link String#format(String, Object...)}
      * @param param1 the first parameter
      * @param param2 the second parameter
@@ -2033,7 +2033,7 @@ public abstract class Logger implements Serializable, BasicLogger {
     /**
      * Log a message at the given level.
      *
-     * @param level the level
+     * @param level   the level
      * @param message the message
      */
     public void log(Level level, Object message) {
@@ -2043,9 +2043,9 @@ public abstract class Logger implements Serializable, BasicLogger {
     /**
      * Issue a log message and throwable at the given log level.
      *
-     * @param level the level
+     * @param level   the level
      * @param message the message
-     * @param t the throwable
+     * @param t       the throwable
      */
     public void log(Level level, Object message, Throwable t) {
         doLog(level, FQCN, message, null, t);
@@ -2054,10 +2054,10 @@ public abstract class Logger implements Serializable, BasicLogger {
     /**
      * Issue a log message and throwable at the given log level and a specific logger class name.
      *
-     * @param level the level
+     * @param level      the level
      * @param loggerFqcn the logger class name
-     * @param message the message
-     * @param t the throwable
+     * @param message    the message
+     * @param t          the throwable
      */
     public void log(Level level, String loggerFqcn, Object message, Throwable t) {
         doLog(level, loggerFqcn, message, null, t);
@@ -2066,9 +2066,9 @@ public abstract class Logger implements Serializable, BasicLogger {
     /**
      * Issue a log message with parameters at the given log level.
      *
-     * @param level the level
+     * @param level   the level
      * @param message the message
-     * @param params the message parameters
+     * @param params  the message parameters
      * @deprecated To log a message with parameters, using {@link #logv(Level, String, Object...)} is recommended.
      */
     @Deprecated
@@ -2079,10 +2079,10 @@ public abstract class Logger implements Serializable, BasicLogger {
     /**
      * Issue a log message with parameters and a throwable at the given log level.
      *
-     * @param level the level
+     * @param level   the level
      * @param message the message
-     * @param params the message parameters
-     * @param t the throwable
+     * @param params  the message parameters
+     * @param t       the throwable
      * @deprecated To log a message with parameters, using {@link #logv(Level, Throwable, String, Object...)} is recommended.
      */
     @Deprecated
@@ -2094,10 +2094,10 @@ public abstract class Logger implements Serializable, BasicLogger {
      * Issue a log message with parameters and a throwable at the given log level.
      *
      * @param loggerFqcn the logger class name
-     * @param level the level
-     * @param message the message
-     * @param params the message parameters
-     * @param t the throwable
+     * @param level      the level
+     * @param message    the message
+     * @param params     the message parameters
+     * @param t          the throwable
      */
     public void log(String loggerFqcn, Level level, Object message, Object[] params, Throwable t) {
         doLog(level, loggerFqcn, message, params, t);
@@ -2106,7 +2106,7 @@ public abstract class Logger implements Serializable, BasicLogger {
     /**
      * Issue a log message at the given log level using {@link java.text.MessageFormat}-style formatting.
      *
-     * @param level the level
+     * @param level  the level
      * @param format the message format string
      * @param params the parameters
      */
@@ -2117,7 +2117,7 @@ public abstract class Logger implements Serializable, BasicLogger {
     /**
      * Issue a log message at the given log level using {@link java.text.MessageFormat}-style formatting.
      *
-     * @param level the level
+     * @param level  the level
      * @param format the message format string
      * @param param1 the sole parameter
      */
@@ -2130,7 +2130,7 @@ public abstract class Logger implements Serializable, BasicLogger {
     /**
      * Issue a log message at the given log level using {@link java.text.MessageFormat}-style formatting.
      *
-     * @param level the level
+     * @param level  the level
      * @param format the message format string
      * @param param1 the first parameter
      * @param param2 the second parameter
@@ -2144,7 +2144,7 @@ public abstract class Logger implements Serializable, BasicLogger {
     /**
      * Issue a log message at the given log level using {@link java.text.MessageFormat}-style formatting.
      *
-     * @param level the level
+     * @param level  the level
      * @param format the message format string
      * @param param1 the first parameter
      * @param param2 the second parameter
@@ -2159,8 +2159,8 @@ public abstract class Logger implements Serializable, BasicLogger {
     /**
      * Issue a log message at the given log level using {@link java.text.MessageFormat}-style formatting.
      *
-     * @param level the level
-     * @param t the throwable
+     * @param level  the level
+     * @param t      the throwable
      * @param format the message format string
      * @param params the parameters
      */
@@ -2171,8 +2171,8 @@ public abstract class Logger implements Serializable, BasicLogger {
     /**
      * Issue a log message at the given log level using {@link java.text.MessageFormat}-style formatting.
      *
-     * @param level the level
-     * @param t the throwable
+     * @param level  the level
+     * @param t      the throwable
      * @param format the message format string
      * @param param1 the sole parameter
      */
@@ -2185,8 +2185,8 @@ public abstract class Logger implements Serializable, BasicLogger {
     /**
      * Issue a log message at the given log level using {@link java.text.MessageFormat}-style formatting.
      *
-     * @param level the level
-     * @param t the throwable
+     * @param level  the level
+     * @param t      the throwable
      * @param format the message format string
      * @param param1 the first parameter
      * @param param2 the second parameter
@@ -2200,8 +2200,8 @@ public abstract class Logger implements Serializable, BasicLogger {
     /**
      * Issue a log message at the given log level using {@link java.text.MessageFormat}-style formatting.
      *
-     * @param level the level
-     * @param t the throwable
+     * @param level  the level
+     * @param t      the throwable
      * @param format the message format string
      * @param param1 the first parameter
      * @param param2 the second parameter
@@ -2217,10 +2217,10 @@ public abstract class Logger implements Serializable, BasicLogger {
      * Issue a log message at the given log level using {@link java.text.MessageFormat}-style formatting.
      *
      * @param loggerFqcn the logger class name
-     * @param level the level
-     * @param t the throwable
-     * @param format the message format string
-     * @param params the parameters
+     * @param level      the level
+     * @param t          the throwable
+     * @param format     the message format string
+     * @param params     the parameters
      */
     public void logv(String loggerFqcn, Level level, Throwable t, String format, Object... params) {
         doLog(level, loggerFqcn, format, params, t);
@@ -2230,10 +2230,10 @@ public abstract class Logger implements Serializable, BasicLogger {
      * Issue a log message at the given log level using {@link java.text.MessageFormat}-style formatting.
      *
      * @param loggerFqcn the logger class name
-     * @param level the level
-     * @param t the throwable
-     * @param format the message format string
-     * @param param1 the sole parameter
+     * @param level      the level
+     * @param t          the throwable
+     * @param format     the message format string
+     * @param param1     the sole parameter
      */
     public void logv(String loggerFqcn, Level level, Throwable t, String format, Object param1) {
         if (isEnabled(level)) {
@@ -2245,11 +2245,11 @@ public abstract class Logger implements Serializable, BasicLogger {
      * Issue a log message at the given log level using {@link java.text.MessageFormat}-style formatting.
      *
      * @param loggerFqcn the logger class name
-     * @param level the level
-     * @param t the throwable
-     * @param format the message format string
-     * @param param1 the first parameter
-     * @param param2 the second parameter
+     * @param level      the level
+     * @param t          the throwable
+     * @param format     the message format string
+     * @param param1     the first parameter
+     * @param param2     the second parameter
      */
     public void logv(String loggerFqcn, Level level, Throwable t, String format, Object param1, Object param2) {
         if (isEnabled(level)) {
@@ -2261,12 +2261,12 @@ public abstract class Logger implements Serializable, BasicLogger {
      * Issue a log message at the given log level using {@link java.text.MessageFormat}-style formatting.
      *
      * @param loggerFqcn the logger class name
-     * @param level the level
-     * @param t the throwable
-     * @param format the message format string
-     * @param param1 the first parameter
-     * @param param2 the second parameter
-     * @param param3 the third parameter
+     * @param level      the level
+     * @param t          the throwable
+     * @param format     the message format string
+     * @param param1     the first parameter
+     * @param param2     the second parameter
+     * @param param3     the third parameter
      */
     public void logv(String loggerFqcn, Level level, Throwable t, String format, Object param1, Object param2, Object param3) {
         if (isEnabled(level)) {
@@ -2277,7 +2277,7 @@ public abstract class Logger implements Serializable, BasicLogger {
     /**
      * Issue a formatted log message at the given log level.
      *
-     * @param level the level
+     * @param level  the level
      * @param format the format string as per {@link String#format(String, Object...)} or resource bundle key therefor
      * @param params the parameters
      */
@@ -2288,7 +2288,7 @@ public abstract class Logger implements Serializable, BasicLogger {
     /**
      * Issue a formatted log message at the given log level.
      *
-     * @param level the level
+     * @param level  the level
      * @param format the format string as per {@link String#format(String, Object...)} or resource bundle key therefor
      * @param param1 the sole parameter
      */
@@ -2301,7 +2301,7 @@ public abstract class Logger implements Serializable, BasicLogger {
     /**
      * Issue a formatted log message at the given log level.
      *
-     * @param level the level
+     * @param level  the level
      * @param format the format string as per {@link String#format(String, Object...)} or resource bundle key therefor
      * @param param1 the first parameter
      * @param param2 the second parameter
@@ -2315,7 +2315,7 @@ public abstract class Logger implements Serializable, BasicLogger {
     /**
      * Issue a formatted log message at the given log level.
      *
-     * @param level the level
+     * @param level  the level
      * @param format the format string as per {@link String#format(String, Object...)} or resource bundle key therefor
      * @param param1 the first parameter
      * @param param2 the second parameter
@@ -2330,8 +2330,8 @@ public abstract class Logger implements Serializable, BasicLogger {
     /**
      * Issue a formatted log message at the given log level.
      *
-     * @param level the level
-     * @param t the throwable
+     * @param level  the level
+     * @param t      the throwable
      * @param format the format string, as per {@link String#format(String, Object...)}
      * @param params the parameters
      */
@@ -2342,8 +2342,8 @@ public abstract class Logger implements Serializable, BasicLogger {
     /**
      * Issue a formatted log message at the given log level.
      *
-     * @param level the level
-     * @param t the throwable
+     * @param level  the level
+     * @param t      the throwable
      * @param format the format string, as per {@link String#format(String, Object...)}
      * @param param1 the sole parameter
      */
@@ -2356,8 +2356,8 @@ public abstract class Logger implements Serializable, BasicLogger {
     /**
      * Issue a formatted log message at the given log level.
      *
-     * @param level the level
-     * @param t the throwable
+     * @param level  the level
+     * @param t      the throwable
      * @param format the format string, as per {@link String#format(String, Object...)}
      * @param param1 the first parameter
      * @param param2 the second parameter
@@ -2371,8 +2371,8 @@ public abstract class Logger implements Serializable, BasicLogger {
     /**
      * Issue a formatted log message at the given log level.
      *
-     * @param level the level
-     * @param t the throwable
+     * @param level  the level
+     * @param t      the throwable
      * @param format the format string, as per {@link String#format(String, Object...)}
      * @param param1 the first parameter
      * @param param2 the second parameter
@@ -2388,10 +2388,10 @@ public abstract class Logger implements Serializable, BasicLogger {
      * Log a message at the given level.
      *
      * @param loggerFqcn the logger class name
-     * @param level the level
-     * @param t the throwable cause
-     * @param format the format string as per {@link String#format(String, Object...)} or resource bundle key therefor
-     * @param param1 the sole parameter
+     * @param level      the level
+     * @param t          the throwable cause
+     * @param format     the format string as per {@link String#format(String, Object...)} or resource bundle key therefor
+     * @param param1     the sole parameter
      */
     public void logf(String loggerFqcn, Level level, Throwable t, String format, Object param1) {
         if (isEnabled(level)) {
@@ -2403,11 +2403,11 @@ public abstract class Logger implements Serializable, BasicLogger {
      * Log a message at the given level.
      *
      * @param loggerFqcn the logger class name
-     * @param level the level
-     * @param t the throwable cause
-     * @param format the format string as per {@link String#format(String, Object...)} or resource bundle key therefor
-     * @param param1 the first parameter
-     * @param param2 the second parameter
+     * @param level      the level
+     * @param t          the throwable cause
+     * @param format     the format string as per {@link String#format(String, Object...)} or resource bundle key therefor
+     * @param param1     the first parameter
+     * @param param2     the second parameter
      */
     public void logf(String loggerFqcn, Level level, Throwable t, String format, Object param1, Object param2) {
         if (isEnabled(level)) {
@@ -2419,12 +2419,12 @@ public abstract class Logger implements Serializable, BasicLogger {
      * Log a message at the given level.
      *
      * @param loggerFqcn the logger class name
-     * @param level the level
-     * @param t the throwable cause
-     * @param format the format string as per {@link String#format(String, Object...)} or resource bundle key therefor
-     * @param param1 the first parameter
-     * @param param2 the second parameter
-     * @param param3 the third parameter
+     * @param level      the level
+     * @param t          the throwable cause
+     * @param format     the format string as per {@link String#format(String, Object...)} or resource bundle key therefor
+     * @param param1     the first parameter
+     * @param param2     the second parameter
+     * @param param3     the third parameter
      */
     public void logf(String loggerFqcn, Level level, Throwable t, String format, Object param1, Object param2, Object param3) {
         if (isEnabled(level)) {
@@ -2436,10 +2436,10 @@ public abstract class Logger implements Serializable, BasicLogger {
      * Log a message at the given level.
      *
      * @param loggerFqcn the logger class name
-     * @param level the level
-     * @param t the throwable cause
-     * @param format the format string as per {@link String#format(String, Object...)} or resource bundle key therefor
-     * @param params the message parameters
+     * @param level      the level
+     * @param t          the throwable cause
+     * @param format     the format string as per {@link String#format(String, Object...)} or resource bundle key therefor
+     * @param params     the message parameters
      */
     public void logf(String loggerFqcn, Level level, Throwable t, String format, Object... params) {
         doLogf(level, loggerFqcn, format, params, t);
@@ -2468,9 +2468,10 @@ public abstract class Logger implements Serializable, BasicLogger {
     /**
      * Get a Logger instance given the logger name with the given suffix.
      * <p/>
-     * <p>This will include a logger separator between logger name and suffix.
+     * <p>
+     * This will include a logger separator between logger name and suffix.
      *
-     * @param name the logger name
+     * @param name   the logger name
      * @param suffix a suffix to append to the logger name
      *
      * @return the logger
@@ -2493,9 +2494,10 @@ public abstract class Logger implements Serializable, BasicLogger {
     /**
      * Get a Logger instance given the name of a class with the given suffix.
      * <p/>
-     * <p>This will include a logger separator between logger name and suffix
+     * <p>
+     * This will include a logger separator between logger name and suffix
      *
-     * @param clazz the Class whose name will be used as the logger name
+     * @param clazz  the Class whose name will be used as the logger name
      * @param suffix a suffix to append to the logger name
      *
      * @return the logger
@@ -2505,11 +2507,11 @@ public abstract class Logger implements Serializable, BasicLogger {
     }
 
     /**
-     * Get a typed logger which implements the given interface.  The current default locale will be used for the new logger.
+     * Get a typed logger which implements the given interface. The current default locale will be used for the new logger.
      *
-     * @param type the interface to implement
+     * @param type     the interface to implement
      * @param category the logger category
-     * @param <T> the logger type
+     * @param <T>      the logger type
      * @return the typed logger
      */
     public static <T> T getMessageLogger(Class<T> type, String category) {
@@ -2517,12 +2519,12 @@ public abstract class Logger implements Serializable, BasicLogger {
     }
 
     /**
-     * Get a typed logger which implements the given interface.  The given locale will be used for the new logger.
+     * Get a typed logger which implements the given interface. The given locale will be used for the new logger.
      *
-     * @param type the interface to implement
+     * @param type     the interface to implement
      * @param category the logger category
-     * @param locale the locale for the new logger
-     * @param <T> the logger type
+     * @param locale   the locale for the new logger
+     * @param <T>      the logger type
      * @return the typed logger
      */
     public static <T> T getMessageLogger(final Class<T> type, final String category, final Locale locale) {
@@ -2543,26 +2545,34 @@ public abstract class Logger implements Serializable, BasicLogger {
         Class<? extends T> loggerClass = null;
         final ClassLoader classLoader = type.getClassLoader();
         final String typeName = type.getName();
-        if (variant != null && variant.length() > 0) try {
-            loggerClass = Class.forName(join(typeName, "$logger", language, country, variant), true, classLoader).asSubclass(type);
-        } catch (ClassNotFoundException e) {
-            // ignore
-        }
-        if (loggerClass == null && country != null && country.length() > 0) try {
-            loggerClass = Class.forName(join(typeName, "$logger", language, country, null), true, classLoader).asSubclass(type);
-        } catch (ClassNotFoundException e) {
-            // ignore
-        }
-        if (loggerClass == null && language != null && language.length() > 0) try {
-            loggerClass = Class.forName(join(typeName, "$logger", language, null, null), true, classLoader).asSubclass(type);
-        } catch (ClassNotFoundException e) {
-            // ignore
-        }
-        if (loggerClass == null) try {
-            loggerClass = Class.forName(join(typeName, "$logger", null, null, null), true, classLoader).asSubclass(type);
-        } catch (ClassNotFoundException e) {
-            throw new IllegalArgumentException("Invalid logger " + type + " (implementation not found in " + classLoader + ")");
-        }
+        if (variant != null && variant.length() > 0)
+            try {
+                loggerClass = Class.forName(join(typeName, "$logger", language, country, variant), true, classLoader)
+                        .asSubclass(type);
+            } catch (ClassNotFoundException e) {
+                // ignore
+            }
+        if (loggerClass == null && country != null && country.length() > 0)
+            try {
+                loggerClass = Class.forName(join(typeName, "$logger", language, country, null), true, classLoader)
+                        .asSubclass(type);
+            } catch (ClassNotFoundException e) {
+                // ignore
+            }
+        if (loggerClass == null && language != null && language.length() > 0)
+            try {
+                loggerClass = Class.forName(join(typeName, "$logger", language, null, null), true, classLoader)
+                        .asSubclass(type);
+            } catch (ClassNotFoundException e) {
+                // ignore
+            }
+        if (loggerClass == null)
+            try {
+                loggerClass = Class.forName(join(typeName, "$logger", null, null, null), true, classLoader).asSubclass(type);
+            } catch (ClassNotFoundException e) {
+                throw new IllegalArgumentException(
+                        "Invalid logger " + type + " (implementation not found in " + classLoader + ")");
+            }
         final Constructor<? extends T> constructor;
         try {
             constructor = loggerClass.getConstructor(Logger.class);
@@ -2576,7 +2586,8 @@ public abstract class Logger implements Serializable, BasicLogger {
         } catch (IllegalAccessException e) {
             throw new IllegalArgumentException("Logger implementation " + loggerClass + " could not be instantiated", e);
         } catch (InvocationTargetException e) {
-            throw new IllegalArgumentException("Logger implementation " + loggerClass + " could not be instantiated", e.getCause());
+            throw new IllegalArgumentException("Logger implementation " + loggerClass + " could not be instantiated",
+                    e.getCause());
         }
     }
 
