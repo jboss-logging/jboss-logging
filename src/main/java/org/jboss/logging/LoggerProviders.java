@@ -137,9 +137,17 @@ final class LoggerProviders {
 
     private static LoggerProvider tryJBossLogManager(final ClassLoader cl, final String via) throws ClassNotFoundException {
         final Class<? extends LogManager> logManagerClass = LogManager.getLogManager().getClass();
-        if (logManagerClass == Class.forName("org.jboss.logmanager.LogManager", false, cl)
+        final Class<?> jblLogManager = Class.forName("org.jboss.logmanager.LogManager", false,
+                Logger.class.getClassLoader());
+        if (logManagerClass == jblLogManager
                 && Class.forName("org.jboss.logmanager.Logger$AttachmentKey", true, cl).getClassLoader() == logManagerClass
                         .getClassLoader()) {
+            // We do not have an explicit dependency on org.jboss.logmanager as we could end up with cyclic dependencies.
+            // Therefore, we check the modules are named, and if they are we add an explicit reads.
+            final Module module = LoggerProviders.class.getModule();
+            if (module.isNamed()) {
+                module.addReads(jblLogManager.getModule());
+            }
             final LoggerProvider provider = new JBossLogManagerProvider();
             logProvider(provider, via);
             return provider;
