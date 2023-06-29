@@ -9,6 +9,3 @@ requires:
     static: true
   - module: java.logging
     static: true
-
-uses:
-  - org.jboss.logging.LoggerProvider
