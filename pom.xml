@@ -379,6 +379,10 @@
                         <goals>
                             <goal>generate</goal>
                         </goals>
+                        <configuration>
+                            <!-- We are going to add the required modules ourselves in module-info.yml -->
+                            <addMandatory>false</addMandatory>
+                        </configuration>
                     </execution>
                 </executions>
             </plugin>

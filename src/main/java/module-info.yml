@@ -1,6 +1,11 @@
 name: org.jboss.logging
 
 requires:
+    # Adding a dependency on java.base explicitly as mandated here to address https://bugs.openjdk.org/browse/JDK-8299769
+    # io.github.dmlloyd.module-info:module-info:2.0 version of the plugin adds it as ACC_SYNTHETIC ACC_MANDATED
+    # resulting in build errors on JDK21+
+  - module: java.base
+    mandated: true
   - module: org.slf4j
     static: true
   - module: log4j.api # log4j 1, theoretically
