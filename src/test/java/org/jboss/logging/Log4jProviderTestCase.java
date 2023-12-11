@@ -56,6 +56,7 @@ public class Log4jProviderTestCase extends AbstractLoggerTestCase {
 
     @Test
     public void testMdc() {
+        AssumeUtil.assumeNotJavaEa();
         MDC.put("test.key", "value");
         Assertions.assertEquals("value", MDC.get("test.key"));
         Assertions.assertEquals("value", org.apache.log4j.MDC.get("test.key"));
