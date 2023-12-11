@@ -54,7 +54,7 @@ jobs:
           java-version: ${{ matrix.java }}
           cache: 'maven'
       - name: Build and Test on Java ${{ matrix.java }}
-        run: mvn clean install
+        run: mvn clean install -fae
       - uses: actions/upload-artifact@v3
         if: failure()
         with:
