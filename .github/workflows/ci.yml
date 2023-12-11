@@ -43,7 +43,7 @@ jobs:
       matrix:
         os: [ubuntu-latest, windows-latest, macos-latest]
         # Keep this list as: all supported LTS JDKs, the latest GA JDK, and the latest EA JDK (if available/optional).
-        java: [11, 17, 21]
+        java: [11, 17, 21, 22-ea]
 
     steps:
       - uses: actions/checkout@v4
@@ -54,12 +54,12 @@ jobs:
           java-version: ${{ matrix.java }}
           cache: 'maven'
       - name: Build and Test on Java ${{ matrix.java }}
-        run: mvn clean install
+        run: mvn -B clean install -fae
       - uses: actions/upload-artifact@v3
         if: failure()
         with:
           name: surefire-reports-${{ matrix.os }}-${{ matrix.java }}
-          path: '**/surefire-reports/*.txt'
+          path: '**/surefire-reports/'
 
   format-check:
     runs-on: ubuntu-latest
