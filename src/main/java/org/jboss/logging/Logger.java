@@ -21,8 +21,10 @@ package org.jboss.logging;
 import static java.security.AccessController.doPrivileged;
 
 import java.io.Serializable;
-import java.lang.reflect.Constructor;
-import java.lang.reflect.InvocationTargetException;
+import java.lang.invoke.MethodHandle;
+import java.lang.invoke.MethodHandles;
+import java.lang.invoke.MethodHandles.Lookup;
+import java.lang.invoke.MethodType;
 import java.security.PrivilegedAction;
 import java.util.Locale;
 
@@ -2509,15 +2511,43 @@ public abstract class Logger implements Serializable, BasicLogger {
     /**
      * Get a typed logger which implements the given interface. The current default locale will be used for the new logger.
      *
+     * @param lookup   a lookup which has access to the implementation class (usually {@link MethodHandles#lookup() lookup()})
      * @param type     the interface to implement
      * @param category the logger category
      * @param <T>      the logger type
      * @return the typed logger
      */
+    public static <T> T getMessageLogger(Lookup lookup, Class<T> type, String category) {
+        return getMessageLogger(lookup, type, category, LoggingLocale.getLocale());
+    }
+
+    /**
+     * Get a typed logger which implements the given interface. The given locale will be used for the new logger.
+     *
+     * @param lookup   a lookup which has access to the implementation class (usually {@link MethodHandles#lookup() lookup()})
+     * @param type     the interface to implement
+     * @param category the logger category
+     * @param locale   the locale for the new logger
+     * @param <T>      the logger type
+     * @return the typed logger
+     */
+    public static <T> T getMessageLogger(final Lookup lookup, final Class<T> type, final String category, final Locale locale) {
+        return doGetMessageLogger(lookup, type, category, locale);
+    }
+
+    /**
+     * Get a typed logger which implements the given interface. The current default locale will be used for the new logger.
+     *
+     * @param type     the interface to implement
+     * @param category the logger category
+     * @param <T>      the logger type
+     * @return the typed logger
+     * @deprecated Use {@link #getMessageLogger(Lookup,Class,String)} instead to avoid errors in modular environments.
+     */
+    @Deprecated(forRemoval = true, since = "3.6")
     public static <T> T getMessageLogger(Class<T> type, String category) {
         return getMessageLogger(type, category, LoggingLocale.getLocale());
     }
-
     /**
      * Get a typed logger which implements the given interface. The given locale will be used for the new logger.
      *
@@ -2526,68 +2556,90 @@ public abstract class Logger implements Serializable, BasicLogger {
      * @param locale   the locale for the new logger
      * @param <T>      the logger type
      * @return the typed logger
+     * @deprecated Use {@link #getMessageLogger(Lookup,Class,String,Locale)} instead to avoid errors in modular environments.
      */
+    @Deprecated(forRemoval = true, since = "3.6")
     public static <T> T getMessageLogger(final Class<T> type, final String category, final Locale locale) {
-        if (System.getSecurityManager() == null)
-            return doGetMessageLogger(type, category, locale);
-        return doPrivileged(new PrivilegedAction<T>() {
-            public T run() {
-                return doGetMessageLogger(type, category, locale);
+        Lookup lookup;
+        if (System.getSecurityManager() == null) {
+            try {
+                lookup = MethodHandles.privateLookupIn(type, MethodHandles.lookup());
+            } catch (IllegalAccessException e) {
+                throw new IllegalArgumentException("This library does not have private access to " + type);
             }
-        });
+        } else {
+            lookup = doPrivileged(new PrivilegedAction<Lookup>() {
+                public Lookup run() {
+                    try {
+                        return MethodHandles.privateLookupIn(type, MethodHandles.lookup());
+                    } catch (IllegalAccessException e) {
+                        throw new IllegalArgumentException("This library does not have private access to " + type);
+                    }
+                }
+            });
+        }
+        return doGetMessageLogger(lookup, type, category, locale);
     }
 
-    private static <T> T doGetMessageLogger(final Class<T> type, final String category, final Locale locale) {
+    private static <T> T doGetMessageLogger(final Lookup lookup, final Class<T> type, final String category,
+            final Locale locale) {
+        if (!type.isInterface()) {
+            throw new IllegalArgumentException("Given type " + type + " is not an interface");
+        }
         String language = locale.getLanguage();
         String country = locale.getCountry();
         String variant = locale.getVariant();
 
         Class<? extends T> loggerClass = null;
-        final ClassLoader classLoader = type.getClassLoader();
         final String typeName = type.getName();
-        if (variant != null && variant.length() > 0)
+        if (variant != null && !variant.isEmpty()) {
             try {
-                loggerClass = Class.forName(join(typeName, "$logger", language, country, variant), true, classLoader)
-                        .asSubclass(type);
+                loggerClass = lookup.findClass(join(typeName, "$logger", language, country, variant)).asSubclass(type);
             } catch (ClassNotFoundException e) {
                 // ignore
+            } catch (IllegalAccessException e) {
+                throw new IllegalArgumentException("The given lookup does not have access to the implementation");
             }
-        if (loggerClass == null && country != null && country.length() > 0)
+        }
+        if (loggerClass == null && country != null && !country.isEmpty()) {
             try {
-                loggerClass = Class.forName(join(typeName, "$logger", language, country, null), true, classLoader)
-                        .asSubclass(type);
+                loggerClass = lookup.findClass(join(typeName, "$logger", language, country, null)).asSubclass(type);
             } catch (ClassNotFoundException e) {
                 // ignore
+            } catch (IllegalAccessException e) {
+                throw new IllegalArgumentException("The given lookup does not have access to the implementation class");
             }
-        if (loggerClass == null && language != null && language.length() > 0)
+        }
+        if (loggerClass == null && language != null && !language.isEmpty()) {
             try {
-                loggerClass = Class.forName(join(typeName, "$logger", language, null, null), true, classLoader)
-                        .asSubclass(type);
+                loggerClass = lookup.findClass(join(typeName, "$logger", language, null, null)).asSubclass(type);
             } catch (ClassNotFoundException e) {
                 // ignore
+            } catch (IllegalAccessException e) {
+                throw new IllegalArgumentException("The given lookup does not have access to the implementation class");
             }
-        if (loggerClass == null)
+        }
+        if (loggerClass == null) {
             try {
-                loggerClass = Class.forName(join(typeName, "$logger", null, null, null), true, classLoader).asSubclass(type);
+                loggerClass = lookup.findClass(join(typeName, "$logger", null, null, null)).asSubclass(type);
             } catch (ClassNotFoundException e) {
-                throw new IllegalArgumentException(
-                        "Invalid logger " + type + " (implementation not found in " + classLoader + ")");
+                throw new IllegalArgumentException("Invalid logger " + type + " (implementation not found)");
+            } catch (IllegalAccessException e) {
+                throw new IllegalArgumentException("The given lookup does not have access to the implementation class");
             }
-        final Constructor<? extends T> constructor;
+        }
+        MethodHandle ctorHandle;
         try {
-            constructor = loggerClass.getConstructor(Logger.class);
+            ctorHandle = lookup.findConstructor(loggerClass, MethodType.methodType(void.class, Logger.class));
         } catch (NoSuchMethodException e) {
             throw new IllegalArgumentException("Logger implementation " + loggerClass + " has no matching constructor");
+        } catch (IllegalAccessException e) {
+            throw new IllegalArgumentException("The given lookup does not have access to the implementation class constructor");
         }
         try {
-            return constructor.newInstance(Logger.getLogger(category));
-        } catch (InstantiationException e) {
+            return type.cast(ctorHandle.invoke(Logger.getLogger(category)));
+        } catch (Throwable e) {
             throw new IllegalArgumentException("Logger implementation " + loggerClass + " could not be instantiated", e);
-        } catch (IllegalAccessException e) {
-            throw new IllegalArgumentException("Logger implementation " + loggerClass + " could not be instantiated", e);
-        } catch (InvocationTargetException e) {
-            throw new IllegalArgumentException("Logger implementation " + loggerClass + " could not be instantiated",
-                    e.getCause());
         }
     }
 
