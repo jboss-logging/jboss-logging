@@ -20,7 +20,9 @@ package org.jboss.logging;
 
 import static java.security.AccessController.doPrivileged;
 
-import java.lang.reflect.Field;
+import java.lang.invoke.MethodHandle;
+import java.lang.invoke.MethodHandles;
+import java.lang.invoke.MethodHandles.Lookup;
 import java.security.PrivilegedAction;
 import java.util.Locale;
 
@@ -41,7 +43,9 @@ public final class Messages {
      * @param type the bundle type class
      * @param <T>  the bundle type
      * @return the bundle
+     * @deprecated Use {@link #getBundle(Lookup,Class)} instead to avoid errors in modular environments.
      */
+    @Deprecated(forRemoval = true, since = "3.6")
     public static <T> T getBundle(Class<T> type) {
         return getBundle(type, LoggingLocale.getLocale());
     }
@@ -53,63 +57,111 @@ public final class Messages {
      * @param locale the message locale to use
      * @param <T>    the bundle type
      * @return the bundle
+     * @deprecated Use {@link #getBundle(Lookup,Class,Locale)} instead to avoid errors in modular environments.
      */
+    @Deprecated(forRemoval = true, since = "3.6")
     public static <T> T getBundle(final Class<T> type, final Locale locale) {
+        Lookup lookup;
         if (System.getSecurityManager() == null) {
-            return doGetBundle(type, locale);
-        }
-        return doPrivileged(new PrivilegedAction<T>() {
-            public T run() {
-                return doGetBundle(type, locale);
+            try {
+                lookup = MethodHandles.privateLookupIn(type, MethodHandles.lookup());
+            } catch (IllegalAccessException e) {
+                throw new IllegalArgumentException("This library does not have private access to " + type);
             }
-        });
+        } else {
+            lookup = doPrivileged(new PrivilegedAction<Lookup>() {
+                public Lookup run() {
+                    try {
+                        return MethodHandles.privateLookupIn(type, MethodHandles.lookup());
+                    } catch (IllegalAccessException e) {
+                        throw new IllegalArgumentException("This library does not have private access to " + type);
+                    }
+                }
+            });
+        }
+        return doGetBundle(lookup, type, locale);
     }
 
-    private static <T> T doGetBundle(final Class<T> type, final Locale locale) {
+    /**
+     * Get a message bundle of the given type. Equivalent to
+     * <code>{@link #getBundle(Class, java.util.Locale) getBundle}(type, Locale.getDefault())</code>.
+     *
+     * @param lookup a lookup which has access to the implementation class (usually {@link MethodHandles#lookup() lookup()})
+     * @param type   the bundle type class
+     * @param <T>    the bundle type
+     * @return the bundle
+     */
+    public static <T> T getBundle(Lookup lookup, Class<T> type) {
+        return getBundle(lookup, type, LoggingLocale.getLocale());
+    }
+
+    /**
+     * Get a message bundle of the given type.
+     *
+     * @param lookup a lookup which has access to the implementation class (usually {@link MethodHandles#lookup() lookup()})
+     * @param type   the bundle type class
+     * @param locale the message locale to use
+     * @param <T>    the bundle type
+     * @return the bundle
+     */
+    public static <T> T getBundle(final Lookup lookup, final Class<T> type, final Locale locale) {
+        return doGetBundle(lookup, type, locale);
+    }
+
+    private static <T> T doGetBundle(final Lookup lookup, final Class<T> type, final Locale locale) {
         String language = locale.getLanguage();
         String country = locale.getCountry();
         String variant = locale.getVariant();
 
         Class<? extends T> bundleClass = null;
-        if (variant != null && variant.length() > 0)
+        if (variant != null && !variant.isEmpty()) {
             try {
-                bundleClass = Class
-                        .forName(join(type.getName(), "$bundle", language, country, variant), true, type.getClassLoader())
-                        .asSubclass(type);
+                bundleClass = lookup.findClass(join(type.getName(), "$bundle", language, country, variant)).asSubclass(type);
             } catch (ClassNotFoundException e) {
                 // ignore
+            } catch (IllegalAccessException e) {
+                throw new IllegalArgumentException("The given lookup does not have access to the implementation class");
             }
-        if (bundleClass == null && country != null && country.length() > 0)
+        }
+        if (bundleClass == null && country != null && !country.isEmpty()) {
             try {
-                bundleClass = Class
-                        .forName(join(type.getName(), "$bundle", language, country, null), true, type.getClassLoader())
-                        .asSubclass(type);
+                bundleClass = lookup.findClass(join(type.getName(), "$bundle", language, country, null)).asSubclass(type);
             } catch (ClassNotFoundException e) {
                 // ignore
+            } catch (IllegalAccessException e) {
+                throw new IllegalArgumentException("The given lookup does not have access to the implementation class");
             }
-        if (bundleClass == null && language != null && language.length() > 0)
+        }
+        if (bundleClass == null && language != null && !language.isEmpty()) {
             try {
-                bundleClass = Class.forName(join(type.getName(), "$bundle", language, null, null), true, type.getClassLoader())
-                        .asSubclass(type);
+                bundleClass = lookup.findClass(join(type.getName(), "$bundle", language, null, null)).asSubclass(type);
             } catch (ClassNotFoundException e) {
                 // ignore
+            } catch (IllegalAccessException e) {
+                throw new IllegalArgumentException("The given lookup does not have access to the implementation class");
             }
-        if (bundleClass == null)
+        }
+        if (bundleClass == null) {
             try {
-                bundleClass = Class.forName(join(type.getName(), "$bundle", null, null, null), true, type.getClassLoader())
-                        .asSubclass(type);
+                bundleClass = lookup.findClass(join(type.getName(), "$bundle", null, null, null)).asSubclass(type);
             } catch (ClassNotFoundException e) {
                 throw new IllegalArgumentException("Invalid bundle " + type + " (implementation not found)");
+            } catch (IllegalAccessException e) {
+                throw new IllegalArgumentException("The given lookup does not have access to the implementation class");
             }
-        final Field field;
+        }
+        final MethodHandle getter;
         try {
-            field = bundleClass.getField("INSTANCE");
+            getter = lookup.findStaticGetter(bundleClass, "INSTANCE", bundleClass);
         } catch (NoSuchFieldException e) {
             throw new IllegalArgumentException("Bundle implementation " + bundleClass + " has no instance field");
+        } catch (IllegalAccessException e) {
+            throw new IllegalArgumentException(
+                    "The given lookup does not have access to the implementation class instance field");
         }
         try {
-            return type.cast(field.get(null));
-        } catch (IllegalAccessException e) {
+            return type.cast(getter.invoke());
+        } catch (Throwable e) {
             throw new IllegalArgumentException("Bundle implementation " + bundleClass + " could not be instantiated", e);
         }
     }
