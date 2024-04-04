@@ -60,7 +60,7 @@
         <version.org.apache.logging.log4j>2.23.1</version.org.apache.logging.log4j>
         <version.org.jboss.logmanager>3.0.4.Final</version.org.jboss.logmanager>
         <version.org.junit>5.10.2</version.org.junit>
-        <version.org.sfl4j>2.0.7</version.org.sfl4j>
+        <version.org.sfl4j>2.0.12</version.org.sfl4j>
 
         <!-- Override the parent version to compile with Java 17 -->
         <version.bundle.plugin>5.1.3</version.bundle.plugin>
