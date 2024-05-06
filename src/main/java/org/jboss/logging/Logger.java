@@ -2548,6 +2548,7 @@ public abstract class Logger implements Serializable, BasicLogger {
     public static <T> T getMessageLogger(Class<T> type, String category) {
         return getMessageLogger(type, category, LoggingLocale.getLocale());
     }
+
     /**
      * Get a typed logger which implements the given interface. The given locale will be used for the new logger.
      *
