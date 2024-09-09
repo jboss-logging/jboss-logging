@@ -2532,7 +2532,10 @@ public abstract class Logger implements Serializable, BasicLogger {
      * @return the typed logger
      */
     public static <T> T getMessageLogger(final Lookup lookup, final Class<T> type, final String category, final Locale locale) {
-        return doGetMessageLogger(lookup, type, category, locale);
+        if (System.getSecurityManager() == null) {
+            return doGetMessageLogger(lookup, type, category, locale);
+        }
+        return doPrivileged((PrivilegedAction<? extends T>) () -> doGetMessageLogger(lookup, type, category, locale));
     }
 
     /**
@@ -2561,25 +2564,25 @@ public abstract class Logger implements Serializable, BasicLogger {
      */
     @Deprecated(forRemoval = true, since = "3.6")
     public static <T> T getMessageLogger(final Class<T> type, final String category, final Locale locale) {
-        Lookup lookup;
         if (System.getSecurityManager() == null) {
             try {
-                lookup = MethodHandles.privateLookupIn(type, MethodHandles.lookup());
+                final Lookup lookup = MethodHandles.privateLookupIn(type, MethodHandles.lookup());
+                return doGetMessageLogger(lookup, type, category, locale);
             } catch (IllegalAccessException e) {
                 throw new IllegalArgumentException("This library does not have private access to " + type);
             }
         } else {
-            lookup = doPrivileged(new PrivilegedAction<Lookup>() {
-                public Lookup run() {
+            return doPrivileged(new PrivilegedAction<T>() {
+                public T run() {
                     try {
-                        return MethodHandles.privateLookupIn(type, MethodHandles.lookup());
+                        final Lookup lookup = MethodHandles.privateLookupIn(type, MethodHandles.lookup());
+                        return doGetMessageLogger(lookup, type, category, locale);
                     } catch (IllegalAccessException e) {
                         throw new IllegalArgumentException("This library does not have private access to " + type);
                     }
                 }
             });
         }
-        return doGetMessageLogger(lookup, type, category, locale);
     }
 
     private static <T> T doGetMessageLogger(final Lookup lookup, final Class<T> type, final String category,

@@ -61,25 +61,25 @@ public final class Messages {
      */
     @Deprecated(forRemoval = true, since = "3.6")
     public static <T> T getBundle(final Class<T> type, final Locale locale) {
-        Lookup lookup;
         if (System.getSecurityManager() == null) {
             try {
-                lookup = MethodHandles.privateLookupIn(type, MethodHandles.lookup());
+                final Lookup lookup = MethodHandles.privateLookupIn(type, MethodHandles.lookup());
+                return doGetBundle(lookup, type, locale);
             } catch (IllegalAccessException e) {
                 throw new IllegalArgumentException("This library does not have private access to " + type);
             }
         } else {
-            lookup = doPrivileged(new PrivilegedAction<Lookup>() {
-                public Lookup run() {
+            return doPrivileged(new PrivilegedAction<T>() {
+                public T run() {
                     try {
-                        return MethodHandles.privateLookupIn(type, MethodHandles.lookup());
+                        final Lookup lookup = MethodHandles.privateLookupIn(type, MethodHandles.lookup());
+                        return doGetBundle(lookup, type, locale);
                     } catch (IllegalAccessException e) {
                         throw new IllegalArgumentException("This library does not have private access to " + type);
                     }
                 }
             });
         }
-        return doGetBundle(lookup, type, locale);
     }
 
     /**
@@ -105,7 +105,10 @@ public final class Messages {
      * @return the bundle
      */
     public static <T> T getBundle(final Lookup lookup, final Class<T> type, final Locale locale) {
-        return doGetBundle(lookup, type, locale);
+        if (System.getSecurityManager() == null) {
+            return doGetBundle(lookup, type, locale);
+        }
+        return doPrivileged((PrivilegedAction<? extends T>) () -> doGetBundle(lookup, type, locale));
     }
 
     private static <T> T doGetBundle(final Lookup lookup, final Class<T> type, final Locale locale) {
