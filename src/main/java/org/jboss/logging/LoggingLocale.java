@@ -50,6 +50,9 @@ class LoggingLocale {
 
     private static Locale getDefaultLocale() {
         final String bcp47Tag = SecurityActions.getSystemProperty("org.jboss.logging.locale", "");
+        if ("ROOT".equalsIgnoreCase(bcp47Tag)) {
+            return Locale.ROOT;
+        }
         if (bcp47Tag.trim().isEmpty()) {
             return Locale.getDefault();
         }
