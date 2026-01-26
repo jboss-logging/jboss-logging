@@ -21,9 +21,9 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/maven-v4_0_0.xsd">
 
     <parent>
-        <groupId>org.jboss.logging</groupId>
-        <artifactId>logging-parent</artifactId>
-        <version>1.0.3.Final</version>
+        <groupId>org.jboss</groupId>
+        <artifactId>jboss-parent</artifactId>
+        <version>51</version>
     </parent>
 
     <modelVersion>4.0.0</modelVersion>
@@ -32,7 +32,7 @@
     <version>3.6.2.Final-SNAPSHOT</version>
     <packaging>jar</packaging>
     <name>JBoss Logging 3</name>
-    <url>http://www.jboss.org</url>
+    <url>https://www.jboss.org</url>
     <description>The JBoss Logging Framework</description>
 
     <licenses>
@@ -55,18 +55,42 @@
     <properties>
         <!-- Dependency versions -->
         <version.ch.qos.logback>1.5.26</version.ch.qos.logback>
-        <version.module-info>2.2</version.module-info>
         <version.org.apache.log4j>1.2.17</version.org.apache.log4j>
         <version.org.apache.logging.log4j>2.24.3</version.org.apache.logging.log4j>
         <version.org.jboss.logmanager>3.1.2.Final</version.org.jboss.logmanager>
         <version.org.junit>5.13.4</version.org.junit>
         <version.org.sfl4j>2.0.12</version.org.sfl4j>
 
-        <!-- Override the parent version to compile with Java 17 -->
-        <version.bundle.plugin>5.1.3</version.bundle.plugin>
+        <!-- Plugin versions -->
+        <version.central.publishing.maven.plugin>0.10.0</version.central.publishing.maven.plugin>
+        <version.formatter.maven.plugin>2.29.0</version.formatter.maven.plugin>
+        <version.impsort.maven.plugin>1.13.0</version.impsort.maven.plugin>
+        <version.module-info>2.2</version.module-info>
 
         <maven.test.redirectTestOutputToFile>true</maven.test.redirectTestOutputToFile>
         <cp.test.classes.dir>${project.build.directory}${file.separator}cp-test-classes</cp.test.classes.dir>
+
+        <!-- JDK configuration: require Java 17 to build -->
+        <jdk.min.version>17</jdk.min.version>
+        <maven.compiler.release>11</maven.compiler.release>
+
+        <!-- maven-release-plugin configuration -->
+        <autoVersionSubmodules>true</autoVersionSubmodules>
+        <releaseProfiles>central-release</releaseProfiles>
+        <signTag>true</signTag>
+        <tagNameFormat>v@{project.version}</tagNameFormat>
+        <arguments>-DskipTests -Dcentral.autoPublish=${central.autoPublish} -Dcentral.waitUntil=${central.waitUntil}</arguments>
+        <!-- Do not push changes by default when using the maven-release-plugin:prepare -->
+        <pushChanges>true</pushChanges>
+        <!-- Use the local directory when using perform -->
+        <localCheckout>true</localCheckout>
+        <!-- Maven Central properties -->
+        <central.sonatype.url>https://central.sonatype.com</central.sonatype.url>
+        <central.serverId>central</central.serverId>
+        <central.deploymentName>jboss-logging-${project.version}</central.deploymentName>
+        <central.autoPublish>true</central.autoPublish>
+        <central.waitUntil>validated</central.waitUntil>
+        <central.skipPublishing>false</central.skipPublishing>
     </properties>
 
     <dependencyManagement>
@@ -142,10 +166,57 @@
             <plugin>
                 <groupId>net.revelc.code.formatter</groupId>
                 <artifactId>formatter-maven-plugin</artifactId>
+                <version>${version.formatter.maven.plugin}</version>
+                <dependencies>
+                    <dependency>
+                        <groupId>org.jboss.logging</groupId>
+                        <artifactId>ide-config</artifactId>
+                        <version>1.0.4.Final</version>
+                    </dependency>
+                </dependencies>
+                <configuration>
+                    <excludes>module-info.java</excludes>
+                    <compilerCompliance>${maven.compiler.release}</compilerCompliance>
+                    <!-- store outside of target to speed up formatting when mvn clean is used -->
+                    <cachedir>.cache</cachedir>
+                    <configFile>eclipse-code-formatter.xml</configFile>
+                    <configXmlFile>wildfly-xml.properties</configXmlFile>
+                    <lineEnding>LF</lineEnding>
+                    <includeResources>true</includeResources>
+                    <removeTrailingWhitespace>true</removeTrailingWhitespace>
+                </configuration>
+                <executions>
+                    <execution>
+                        <id>format-source</id>
+                        <goals>
+                            <goal>format</goal>
+                        </goals>
+                        <phase>process-sources</phase>
+                    </execution>
+                </executions>
             </plugin>
             <plugin>
                 <groupId>net.revelc.code</groupId>
                 <artifactId>impsort-maven-plugin</artifactId>
+                <version>${version.impsort.maven.plugin}</version>
+                <configuration>
+                    <excludes>module-info.java</excludes>
+                    <compliance>${maven.compiler.release}</compliance>
+                    <!-- store outside of target to speed up formatting when mvn clean is used -->
+                    <cachedir>.cache</cachedir>
+                    <groups>java.,javax.,jakarta.,org.,com.</groups>
+                    <staticGroups>*</staticGroups>
+                    <removeUnused>true</removeUnused>
+                </configuration>
+                <executions>
+                    <execution>
+                        <id>format-import-source</id>
+                        <goals>
+                            <goal>sort</goal>
+                        </goals>
+                        <phase>process-sources</phase>
+                    </execution>
+                </executions>
             </plugin>
             <plugin>
                 <artifactId>maven-compiler-plugin</artifactId>
@@ -173,7 +244,6 @@
                         <phase>test-compile</phase>
                         <configuration>
                             <outputDirectory>${cp.test.classes.dir}</outputDirectory>
-                            <skip>${skip.cp.tests}</skip>
                             <testIncludes>
                                 <testInclude>**/*ClassPathTestCase.java</testInclude>
                             </testIncludes>
@@ -340,9 +410,6 @@
                         <manifest>
                             <addDefaultSpecificationEntries>false</addDefaultSpecificationEntries>
                         </manifest>
-                        <manifestEntries>
-                            <Automatic-Module-Name>org.jboss.logging</Automatic-Module-Name>
-                        </manifestEntries>
                     </archive>
                     <instructions>
                         <Export-Package>
@@ -381,20 +448,113 @@
         </plugins>
     </build>
 
-    <repositories>
-        <repository>
-            <id>jboss-public-repository-group</id>
-            <name>JBoss Public Repository Group</name>
-            <releases>
-                <enabled>true</enabled>
-                <updatePolicy>never</updatePolicy>
-            </releases>
-            <snapshots>
-                <enabled>true</enabled>
-                <updatePolicy>never</updatePolicy>
-            </snapshots>
-            <url>https://repository.jboss.org/nexus/content/groups/public/</url>
-            <layout>default</layout>
-        </repository>
-    </repositories>
+    <profiles>
+        <profile>
+            <id>format-check</id>
+            <build>
+                <plugins>
+                    <!-- Validate formatting -->
+                    <plugin>
+                        <groupId>net.revelc.code.formatter</groupId>
+                        <artifactId>formatter-maven-plugin</artifactId>
+                        <executions>
+                            <execution>
+                                <id>validate-format</id>
+                                <phase>validate</phase>
+                                <goals>
+                                    <goal>validate</goal>
+                                </goals>
+                            </execution>
+                        </executions>
+                    </plugin>
+                    <plugin>
+                        <groupId>net.revelc.code</groupId>
+                        <artifactId>impsort-maven-plugin</artifactId>
+                        <executions>
+                            <execution>
+                                <id>check-import-sort</id>
+                                <phase>validate</phase>
+                                <goals>
+                                    <goal>check</goal>
+                                </goals>
+                            </execution>
+                        </executions>
+                    </plugin>
+                </plugins>
+            </build>
+        </profile>
+        <profile>
+            <id>central-release</id>
+
+            <distributionManagement>
+                <snapshotRepository>
+                    <id>${central.serverId}</id>
+                    <url>${central.sonatype.url}</url>
+                </snapshotRepository>
+                <repository>
+                    <id>${central.serverId}</id>
+                    <url>${central.sonatype.url}</url>
+                </repository>
+            </distributionManagement>
+
+            <build>
+                <plugins>
+                    <plugin>
+                        <artifactId>maven-source-plugin</artifactId>
+                        <executions>
+                            <execution>
+                                <id>attach-sources</id>
+                                <goals>
+                                    <goal>jar-no-fork</goal>
+                                </goals>
+                            </execution>
+                        </executions>
+                    </plugin>
+                    <plugin>
+                        <artifactId>maven-javadoc-plugin</artifactId>
+                        <executions>
+                            <execution>
+                                <id>aggregate-javadoc</id>
+                                <goals>
+                                    <goal>aggregate</goal>
+                                </goals>
+                                <phase>package</phase>
+                            </execution>
+                            <execution>
+                                <id>attach-javadocs</id>
+                                <goals>
+                                    <goal>jar</goal>
+                                </goals>
+                            </execution>
+                        </executions>
+                    </plugin>
+                    <plugin>
+                        <artifactId>maven-gpg-plugin</artifactId>
+                        <executions>
+                            <execution>
+                                <id>sign-artifacts</id>
+                                <phase>verify</phase>
+                                <goals>
+                                    <goal>sign</goal>
+                                </goals>
+                            </execution>
+                        </executions>
+                    </plugin>
+                    <plugin>
+                        <groupId>org.sonatype.central</groupId>
+                        <artifactId>central-publishing-maven-plugin</artifactId>
+                        <version>${version.central.publishing.maven.plugin}</version>
+                        <extensions>true</extensions>
+                        <configuration>
+                            <publishingServerId>${central.serverId}</publishingServerId>
+                            <autoPublish>${central.autoPublish}</autoPublish>
+                            <waitUntil>${central.waitUntil}</waitUntil>
+                            <deploymentName>${central.deploymentName}</deploymentName>
+                            <skipPublishing>${central.skipPublishing}</skipPublishing>
+                        </configuration>
+                    </plugin>
+                </plugins>
+            </build>
+        </profile>
+    </profiles>
 </project>
