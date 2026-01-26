@@ -17,8 +17,7 @@
   ~ limitations under the License.
   -->
 
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/maven-v4_0_0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/maven-v4_0_0.xsd">
 
     <parent>
         <groupId>org.jboss</groupId>
@@ -29,7 +28,7 @@
     <modelVersion>4.0.0</modelVersion>
     <groupId>org.jboss.logging</groupId>
     <artifactId>jboss-logging</artifactId>
-    <version>3.6.2.Final-SNAPSHOT</version>
+    <version>3.6.2.Final</version>
     <packaging>jar</packaging>
     <name>JBoss Logging 3</name>
     <url>https://www.jboss.org</url>
@@ -44,12 +43,11 @@
     </licenses>
 
 
-    <scm child.scm.connection.inherit.append.path="false" child.scm.developerConnection.inherit.append.path="false"
-         child.scm.url.inherit.append.path="false">
+    <scm child.scm.connection.inherit.append.path="false" child.scm.developerConnection.inherit.append.path="false" child.scm.url.inherit.append.path="false">
         <connection>scm:git:git://github.com/jboss-logging/jboss-logging.git</connection>
         <developerConnection>scm:git:git@github.com:jboss-logging/jboss-logging.git</developerConnection>
         <url>https://github.com/jboss-logging/jboss-logging/tree/main/</url>
-        <tag>HEAD</tag>
+        <tag>v3.6.2.Final</tag>
     </scm>
 
     <properties>
