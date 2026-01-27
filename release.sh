@@ -66,6 +66,7 @@ DEVEL_VERSION=""
 RELEASE_VERSION=""
 SCRIPT_PATH=$(realpath "${0}")
 SCRIPT_DIR=$(dirname "${SCRIPT_PATH}")
+MVN="${SCRIPT_DIR}/mvnw"
 LOCAL_REPO="/tmp/m2/repository/$(basename "${SCRIPT_DIR}")"
 VERBOSE=false
 GH_RELEASE_TYPE="--latest"
@@ -133,7 +134,7 @@ fi
 # Find the expected Server ID
 # We temporarily disable set -e here because mvn might fail if args are bad, and we want to capture that
 set +e
-SERVER_ID=$(mvn help:evaluate -Dexpression=central.serverId -q -DforceStdout "${MAVEN_ARGS[@]}" | sed 's/^\[INFO\] \[stdout\] //')
+SERVER_ID=$("${MVN}" help:evaluate -Dexpression=central.serverId -q -DforceStdout "${MAVEN_ARGS[@]}" | sed 's/^\[INFO\] \[stdout\] //')
 RET_CODE=$?
 set -e
 
@@ -142,7 +143,7 @@ if [ $RET_CODE -ne 0 ]; then
 fi
 
 # Check the settings to ensure a server defined with that value
-if ! mvn help:effective-settings | grep -q "<id>${SERVER_ID}</id>"; then
+if ! "${MVN}" help:effective-settings | grep -q "<id>${SERVER_ID}</id>"; then
     failNoHelp "A server with the id of \"${SERVER_ID}\" was not found in your settings.xml file."
 fi
 
@@ -168,7 +169,7 @@ if [ -d "${LOCAL_REPO}" ]; then
     find "${LOCAL_REPO}" -type d -name "*SNAPSHOT" -print0 | xargs -0 -I {} rm "${RM_FLAGS}" "{}"
 
     # Delete directories associated with this project
-    PROJECT_PATH="$(mvn help:evaluate -Dexpression=project.groupId -q -DforceStdout "${MAVEN_ARGS[@]}")"
+    PROJECT_PATH="$("${MVN}" help:evaluate -Dexpression=project.groupId -q -DforceStdout "${MAVEN_ARGS[@]}")"
     # Safe replacement of dots with slashes
     PROJECT_PATH="${LOCAL_REPO}/${PROJECT_PATH//./\/}"
 
@@ -178,7 +179,7 @@ if [ -d "${LOCAL_REPO}" ]; then
 fi
 
 # Create the command
-CMD=(mvn clean release:clean release:prepare release:perform)
+CMD=("${MVN}" clean release:clean release:prepare release:perform)
 CMD+=("-Dmaven.repo.local=${LOCAL_REPO}")
 CMD+=("-DdevelopmentVersion=${DEVEL_VERSION}")
 CMD+=("-DreleaseVersion=${RELEASE_VERSION}")
