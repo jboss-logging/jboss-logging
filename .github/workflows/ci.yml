@@ -55,7 +55,7 @@ jobs:
           cache: 'maven'
       - name: Build and Test on Java ${{ matrix.java }}
         run: mvn -B clean verify -fae
-      - uses: actions/upload-artifact@v6
+      - uses: actions/upload-artifact@v7
         if: failure()
         with:
           name: surefire-reports-${{ matrix.os }}-${{ matrix.java }}
@@ -80,7 +80,7 @@ jobs:
             17
       - name: Build on 17 and Test on Java 11
         run: mvn -B clean verify -fae "-Djvm=${{env.JAVA_HOME_11_X64}}/bin/java"
-      - uses: actions/upload-artifact@v6
+      - uses: actions/upload-artifact@v7
         if: failure()
         with:
           name: surefire-reports-${{ matrix.os }}-11
