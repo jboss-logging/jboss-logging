@@ -28,7 +28,7 @@
     <modelVersion>4.0.0</modelVersion>
     <groupId>org.jboss.logging</groupId>
     <artifactId>jboss-logging</artifactId>
-    <version>3.6.3.Final-SNAPSHOT</version>
+    <version>3.6.3.Final</version>
     <packaging>jar</packaging>
     <name>JBoss Logging 3</name>
     <url>https://www.jboss.org</url>
@@ -47,7 +47,7 @@
         <connection>scm:git:git://github.com/jboss-logging/jboss-logging.git</connection>
         <developerConnection>scm:git:git@github.com:jboss-logging/jboss-logging.git</developerConnection>
         <url>https://github.com/jboss-logging/jboss-logging/tree/main/</url>
-        <tag>HEAD</tag>
+        <tag>v3.6.3.Final</tag>
     </scm>
 
     <properties>
