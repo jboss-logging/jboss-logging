@@ -2566,6 +2566,7 @@ public abstract class Logger implements Serializable, BasicLogger {
     public static <T> T getMessageLogger(final Class<T> type, final String category, final Locale locale) {
         if (System.getSecurityManager() == null) {
             try {
+                Logger.class.getModule().addReads(type.getModule());
                 final Lookup lookup = MethodHandles.privateLookupIn(type, MethodHandles.lookup());
                 return doGetMessageLogger(lookup, type, category, locale);
             } catch (IllegalAccessException e) {
@@ -2575,6 +2576,7 @@ public abstract class Logger implements Serializable, BasicLogger {
             return doPrivileged(new PrivilegedAction<T>() {
                 public T run() {
                     try {
+                        Logger.class.getModule().addReads(type.getModule());
                         final Lookup lookup = MethodHandles.privateLookupIn(type, MethodHandles.lookup());
                         return doGetMessageLogger(lookup, type, category, locale);
                     } catch (IllegalAccessException e) {
