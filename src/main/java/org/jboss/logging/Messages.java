@@ -63,6 +63,7 @@ public final class Messages {
     public static <T> T getBundle(final Class<T> type, final Locale locale) {
         if (System.getSecurityManager() == null) {
             try {
+                Messages.class.getModule().addReads(type.getModule());
                 final Lookup lookup = MethodHandles.privateLookupIn(type, MethodHandles.lookup());
                 return doGetBundle(lookup, type, locale);
             } catch (IllegalAccessException e) {
@@ -72,6 +73,7 @@ public final class Messages {
             return doPrivileged(new PrivilegedAction<T>() {
                 public T run() {
                     try {
+                        Messages.class.getModule().addReads(type.getModule());
                         final Lookup lookup = MethodHandles.privateLookupIn(type, MethodHandles.lookup());
                         return doGetBundle(lookup, type, locale);
                     } catch (IllegalAccessException e) {
